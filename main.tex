@@ -1,0 +1,167 @@
+\documentclass[twoside,a4paper,11pt]{memoir}
+\input{preamble}
+
+\title{DDU}
+\subtitle{Master's Thesis} 
+
+\author{Aaron Ang}
+\authoremail{\url{a.w.z.ang@student.tudelft.nl}}
+\birthplace{Amstelveen, The Netherlands}
+\studentid{4139194}
+
+\company{
+\includegraphics[height=1.3cm]{figures/parc_logo.png}\\
+PARC, a Xerox company\\
+3333 Coyote Hill Road\\
+Palo Alto, CA 94304\\
+\url{www.parc.com}
+}
+
+\chair{Prof. Dr. A. van Deursen, Faculty EEMCS, TU Delft}
+\supervisor{Prof. Dr. A. van Deursen, Faculty EEMCS, TU Delft}
+\externalsupervisor{Prof. Dr. R. Maranhao, University of Lisbon}
+
+\setcounter{tocdepth}{1}
+\setsecnumdepth{subsection}
+\maxsecnumdepth{subsection}
+
+\begin{document}
+
+\frontmatter
+\thispagestyle{empty}
+\maketitle
+\makeformaltitlepages{hello}
+
+\include{preface}
+
+\cleardoublepage\tableofcontents
+\cleardoublepage\listoffigures
+\cleardoublepage\mainmatter
+
+\chapter{Introduction}
+\label{ch:introduction}
+Software systems are complex and error-prone, likely to expose failures to the end user.
+When a failure occurs, the developer has to debug the system to eliminate the failure.
+This debugging process can be described in three phases \cite{parnin2011automated}.
+In the first phase, the developer has to pinpoint the fault, also known as the root cause, in code that causes the failure.
+In the second phase, the developer has to develop an understanding of the root cause and its context.
+Finally, in the third phase, the developer has to implement a patch that corrects the behavior of the system.
+This process is time-consuming and can account for 30\% to 90\% of the software development cycle \cite{robbins2003debugging, beizer2003software, britton2013reversible}. 
+
+Traditionally, developers use four different approaches to debug a software system, namely program logging, assertions, breakpoints and profiling \cite{wong2016survey}.
+Program logging is the act of inserting \emph{print} statements in the code to observe program state information during execution.
+Assertions are constraints that can be added to a program that have to evaluate to true during execution time. 
+Breakpoints allow the developer to pause the software system during execution, and observe and modify variable values.
+Profiling is used to perform runtime analysis and collect metrics on, for example, execution speed and memory usage.
+These techniques provide an intuitive approach to localize the root cause of a failure, but, as one might expect, are less effective in the massive size and scale of software systems today.
+
+Therefore, in the last decades a lot of research has been performed on improving and developing \emph{advanced} fault localization techniques \cite{wong2016survey} such that they are applicable to the software systems of today.
+Specifically, a prominent fault localization technique is spectrum-based fault localization (SBFL).
+SBFL techniques pinpoint faults in code based on execution information of a program, also known as a program spectrum \cite{reps1997use}.
+It does this by outputting a list of suspicious components, for example statements or methods, ranked by their suspiciousness.
+Intuitively, if a statement is executed primarily during failed executions, then this statement might be assigned a higher suspiciousness score. 
+Similarly, if a statement is executed primarily during successful executions, then this statement might be assigned a lower suspiciousness score.
+
+While SBFL techniques are promising for debugging purposes, these techniques are dependent on the quality of a test suite.
+Currently, test suites are optimized with respect to adequacy measurements that focus on error detection, e.g. branch coverage, line coverage.
+However, Perez \etal~\cite{DBLP:conf/icse/PerezAD17} show evidence that optimizing a test suite with respect to DDU --- a metric to quantify the test suite's diagnosability --- improves the diagnostic performance of SBFL by 34\% compared to a test suite optimized with respect to branch coverage.
+The goal of DDU is to capture diagnosability and to serve as a complementary metric to code coverage for developers to use to improve the test suite's diagnosability.
+
+\section{Problem Definition}
+\label{sec:problem_definition}
+Currently, when the DDU is computed for a given test suite, its value is in the domain $[ 0, 1 ]$, where $0$ suggests that the test suite's diagnosability is low, and $1$ suggests that the test suite's diagnosability is high.
+The problem with this value is that the developer does not know how to extend or update the test suite given a DDU value.
+For example, when the test suite's DDU is equal to $0.1$, the developer does not know how to write tests that improve the DDU.
+In other words, time spent on software debugging cannot be reduced using DDU because its practical implications are unclear to the developer.
+
+\section{Goal}
+Although DDU is currently not usable in practice, Perez \etal \cite{DBLP:conf/icse/PerezAD17} have shown that optimizing a test suite with respect to DDU can yield a 34\% gain in diagnostic performance using SBFL.
+In addition, having a test suite with a high diagnosability could possibly reduce the time spent debugging because the fault is easier to find manually.
+Therefore, the goal of this thesis is to find ways to make DDU usable in practice.
+In other words, we explore possibilities to convey DDU to the developer such that the developer knows what kind of tests to write to improve the system's diagnosability.
+
+\section{Structure of Report}
+The structure of this report is as follows. 
+\todo{Update once all chapters are done.}
+
+\chapter{Background}
+\label{ch:background}
+
+In this chapter, we discuss topics that are relevant to understanding the following chapters.
+First, we discuss spectrum-based reasoning, which is used in the experiments to compute the diagnostic performance.
+Second, we discuss the metric used to evaluate the diagnostic performance of spectrum-based fault localization techniques.
+Then, we explain the definition of diagnosability and diagnosability metrics.
+Finally, we briefly discuss error detection.
+
+\section{Spectrum-Based Reasoning (SBR)}
+\todo{Describe how SR works and Barinel.}
+
+Spectrum-based reasoning is a spectrum-based fault localization technique that leverages a Bayesian reasoning framework to diagnose fault candidates that could potentially be the root cause for a given software failure \cite{abreu2009spectrum}.
+In SBR, we define a finite set $\mathcal{C} = \langle c_1, c_2, \ldots, c_M \rangle$ of $M$ system components, and the finite set $\mathcal{T} = \langle t_1, t_2, \ldots, t_N \rangle$ of $N$ system transactions, such as test executions.
+The outcomes of all system transactions are defined as an error vector $e = \langle e_1, e_2, \ldots, e_N \rangle$, where $e_i = 1$ indicates that transaction $t_i$ has failed and $e_i = 0$ otherwise.
+To keep track of which system components were executed during which system transactions, we construct a $N \times M$ activity matrix $\mathcal{A}$, where $\mathcal{A}_{ij} = 1$ indicates that component $c_j$ was hit during transaction $t_i$.
+The pair $(\mathcal{A}, e)$ is also known as a program spectrum, which was first coined by Reps \etal \cite{reps1997use}.
+
+SBR distinguishes itself from SBFL techniques by leveraging a reasoning framework.
+More specifically, the diagnostic report is generated by reasoning about the program spectrum instead of using a so-called similarity coefficient.
+
+\section{Evaluation of Diagnosis} 
+\todo{Describe wasted effort}
+
+\section{Diagnosability}
+\todo{Explain concept and definition of diagnosability: the property of faults to be easily and precisely located}
+
+\subsection{Diagnosability Metric: Entropy}
+\subsection{Diagnosability Metric: DDU}
+
+\subsubsection{Density}
+
+\subsubsection{Diversity}
+
+\subsubsection{Uniqueness}
+
+\section{Error detection}
+
+\chapter{Research Questions}
+\label{ch:research_questions}
+To explore possibilities to convey DDU to the developer with usability in mind, we define four research questions that are relevant to investigate.
+Note that the nature of this study will be exploratory because little research has been performed on software diagnosability.
+Moreover, DDU is a metric that has been proposed recently and, therefore, no research has investigated this metric.
+
+To make recommendations based on DDU, it is necessary to obtain a better understanding of DDU and its individual components: density, diversity, and uniqueness.
+Specifically, we are interested in what common values are for DDU and its individual components in open source software.
+Hence, the first research question is defined as follows.
+
+\begin{framed}
+\noindent
+\textbf{RQ1:} What kind of values do density, diversity, uniqueness, and DDU take on in open source software?
+\end{framed}
+
+Next, we would like to validate that DDU and diagnosability are positively correlated, i.e. the higher DDU, the better the diagnosability, and vice versa.
+
+\begin{framed}
+\noindent
+\textbf{RQ2:} What is the relation between density, diversity, uniqueness, and DDU and diagnosability?
+\end{framed}
+
+\begin{framed}
+\noindent
+\textbf{RQ3:} What is the relation between density, diversity, uniqueness, and DDU and test coverage?
+\end{framed}
+
+\begin{framed}
+\noindent
+\textbf{RQ4:} What kinds of tests have positive or negative effects on density, diversity, uniqueness, and DDU?
+\end{framed}
+
+\chapter{RQ1}
+\label{ch:rq1}
+In this chapter, we discuss
+
+\chapter{Conclusion}
+\label{ch:conclusion}
+
+\bibliographystyle{plain}
+\bibliography{bibliography}
+
+\end{document}
