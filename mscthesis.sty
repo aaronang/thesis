@@ -1,7 +1,7 @@
 
 
 %---------------------------------------------------------------------%
-%                     Define header and footer                        %    
+%                     Define header and footer                        %
 %---------------------------------------------------------------------%
 %
 % Dropped fancy plain as it is essentially included in memoir already.
@@ -21,7 +21,7 @@
 \pagestyle{ruled}
 
 %---------------------------------------------------------------------%
-%                     Chapter headings                                %    
+%                     Chapter headings                                %
 %---------------------------------------------------------------------%
 \renewcommand{\printchaptertitle}[1]{\raggedleft{\textbf{\Huge{#1}}}}
 
@@ -33,7 +33,7 @@
 \renewcommand{\afterchapternum}{\vskip\onelineskip\hrule\vskip\onelineskip}%
 
 %---------------------------------------------------------------------%
-%                     Define new variables                            %    
+%                     Define new variables                            %
 %---------------------------------------------------------------------%
 
 \gdef\theauthor{\@author}
@@ -79,7 +79,7 @@ Delft, the Netherlands \\
 }
 
 %---------------------------------------------------------------------%
-%                     Title page                                      %    
+%                     Title page                                      %
 %---------------------------------------------------------------------%
 
 \date{}
@@ -132,17 +132,17 @@ in
 {\large \@MAJOR}
 \vskip 2em
 by
-\vskip 2em 
+\vskip 2em
 {\large \begin{tabular}[t]{c}
 \@author \\
 born in \@birthplace{}
 \end{tabular}}
 \vfill
-\ifcompany@defined 
+\ifcompany@defined
   \end{center}
   \begin{tabular}{@{}l@{}r@{}}
-    \begin{minipage}[b]{.54\textwidth}\@university\end{minipage} & 
-    \begin{minipage}[b]{.46\textwidth}\flushright\@company\end{minipage}
+    \begin{minipage}[b]{.6\textwidth}\@university\end{minipage} &
+    \begin{minipage}[b]{.4\textwidth}\flushright\@company\end{minipage}
   \end{tabular}
 \else
   \@university
@@ -188,7 +188,3 @@ Committee Member: & \@committeemember\\
 \\\\\\\end{tabular}
 \cleardoublepage\endgroup
 }
-
-
-
-
