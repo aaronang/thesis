@@ -122,11 +122,11 @@ The two main phases of SBR are candidate generation and candidate ranking:
 
   \item In the candidate ranking phase, the fault probability for each candidate $d_i$ is computed using the Naive Bayes rule \cite{Abreu:2009:SMF:1747491.1747511}:
   \begin{equation}
-    P(d_i | (A, e)) = P(d_i) \cdot \prod_{j \in 1..N} \frac{P((A_j, e_j) | d_i)}{P(A_j)}
+    P(d_i | (\mathcal{A}, e)) = P(d_i) \cdot \prod_{j \in 1..N} \frac{P((\mathcal{A}_j, e_j) | d_i)}{P(\mathcal{A}_j)}
   \end{equation}
   $P(d_i)$ is the prior probability, i.e. the probability that $d_i$ is faulty without any evidence.
-  $P(A_j)$ is a normalizing term that is identical for all candidates.
-  $P((A_j, e_j) | d_i)$ changes the prior probability with every new observation from the program spectrum.
+  $P(\mathcal{A}_j)$ is a normalizing term that is identical for all candidates.
+  $P((\mathcal{A}_j, e_j) | d_i)$ changes the prior probability with every new observation from the program spectrum.
   This term can be computed using Maximum Likelihood Estimation (MLE).
 \end{enumerate}
 
@@ -142,16 +142,114 @@ Both evaluation metrics assume \emph{perfect bug understanding}, which has been 
 However, cost of diagnosis and effort serve as an evaluation metric that can be used for objective comparison.
 
 \section{Diagnosability}
-\todo{Explain concept and definition of diagnosability: the property of faults to be easily and precisely located}
+Diagnosability is the property of faults to be easily and precisely located.
+In other words, given that a fault exists in the software system, if the test suite's diagnosability is high and we would perform SFL using an automated debugging technique, then the faulty component would be ranked high in the diagnostic report, i.e. the wasted effort would be low.
+On the contrary, if the test suite's diagnosability is low and we would perform SFL using an automated debugging technique, then the faulty component would be ranked low in the diagnostic report, i.e. the wasted effort would be high.
 
 \subsection{Diagnosability Metric: Entropy}
+The optimal diagnosability is achieved by having an exhaustive test suite that would exercise any combination of software components.
+This way, any fault, whether it involves a single component or multiple components, can be diagnosed using an automated debugging technique with 100\% accuracy.
+Perez \etal find that Shannon's entropy accurately captures the test suite's exhaustiveness \cite{DBLP:conf/icse/PerezAD17}:
+
+\begin{equation}
+  H(X) = - \sum_i P(x_i) \cdot log_2(P(x_i))
+\end{equation}
+
+However, an optimal entropy would require $2^M -1$ tests, which from the practical perspective is impossible to achieve.
+First, not all activity patterns can be generated from tests due to ambiguity groups and software topology.
+For example, a basic block consisting of several statements; these statements will always be activated together.
+Second, systems of today can consist of millions of lines of code and would therefore require a non-realistic effort to generate the tests.
+
 \subsection{Diagnosability Metric: DDU}
+To elevate the problem with entropy, Perez \etal \cite{DBLP:conf/icse/PerezAD17} propose a new diagnosability metric: DDU.
+DDU combines three diagnosability metrics that capture characteristics of the activity matrix: density, diversity, and uniqueness.
 
 \subsubsection{Density}
+Prior work \cite{} has used density to assess the diagnosability of the activity matrix:
+\begin{equation}
+  \rho = \frac{\sum_{i,j}\mathcal{A}_{ij}}{N \cdot M}
+\end{equation}
+Gonzáles-Sanchez \etal \cite{} show by induction that the optimal density for SBR is obtained when $\rho = 0.5$.
+For DDU, Perez \etal propose a normalized density $\rho'$ where its optimal value is 1.0 instead of 0.5:
+\begin{equation}
+  \rho' = 1 - | 1 - 2 \rho |
+\end{equation}
+Note that an optimal value for normalized density can be obtained without improving the diagnosability, see \autoref{fig:}
+For this reason, Perez \etal \cite{DBLP:conf/icse/PerezAD17} propose two enhancements: diversity and uniqueness.
 
 \subsubsection{Diversity}
+\begin{figure}
+\begin{center}
+\subfloat[No Test Diversity.][\centering No Test Diversity.\par $\rho' = 1.0 \quad
+\mathcal{G}=0.0$]{
+\label{fig:no_diversity}
+\def\arraystretch{0.95}
+\begin{tabular}{c|cccc}
+  & $c_1$ & $c_2$ & $c_3$ & $c_4$     \\ \hline
+  $t_1$ & 1 & 1 & 0 & 0 \\
+  $t_2$ & 1 & 1 & 0 & 0 \\
+  $t_3$ & 1 & 1 & 0 & 0 \\
+  $t_4$ & 1 & 1 & 0 & 0 \\
+\end{tabular}
+}\qquad%
+\subfloat[Test Diversity.][\centering Test Diversity.\par $\rho'=1.0 \quad \mathcal{G}=1.0$]{
+\label{fig:diversity}
+\def\arraystretch{0.95}
+\begin{tabular}{c|cccc}
+  & $c_1$ & $c_2$ & $c_3$ & $c_4$     \\ \hline
+  $t_1$ & 1 & 1 & 0 & 0 \\
+  $t_2$ & 0 & 0 & 1 & 1 \\
+  $t_3$ & 1 & 1 & 1 & 0 \\
+  $t_4$ & 0 & 0 & 0 & 1 \\
+\end{tabular}
+}
+\end{center}
+\vspace{-0.3cm}
+\caption{Impact of diversity on $\rho'$ and $\mathcal{G}$.}\label{fig:diversity_spectra}
+\end{figure}
+
+The first enhancement to the normalized density is diversity, which ensures test diversity.
+Test diversity captures the diversity among test activity patterns.
+More specifically, the test diversity is low when the test suite consists of many tests that have identical activity patterns.
+Conversely, the test diversity is high when the test suite consists of many tests that have distinct activity patterns.
+From the diagnostic perspective, a high test diversity is desired such that the fault probabilities of more diagnostic candidates can be updated for a better fault diagnosis.
 
 \subsubsection{Uniqueness}
+\begin{figure}[htb]
+\begin{center}
+\subfloat[Component Ambiguity.][\centering Component Ambiguity.\par $\rho' = 1.0 \quad
+\mathcal{G}=1.0$ \par $\mathcal{U}=0.75$]{
+\label{fig:ambiguity}
+\def\arraystretch{0.95}
+\begin{tabular}{c|cccc}
+  & $c_1$ & $c_2$ & $c_3$ & $c_4$     \\ \hline
+  $t_1$ & 1 & 1 & 0 & 0 \\
+  $t_2$ & 0 & 0 & 1 & 1 \\
+  $t_3$ & 1 & 1 & 1 & 0 \\
+  $t_4$ & 0 & 0 & 0 & 1 \\
+\end{tabular}
+\smallskip
+
+}\qquad%
+\subfloat[No Component Ambiguity.][\centering No Component Ambiguity.\par $\rho'=1.0 \quad
+\mathcal{G}=1.0$ \par $\mathcal{U}=1.0$]{
+\label{fig:no_ambiguity}
+\def\arraystretch{0.95}
+\begin{tabular}{c|cccc}
+  & $c_1$ & $c_2$ & $c_3$ & $c_4$     \\ \hline
+  $t_1$ & 1 & 1 & 0 & 0 \\
+  $t_2$ & 0 & 1 & 1 & 0 \\
+  $t_3$ & 1 & 0 & 1 & 1 \\
+  $t_4$ & 0 & 0 & 0 & 1 \\
+\end{tabular}
+}
+\end{center}
+\vspace{-0.3cm}
+\caption{Impact of component ambiguity on $\rho'$, $\mathcal{G}$ and
+$\mathcal{U}$.}\label{fig:ambiguity_spectra}
+\end{figure}
+The second enhancement to the normalized density is uniqueness, which checks for ambiguity in component activity patterns.
+Component ambiguity is undesirable because it prevents SBR from updating the fault probabilities of the individual components in the ambiguity group, resulting in a less accurate diagnosis.
 
 \section{Error detection}
 
