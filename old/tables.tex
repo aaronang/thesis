@@ -1,0 +1,151 @@
+\begin{table}[]
+\centering
+\caption{Metrics and statistical tests related to density. Note that $t$ is computed using the t-test and $T$ is computed using the Wilcoxon signed-rank test.}
+\label{tab:statistical_test_delta_density}
+\begin{adjustbox}{center}
+\begin{tabular}{llll}
+\toprule
+ &  & \multicolumn{2}{c}{Median / Shapiro-Wilk / Statistical test} \\
+\multirow{-2}{*}{Subject} & \multirow{-2}{*}{Size} & $\emph{Effort}(\emph{density}_{LOW})$ & $\emph{Effort}(\emph{density}_{HIGH})$ \\
+\rowcolor{Gray}
+\cellcolor{Gray} & \cellcolor{Gray} & 0.1617 & 0.1722 \\
+\rowcolor{Gray}
+\cellcolor{Gray} & \cellcolor{Gray} & $W = 0.9633$, $p\emph{-value} = 0.3968$ & $W = 0.9559$, $p\emph{-value} = 0.2609$ \\
+\rowcolor{Gray}
+\multirow{-3}{*}{\cellcolor{Gray}\begin{tabular}[c]{@{}l@{}}Commons\\ Codec\end{tabular}} & \multirow{-3}{*}{\cellcolor{Gray}29} & \multicolumn{2}{c}{\cellcolor{Gray}$t = 0.4314$, $p\emph{-value} = 0.6678$} \\
+ &  & 0.1539 & 0.1539 \\
+ &  & $W = 0.9587$, $p\emph{-value} = 0.0165$ & $W = 0.9582$, $p\emph{-value} = 0.0155$ \\
+\multirow{-3}{*}{\begin{tabular}[c]{@{}l@{}}Commons\\ Compress\end{tabular}} & \multirow{-3}{*}{74} & \multicolumn{2}{c}{$T = 1340.0$, $p\emph{-value} = 0.9539$} \\
+\rowcolor{Gray}
+\cellcolor{Gray} & \cellcolor{Gray} & 0.1765 & 0.1720 \\
+\rowcolor{Gray}
+\cellcolor{Gray} & \cellcolor{Gray} & $W = 0.9696$, $p\emph{-value} = 3.5022\times10^{-5}$ & $W = 0.9682$, $p\emph{-value} = 2.2473\times10^{-5}$ \\
+\rowcolor{Gray}
+\multirow{-3}{*}{\cellcolor{Gray}\begin{tabular}[c]{@{}l@{}}Commons\\ Math\end{tabular}} & \multirow{-3}{*}{\cellcolor{Gray}251} & \multicolumn{2}{c}{\cellcolor{Gray}$T = 13967.0$, $p\emph{-value} = 0.2734$} \\
+ &  & 0.1408 & 0.1464 \\
+ &  & $W = 0.9711$, $p\emph{-value} = 0.0843$ & $W = 0.9749$, $p\emph{-value} = 0.1430$ \\
+\multirow{-3}{*}{Guice} & \multirow{-3}{*}{75} & \multicolumn{2}{c}{$t = -0.0742$, $p\emph{-value} = 0.9408$} \\
+\rowcolor{Gray}
+\cellcolor{Gray} & \cellcolor{Gray} & 0.1078 & 0.1002 \\
+\rowcolor{Gray}
+\cellcolor{Gray} & \cellcolor{Gray} & $W = 0.9178$, $p\emph{-value} = 0.0268$ & $W = 0.9208$, $p\emph{-value} = 0.0320$ \\
+\rowcolor{Gray}
+\multirow{-3}{*}{\cellcolor{Gray}Jsoup} & \multirow{-3}{*}{\cellcolor{Gray}29} & \multicolumn{2}{c}{\cellcolor{Gray}$T = 176.0$, $p\emph{-value} = 0.3695$}\\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+\begin{table}[]
+\centering
+\caption{Metrics and statistical tests related to diversity. Note that $t$ is computed using the t-test and $T$ is computed using the Wilcoxon signed-rank test.}
+\label{tab:statistical_test_delta_diversity}
+\begin{adjustbox}{center}
+\begin{tabular}{llll}
+\toprule
+ &  & \multicolumn{2}{c}{Median / Shapiro-Wilk / Statistical test} \\
+\multirow{-2}{*}{Subject} & \multirow{-2}{*}{Size} & $\emph{Effort}(\emph{diversity}_{LOW})$ & $\emph{Effort}(\emph{diversity}_{HIGH})$ \\
+\rowcolor{Gray}
+\cellcolor{Gray} & \cellcolor{Gray} & 0.1791 & 0.1881 \\
+\rowcolor{Gray}
+\cellcolor{Gray} & \cellcolor{Gray} & $W = 0.9678$, $p\emph{-value} = 0.6154$ & $W = 0.9685$, $p\emph{-value} = 0.6318$ \\
+\rowcolor{Gray}
+\multirow{-3}{*}{\cellcolor{Gray}\begin{tabular}[c]{@{}l@{}}Commons\\ Codec\end{tabular}} & \multirow{-3}{*}{\cellcolor{Gray}24} & \multicolumn{2}{c}{\cellcolor{Gray}$t = -0.2070$, $p\emph{-value} = 0.8368$} \\
+ &  & 0.1584 & 0.1584 \\
+ &  & $W = 0.9546$, $p\emph{-value} = 0.0103$ & $W = 0.9597$, $p\emph{-value} = 0.0199$ \\
+\multirow{-3}{*}{\begin{tabular}[c]{@{}l@{}}Commons\\ Compress\end{tabular}} & \multirow{-3}{*}{73} & \multicolumn{2}{c}{$T = 1040.0$, $p\emph{-value} = 0.1241$} \\
+\rowcolor{Gray}
+\cellcolor{Gray} & \cellcolor{Gray} & 0.1767 & 0.1724 \\
+\rowcolor{Gray}
+\cellcolor{Gray} & \cellcolor{Gray} & $W = 0.9693$, $p\emph{-value} = 2.6065\times10^{-5}$ & $W = 0.9646$, $p\emph{-value} = 5.9871\times10^{-6}$ \\
+\rowcolor{Gray}
+\multirow{-3}{*}{\cellcolor{Gray}\begin{tabular}[c]{@{}l@{}}Commons\\ Math\end{tabular}} & \multirow{-3}{*}{\cellcolor{Gray}256} & \multicolumn{2}{c}{\cellcolor{Gray}$T = 13463.0$, $p\emph{-value} = 0.0649$} \\
+ &  & 0.1410 & 0.1464 \\
+ &  & $W = 0.9712$, $p\emph{-value} = 0.0856$ & $W = 0.9753$, $p\emph{-value} = 0.1512$ \\
+\multirow{-3}{*}{Guice} & \multirow{-3}{*}{75} & \multicolumn{2}{c}{$t = -0.0574$, $p\emph{-value} = 0.9542$} \\
+\rowcolor{Gray}
+\cellcolor{Gray} & \cellcolor{Gray} & 0.1128 & 0.0998 \\
+\rowcolor{Gray}
+\cellcolor{Gray} & \cellcolor{Gray} & $W = 0.9211$, $p\emph{-value} = 0.0326$ & $W = 0.9158$, $p\emph{-value} = 0.0239$ \\
+\rowcolor{Gray}
+\multirow{-3}{*}{\cellcolor{Gray}Jsoup} & \multirow{-3}{*}{\cellcolor{Gray}29} & \multicolumn{2}{c}{\cellcolor{Gray}$T = 192.0$, $p\emph{-value} = 0.5813$}\\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+\begin{table}[]
+\centering
+\caption{Metrics and statistical tests related to uniqueness. Note that $t$ is computed using the t-test and $T$ is computed using the Wilcoxon signed-rank test.}
+\label{tab:statistical_test_delta_uniqueness}
+\begin{adjustbox}{center}
+\begin{tabular}{llll}
+\toprule
+ &  & \multicolumn{2}{c}{Median / Shapiro-Wilk / Statistical test} \\
+\multirow{-2}{*}{Subject} & \multirow{-2}{*}{Size} & $\emph{Effort}(\emph{uniqueness}_{LOW})$ & $\emph{Effort}(\emph{uniqueness}_{HIGH})$ \\
+\rowcolor{Gray}
+\cellcolor{Gray} & \cellcolor{Gray} & 0.1758 & 0.1622 \\
+\rowcolor{Gray}
+\cellcolor{Gray} & \cellcolor{Gray} & $W = 0.9676$, $p\emph{-value} = 0.5624$ & $W = 0.9654$, $p\emph{-value} = 0.5104$ \\
+\rowcolor{Gray}
+\multirow{-3}{*}{\cellcolor{Gray}\begin{tabular}[c]{@{}l@{}}Commons\\ Codec\end{tabular}} & \multirow{-3}{*}{\cellcolor{Gray}26} & \multicolumn{2}{c}{\cellcolor{Gray}$t = -0.9103$, $p\emph{-value} = 0.3669$} \\
+ &  & 0.1463 & 0.1463 \\
+ &  & $W = 0.9378$, $p\emph{-value} = 0.0069$ & $W = 0.9445$, $p\emph{-value} = 0.0132$ \\
+\multirow{-3}{*}{\begin{tabular}[c]{@{}l@{}}Commons\\ Compress\end{tabular}} & \multirow{-3}{*}{55} & \multicolumn{2}{c}{$T = 481.0$, $p\emph{-value} = \mathbf{0.0154}$} \\
+\rowcolor{Gray}
+\cellcolor{Gray} & \cellcolor{Gray} & 0.1662 & 0.1564 \\
+\rowcolor{Gray}
+\cellcolor{Gray} & \cellcolor{Gray} & $W = 0.9621$, $p\emph{-value} = 6.2737\times10^{-5}$ & $W = 0.9636$, $p\emph{-value} = 9.1669\times10^{-5}$ \\
+\rowcolor{Gray}
+\multirow{-3}{*}{\cellcolor{Gray}\begin{tabular}[c]{@{}l@{}}Commons\\ Math\end{tabular}} & \multirow{-3}{*}{\cellcolor{Gray}187} & \multicolumn{2}{c}{\cellcolor{Gray}$T = 5077.0$, $p\emph{-value} = \mathbf{8.5858\times10^{-7}}$} \\
+ &  & 0.1348 & 0.1406 \\
+ &  & $W = 0.9559$, $p\emph{-value} = 0.0455$ & $W = 0.9607$, $p\emph{-value} = 0.0747$ \\
+\multirow{-3}{*}{Guice} & \multirow{-3}{*}{54} & \multicolumn{2}{c}{$T = 459.0$, $p\emph{-value} = 0.0558$} \\
+\rowcolor{Gray}
+\cellcolor{Gray} & \cellcolor{Gray} & 0.0979 & 0.0998 \\
+\rowcolor{Gray}
+\cellcolor{Gray} & \cellcolor{Gray} & $W = 0.8962$, $p\emph{-value} = 0.0110$ & $W = 0.9337$, $p\emph{-value} = 0.0853$ \\
+\rowcolor{Gray}
+\multirow{-3}{*}{\cellcolor{Gray}Jsoup} & \multirow{-3}{*}{\cellcolor{Gray}27} & \multicolumn{2}{c}{\cellcolor{Gray}$T = 83.0$, $p\emph{-value} = \mathbf{0.0108}$}\\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+\begin{table}[]
+\centering
+\caption{Metrics and statistical tests related to DDU. Note that $t$ is computed using the t-test and $T$ is computed using the Wilcoxon signed-rank test.}
+\label{tab:statistical_test_delta_ddu}
+\begin{adjustbox}{center}
+\begin{tabular}{llll}
+\toprule
+ &  & \multicolumn{2}{c}{Effort / Shapiro-Wilk / Statistical test} \\
+\multirow{-2}{*}{Subject} & \multirow{-2}{*}{Size} & $\emph{Effort}(\emph{DDU}_{LOW})$ & $\emph{Effort}(\emph{DDU}_{HIGH})$ \\
+\rowcolor{Gray}
+\cellcolor{Gray} & \cellcolor{Gray} & 0.1722 & 0.1454 \\
+\rowcolor{Gray}
+\cellcolor{Gray} & \cellcolor{Gray} & $W = 0.9593$, $p\emph{-value} = 0.3174$ & $W = 0.9655$, $p\emph{-value} = 0.4472$ \\
+\rowcolor{Gray}
+\multirow{-3}{*}{\cellcolor{Gray}\begin{tabular}[c]{@{}l@{}}Commons\\ Codec\end{tabular}} & \multirow{-3}{*}{\cellcolor{Gray}29} & \multicolumn{2}{c}{\cellcolor{Gray}$t = -0.8282$, $p\emph{-value} = 0.4110$} \\
+ &  & 0.1583 & 0.1583 \\
+ &  & $W = 0.9568$, $p\emph{-value} = 0.0129$ & $W = 0.9617$, $p\emph{-value} = 0.0247$ \\
+\multirow{-3}{*}{\begin{tabular}[c]{@{}l@{}}Commons\\ Compress\end{tabular}} & \multirow{-3}{*}{74} & \multicolumn{2}{c}{$T = 974.0$, $p\emph{-value} = \mathbf{0.0384}$} \\
+\rowcolor{Gray}
+\cellcolor{Gray} & \cellcolor{Gray} & 0.1742 & 0.1717 \\
+\rowcolor{Gray}
+\cellcolor{Gray} & \cellcolor{Gray} & $W = 0.9699$, $p\emph{-value} = 2.5558\times10^{-5}$ & $W = 0.9619$, $p\emph{-value} = 2.1199\times10^{-6}$ \\
+\rowcolor{Gray}
+\multirow{-3}{*}{\cellcolor{Gray}\begin{tabular}[c]{@{}l@{}}Commons\\ Math\end{tabular}} & \multirow{-3}{*}{\cellcolor{Gray}262} & \multicolumn{2}{c}{\cellcolor{Gray}$T = 11308.0$, $p\emph{-value} = \mathbf{2.1258\times10^{-5}}$} \\
+ &  & 0.1403 & 0.1464 \\
+ &  & $W = 0.9722$, $p\emph{-value} = 0.0982$ & $W = 0.9744$, $p\emph{-value} = 0.1333$ \\
+\multirow{-3}{*}{Guice} & \multirow{-3}{*}{75} & \multicolumn{2}{c}{$t = -0.3054$, $p\emph{-value} = 0.7604$} \\
+\rowcolor{Gray}
+\cellcolor{Gray} & \cellcolor{Gray} & 0.1078 & 0.1002 \\
+\rowcolor{Gray}
+\cellcolor{Gray} & \cellcolor{Gray} & $W = 0.9237$, $p\emph{-value} = 0.0379$ & $W = 0.9153$, $p\emph{-value} = 0.0233$ \\
+\rowcolor{Gray}
+\multirow{-3}{*}{\cellcolor{Gray}Jsoup} & \multirow{-3}{*}{\cellcolor{Gray}29} & \multicolumn{2}{c}{\cellcolor{Gray}$T = 155.0$, $p\emph{-value} = 0.1765$}\\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}

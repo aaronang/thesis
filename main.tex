@@ -416,7 +416,7 @@ To investigate the relations between these metrics in more detail, we display th
 For three projects we can say with 95\% confidence that density is correlated with effort.
 However, the Pearson correlation for Commons Compress is negative while the Pearson correlation values for Commons Math and Commons Codec are positive.
 Hence, the results show no strong evidence that density is correlated with effort.
-Regarding diversity and uniqueness, we observe in \Cref{tab:correlation_effort} that both metrics are negatively correlated to effort, and that the correlation values in 4 out of 5 projects are statistically significant.
+Regarding diversity and uniqueness, we observe in \Cref{tab:correlation_effort} and \Cref{fig:metric_vs_effort} that both metrics have a weak negative correlation with effort, and that the correlation values in 4 out of 5 projects are statistically significant.
 Regarding DDU, for two projects the results show statistical significance that DDU is negatively correlated to effort.
 However, for three projects there is no evidence that DDU is correlated to effort.
 Therefore, there is no strong evidence that DDU is negatively correlated to effort.
@@ -451,14 +451,85 @@ Therefore, there is no strong evidence that DDU is negatively correlated to effo
 \end{adjustbox}
 \end{table}
 
+\begin{figure*}
+    \centering
+    \begin{subfigure}[b]{0.49\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/delta_density_delta_effort}
+        \caption{Density, $r=-0.107$, $p<0.01$.}
+        \label{fig:delta_density_delta_effort}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.49\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/delta_diversity_delta_effort}
+        \caption{Diversity, $r=-0.189$, $p = 4.479\times10^{-5}$.}
+        \label{fig:delta_diversity_delta_effort}
+    \end{subfigure}
+    \vskip\baselineskip
+    \begin{subfigure}[b]{0.49\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/delta_uniqueness_delta_effort}
+        \caption{Uniqueness, $r=-0.079$, $p=0.137$.}
+        \label{fig:delta_uniqueness_delta_effort}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.49\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/delta_ddu_delta_effort}
+        \caption{DDU, $r=-0.223$, $p=9.044\times10^{-7}$.}
+        \label{fig:delta_ddu_delta_effort}
+    \end{subfigure}
+    \caption{Scatterplot of delta density, delta diversity, delta uniqueness, and delta DDU against delta effort.}
+    \label{fig:delta_metric_vs_delta_effort}
+\end{figure*}
+
+\begin{table}[]
+\centering
+\caption{Correlation between delta density, delta diversity, delta uniqueness, delta DDU, and delta effort.}
+\label{tab:delta_metric_delta_effort}
+\begin{adjustbox}{center}
+\begin{tabular}{lllll}
+\toprule
+ & \multicolumn{4}{c}{Size / Pearson correlation / Correlation p-value} \\
+\multirow{-2}{*}{Subject} & Density & Diversity & Uniqueness & DDU \\
+\rowcolor{Gray}
+\cellcolor{Gray} & 29 & 24 & 26 & 29 \\
+\rowcolor{Gray}
+\cellcolor{Gray} & -0.277 & -0.229 & 0.230 & 0.011 \\
+\rowcolor{Gray}
+\multirow{-3}{*}{\cellcolor{Gray}\begin{tabular}[c]{@{}l@{}}Commons\\ Codec\end{tabular}} & 0.145 & 0.281 & 0.256 & 0.950 \\
+ & 74 & 73 & 55 & 74 \\
+ & -0.098 & -0.372 & -0.217 & -0.297 \\
+\multirow{-3}{*}{\begin{tabular}[c]{@{}l@{}}Commons\\ Compress\end{tabular}} & 0.401 & $\mathbf{0.001}$ & 0.111 & $\mathbf{0.010}$ \\
+\rowcolor{Gray}
+\cellcolor{Gray} & 251 & 256 & 186 & 262 \\
+\rowcolor{Gray}
+\cellcolor{Gray} & -0.142 & -0.162 & -0.109 & -0.280 \\
+\rowcolor{Gray}
+\multirow{-3}{*}{\cellcolor{Gray}\begin{tabular}[c]{@{}l@{}}Commons\\ Math\end{tabular}} & $\mathbf{0.023}$ & $\mathbf{0.009}$ & 0.135 & $\mathbf{3.855\times10^{-6}}$ \\
+ & 78 & 78 & 57 & 78 \\
+ & 0.103 & 0.001 & 0.047 & -0.006 \\
+\multirow{-3}{*}{Guice} & 0.368 & 0.995 & 0.728 & 0.952 \\
+\rowcolor{Gray}
+\cellcolor{Gray} & 29 & 29 & 27 & 29 \\
+\rowcolor{Gray}
+\cellcolor{Gray} & 0.452 & -0.465 & 0.012 & -0.273 \\
+\rowcolor{Gray}
+\multirow{-3}{*}{\cellcolor{Gray}Jsoup} & $\mathbf{0.013}$ & $\mathbf{0.011}$ & 0.951 & 0.150\\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
 In the second experiment, we generate two test suites for a given class: a test suite with 50\% of the test cases enabled, and a test suite with 100\% of the test cases enabled.
 This naturally results in two test suites with two different DDU values.
 For each class, we compare the effort of a test suite with a lower DDU value with a test suite with a higher DDU value.
 Identical approach is used for density, diversity, and uniqueness.
 Note that we exclude classes where the two test suites do not result in a metric difference.
-The results of this experiment are shown in \Cref{fig:delta_effort}, and the median effort and statistical test results for each subject are shown in \Cref{tab:statistical_test_delta_density}, \Cref{tab:statistical_test_delta_diversity}, \Cref{tab:statistical_test_delta_uniqueness}, and \Cref{tab:statistical_test_delta_ddu}.
-We observe that $\emph{Effort}(\emph{DDU}_{HIGH})$ is statistically different in two cases out of five.
-Hence, there is no strong evidence that improving the DDU for a class' test suite will improve diagnosability.
+The results of this experiment are shown in \Cref{fig:delta_metric_vs_delta_effort} and \Cref{tab:delta_metric_delta_effort}.
+In \Cref{fig:delta_metric_vs_delta_effort}, we observe that an increase in any metric --- density, diversity, uniqueness, DDU --- results in a lower required effort to diagnose mistakes.
+Although the results are statistically significant, see \Cref{fig:delta_metric_vs_delta_effort}, the correlations are weak.
 
 Revisiting the second research question:
 \begin{framed}
@@ -467,166 +538,9 @@ Revisiting the second research question:
 \end{framed}
 \textbf{A:} In the first experiment, two out of the five projects show that DDU is negatively correlated with diagnosability.
 In the second experiment, two out of the five projects show that improving the DDU value of a class' test suite will improve the diagnosability.
-Therefore, based on these two experiments, there is no strong evidence that DDU is correlated to diagnosability.
+Therefore, based on these two experiments, there is no evidence that DDU is strongly correlated to diagnosability.
+However, in the second experiment, we observe that an increase in DDU is weakly correlated to an decrease in effort and, thus, weakly correlated to diagnosability.
 There is also no strong evidence that density, diversity, and uniqueness are correlated to diagnosability.
-
-\begin{figure}
-  \includegraphics[width=\linewidth]{figures/delta_ddu_delta_effort}
-  \caption{Scatter plot of DDU improvent and effort.}
-  \label{fig:delta_effort}
-\end{figure}
-
-\begin{table}[]
-\centering
-\caption{Metrics and statistical tests related to density. Note that $t$ is computed using the t-test and $T$ is computed using the Wilcoxon signed-rank test.}
-\label{tab:statistical_test_delta_density}
-\begin{adjustbox}{center}
-\begin{tabular}{llll}
-\toprule
- &  & \multicolumn{2}{c}{Median / Shapiro-Wilk / Statistical test} \\
-\multirow{-2}{*}{Subject} & \multirow{-2}{*}{Size} & $\emph{Effort}(\emph{density}_{LOW})$ & $\emph{Effort}(\emph{density}_{HIGH})$ \\
-\rowcolor{Gray}
-\cellcolor{Gray} & \cellcolor{Gray} & 0.1617 & 0.1722 \\
-\rowcolor{Gray}
-\cellcolor{Gray} & \cellcolor{Gray} & $W = 0.9633$, $p\emph{-value} = 0.3968$ & $W = 0.9559$, $p\emph{-value} = 0.2609$ \\
-\rowcolor{Gray}
-\multirow{-3}{*}{\cellcolor{Gray}\begin{tabular}[c]{@{}l@{}}Commons\\ Codec\end{tabular}} & \multirow{-3}{*}{\cellcolor{Gray}29} & \multicolumn{2}{c}{\cellcolor{Gray}$t = 0.4314$, $p\emph{-value} = 0.6678$} \\
- &  & 0.1539 & 0.1539 \\
- &  & $W = 0.9587$, $p\emph{-value} = 0.0165$ & $W = 0.9582$, $p\emph{-value} = 0.0155$ \\
-\multirow{-3}{*}{\begin{tabular}[c]{@{}l@{}}Commons\\ Compress\end{tabular}} & \multirow{-3}{*}{74} & \multicolumn{2}{c}{$T = 1340.0$, $p\emph{-value} = 0.9539$} \\
-\rowcolor{Gray}
-\cellcolor{Gray} & \cellcolor{Gray} & 0.1765 & 0.1720 \\
-\rowcolor{Gray}
-\cellcolor{Gray} & \cellcolor{Gray} & $W = 0.9696$, $p\emph{-value} = 3.5022\times10^{-5}$ & $W = 0.9682$, $p\emph{-value} = 2.2473\times10^{-5}$ \\
-\rowcolor{Gray}
-\multirow{-3}{*}{\cellcolor{Gray}\begin{tabular}[c]{@{}l@{}}Commons\\ Math\end{tabular}} & \multirow{-3}{*}{\cellcolor{Gray}251} & \multicolumn{2}{c}{\cellcolor{Gray}$T = 13967.0$, $p\emph{-value} = 0.2734$} \\
- &  & 0.1408 & 0.1464 \\
- &  & $W = 0.9711$, $p\emph{-value} = 0.0843$ & $W = 0.9749$, $p\emph{-value} = 0.1430$ \\
-\multirow{-3}{*}{Guice} & \multirow{-3}{*}{75} & \multicolumn{2}{c}{$t = -0.0742$, $p\emph{-value} = 0.9408$} \\
-\rowcolor{Gray}
-\cellcolor{Gray} & \cellcolor{Gray} & 0.1078 & 0.1002 \\
-\rowcolor{Gray}
-\cellcolor{Gray} & \cellcolor{Gray} & $W = 0.9178$, $p\emph{-value} = 0.0268$ & $W = 0.9208$, $p\emph{-value} = 0.0320$ \\
-\rowcolor{Gray}
-\multirow{-3}{*}{\cellcolor{Gray}Jsoup} & \multirow{-3}{*}{\cellcolor{Gray}29} & \multicolumn{2}{c}{\cellcolor{Gray}$T = 176.0$, $p\emph{-value} = 0.3695$}\\
-\bottomrule
-\end{tabular}
-\end{adjustbox}
-\end{table}
-
-\begin{table}[]
-\centering
-\caption{Metrics and statistical tests related to diversity. Note that $t$ is computed using the t-test and $T$ is computed using the Wilcoxon signed-rank test.}
-\label{tab:statistical_test_delta_diversity}
-\begin{adjustbox}{center}
-\begin{tabular}{llll}
-\toprule
- &  & \multicolumn{2}{c}{Median / Shapiro-Wilk / Statistical test} \\
-\multirow{-2}{*}{Subject} & \multirow{-2}{*}{Size} & $\emph{Effort}(\emph{diversity}_{LOW})$ & $\emph{Effort}(\emph{diversity}_{HIGH})$ \\
-\rowcolor{Gray}
-\cellcolor{Gray} & \cellcolor{Gray} & 0.1791 & 0.1881 \\
-\rowcolor{Gray}
-\cellcolor{Gray} & \cellcolor{Gray} & $W = 0.9678$, $p\emph{-value} = 0.6154$ & $W = 0.9685$, $p\emph{-value} = 0.6318$ \\
-\rowcolor{Gray}
-\multirow{-3}{*}{\cellcolor{Gray}\begin{tabular}[c]{@{}l@{}}Commons\\ Codec\end{tabular}} & \multirow{-3}{*}{\cellcolor{Gray}24} & \multicolumn{2}{c}{\cellcolor{Gray}$t = -0.2070$, $p\emph{-value} = 0.8368$} \\
- &  & 0.1584 & 0.1584 \\
- &  & $W = 0.9546$, $p\emph{-value} = 0.0103$ & $W = 0.9597$, $p\emph{-value} = 0.0199$ \\
-\multirow{-3}{*}{\begin{tabular}[c]{@{}l@{}}Commons\\ Compress\end{tabular}} & \multirow{-3}{*}{73} & \multicolumn{2}{c}{$T = 1040.0$, $p\emph{-value} = 0.1241$} \\
-\rowcolor{Gray}
-\cellcolor{Gray} & \cellcolor{Gray} & 0.1767 & 0.1724 \\
-\rowcolor{Gray}
-\cellcolor{Gray} & \cellcolor{Gray} & $W = 0.9693$, $p\emph{-value} = 2.6065\times10^{-5}$ & $W = 0.9646$, $p\emph{-value} = 5.9871\times10^{-6}$ \\
-\rowcolor{Gray}
-\multirow{-3}{*}{\cellcolor{Gray}\begin{tabular}[c]{@{}l@{}}Commons\\ Math\end{tabular}} & \multirow{-3}{*}{\cellcolor{Gray}256} & \multicolumn{2}{c}{\cellcolor{Gray}$T = 13463.0$, $p\emph{-value} = 0.0649$} \\
- &  & 0.1410 & 0.1464 \\
- &  & $W = 0.9712$, $p\emph{-value} = 0.0856$ & $W = 0.9753$, $p\emph{-value} = 0.1512$ \\
-\multirow{-3}{*}{Guice} & \multirow{-3}{*}{75} & \multicolumn{2}{c}{$t = -0.0574$, $p\emph{-value} = 0.9542$} \\
-\rowcolor{Gray}
-\cellcolor{Gray} & \cellcolor{Gray} & 0.1128 & 0.0998 \\
-\rowcolor{Gray}
-\cellcolor{Gray} & \cellcolor{Gray} & $W = 0.9211$, $p\emph{-value} = 0.0326$ & $W = 0.9158$, $p\emph{-value} = 0.0239$ \\
-\rowcolor{Gray}
-\multirow{-3}{*}{\cellcolor{Gray}Jsoup} & \multirow{-3}{*}{\cellcolor{Gray}29} & \multicolumn{2}{c}{\cellcolor{Gray}$T = 192.0$, $p\emph{-value} = 0.5813$}\\
-\bottomrule
-\end{tabular}
-\end{adjustbox}
-\end{table}
-
-\begin{table}[]
-\centering
-\caption{Metrics and statistical tests related to uniqueness. Note that $t$ is computed using the t-test and $T$ is computed using the Wilcoxon signed-rank test.}
-\label{tab:statistical_test_delta_uniqueness}
-\begin{adjustbox}{center}
-\begin{tabular}{llll}
-\toprule
- &  & \multicolumn{2}{c}{Median / Shapiro-Wilk / Statistical test} \\
-\multirow{-2}{*}{Subject} & \multirow{-2}{*}{Size} & $\emph{Effort}(\emph{uniqueness}_{LOW})$ & $\emph{Effort}(\emph{uniqueness}_{HIGH})$ \\
-\rowcolor{Gray}
-\cellcolor{Gray} & \cellcolor{Gray} & 0.1758 & 0.1622 \\
-\rowcolor{Gray}
-\cellcolor{Gray} & \cellcolor{Gray} & $W = 0.9676$, $p\emph{-value} = 0.5624$ & $W = 0.9654$, $p\emph{-value} = 0.5104$ \\
-\rowcolor{Gray}
-\multirow{-3}{*}{\cellcolor{Gray}\begin{tabular}[c]{@{}l@{}}Commons\\ Codec\end{tabular}} & \multirow{-3}{*}{\cellcolor{Gray}26} & \multicolumn{2}{c}{\cellcolor{Gray}$t = -0.9103$, $p\emph{-value} = 0.3669$} \\
- &  & 0.1463 & 0.1463 \\
- &  & $W = 0.9378$, $p\emph{-value} = 0.0069$ & $W = 0.9445$, $p\emph{-value} = 0.0132$ \\
-\multirow{-3}{*}{\begin{tabular}[c]{@{}l@{}}Commons\\ Compress\end{tabular}} & \multirow{-3}{*}{55} & \multicolumn{2}{c}{$T = 481.0$, $p\emph{-value} = \mathbf{0.0154}$} \\
-\rowcolor{Gray}
-\cellcolor{Gray} & \cellcolor{Gray} & 0.1662 & 0.1564 \\
-\rowcolor{Gray}
-\cellcolor{Gray} & \cellcolor{Gray} & $W = 0.9621$, $p\emph{-value} = 6.2737\times10^{-5}$ & $W = 0.9636$, $p\emph{-value} = 9.1669\times10^{-5}$ \\
-\rowcolor{Gray}
-\multirow{-3}{*}{\cellcolor{Gray}\begin{tabular}[c]{@{}l@{}}Commons\\ Math\end{tabular}} & \multirow{-3}{*}{\cellcolor{Gray}187} & \multicolumn{2}{c}{\cellcolor{Gray}$T = 5077.0$, $p\emph{-value} = \mathbf{8.5858\times10^{-7}}$} \\
- &  & 0.1348 & 0.1406 \\
- &  & $W = 0.9559$, $p\emph{-value} = 0.0455$ & $W = 0.9607$, $p\emph{-value} = 0.0747$ \\
-\multirow{-3}{*}{Guice} & \multirow{-3}{*}{54} & \multicolumn{2}{c}{$T = 459.0$, $p\emph{-value} = 0.0558$} \\
-\rowcolor{Gray}
-\cellcolor{Gray} & \cellcolor{Gray} & 0.0979 & 0.0998 \\
-\rowcolor{Gray}
-\cellcolor{Gray} & \cellcolor{Gray} & $W = 0.8962$, $p\emph{-value} = 0.0110$ & $W = 0.9337$, $p\emph{-value} = 0.0853$ \\
-\rowcolor{Gray}
-\multirow{-3}{*}{\cellcolor{Gray}Jsoup} & \multirow{-3}{*}{\cellcolor{Gray}27} & \multicolumn{2}{c}{\cellcolor{Gray}$T = 83.0$, $p\emph{-value} = \mathbf{0.0108}$}\\
-\bottomrule
-\end{tabular}
-\end{adjustbox}
-\end{table}
-
-\begin{table}[]
-\centering
-\caption{Metrics and statistical tests related to DDU. Note that $t$ is computed using the t-test and $T$ is computed using the Wilcoxon signed-rank test.}
-\label{tab:statistical_test_delta_ddu}
-\begin{adjustbox}{center}
-\begin{tabular}{llll}
-\toprule
- &  & \multicolumn{2}{c}{Effort / Shapiro-Wilk / Statistical test} \\
-\multirow{-2}{*}{Subject} & \multirow{-2}{*}{Size} & $\emph{Effort}(\emph{DDU}_{LOW})$ & $\emph{Effort}(\emph{DDU}_{HIGH})$ \\
-\rowcolor{Gray}
-\cellcolor{Gray} & \cellcolor{Gray} & 0.1722 & 0.1454 \\
-\rowcolor{Gray}
-\cellcolor{Gray} & \cellcolor{Gray} & $W = 0.9593$, $p\emph{-value} = 0.3174$ & $W = 0.9655$, $p\emph{-value} = 0.4472$ \\
-\rowcolor{Gray}
-\multirow{-3}{*}{\cellcolor{Gray}\begin{tabular}[c]{@{}l@{}}Commons\\ Codec\end{tabular}} & \multirow{-3}{*}{\cellcolor{Gray}29} & \multicolumn{2}{c}{\cellcolor{Gray}$t = -0.8282$, $p\emph{-value} = 0.4110$} \\
- &  & 0.1583 & 0.1583 \\
- &  & $W = 0.9568$, $p\emph{-value} = 0.0129$ & $W = 0.9617$, $p\emph{-value} = 0.0247$ \\
-\multirow{-3}{*}{\begin{tabular}[c]{@{}l@{}}Commons\\ Compress\end{tabular}} & \multirow{-3}{*}{74} & \multicolumn{2}{c}{$T = 974.0$, $p\emph{-value} = \mathbf{0.0384}$} \\
-\rowcolor{Gray}
-\cellcolor{Gray} & \cellcolor{Gray} & 0.1742 & 0.1717 \\
-\rowcolor{Gray}
-\cellcolor{Gray} & \cellcolor{Gray} & $W = 0.9699$, $p\emph{-value} = 2.5558\times10^{-5}$ & $W = 0.9619$, $p\emph{-value} = 2.1199\times10^{-6}$ \\
-\rowcolor{Gray}
-\multirow{-3}{*}{\cellcolor{Gray}\begin{tabular}[c]{@{}l@{}}Commons\\ Math\end{tabular}} & \multirow{-3}{*}{\cellcolor{Gray}262} & \multicolumn{2}{c}{\cellcolor{Gray}$T = 11308.0$, $p\emph{-value} = \mathbf{2.1258\times10^{-5}}$} \\
- &  & 0.1403 & 0.1464 \\
- &  & $W = 0.9722$, $p\emph{-value} = 0.0982$ & $W = 0.9744$, $p\emph{-value} = 0.1333$ \\
-\multirow{-3}{*}{Guice} & \multirow{-3}{*}{75} & \multicolumn{2}{c}{$t = -0.3054$, $p\emph{-value} = 0.7604$} \\
-\rowcolor{Gray}
-\cellcolor{Gray} & \cellcolor{Gray} & 0.1078 & 0.1002 \\
-\rowcolor{Gray}
-\cellcolor{Gray} & \cellcolor{Gray} & $W = 0.9237$, $p\emph{-value} = 0.0379$ & $W = 0.9153$, $p\emph{-value} = 0.0233$ \\
-\rowcolor{Gray}
-\multirow{-3}{*}{\cellcolor{Gray}Jsoup} & \multirow{-3}{*}{\cellcolor{Gray}29} & \multicolumn{2}{c}{\cellcolor{Gray}$T = 155.0$, $p\emph{-value} = 0.1765$}\\
-\bottomrule
-\end{tabular}
-\end{adjustbox}
-\end{table}
 
 \chapter{DDU vs. Error Detection}
 \label{ch:rq3}
