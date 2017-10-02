@@ -283,37 +283,43 @@ Perez \etal \cite{DBLP:conf/icse/PerezAD17} have shown in an experiment that opt
 
 \chapter{Research Questions}
 \label{ch:research_questions}
-To explore possibilities to convey DDU to the developer with usability in mind, we define four research questions that are relevant to investigate.
-Note that the nature of this study will be exploratory because little research has been performed on software diagnosability.
-Moreover, DDU is a metric that has been proposed recently \cite{DBLP:conf/icse/PerezAD17} and, therefore, to the best of our knowledge, no research has investigated this metric.
+Ideally, we would like to propose an intuitive approach that allows developers to use DDU in their software development cycle.
+However, to the best of our knowledge, there has been no study yet on DDU that investigates how it actually behaves in practice.
+For this reason, the goal of this study is to explore how DDU behaves in practice and to potentially improve DDU.
+To achieve this goal, we define four research questions.
 
 \begin{framed}
 \noindent
-\textbf{RQ1:} What kind of values do density, diversity, uniqueness, and DDU take on?
+\textbf{RQ1:} How do normalized density, diversity, uniqueness, and DDU vary in practice?
 \end{framed}
-
-To make recommendations based on DDU, it is necessary to obtain a better understanding of DDU and its individual components: density, diversity, and uniqueness.
-Specifically, we are interested in what common values are for DDU and its individual components in software systems.
+To be able to propose an intuitive approach that allows developers to use DDU in practie, we first need to understand how the metrics vary in practice.
+By analyzing how these metrics perform in practice, we are able to propose improvements for DDU, and potentially propose an approach that enables DDU in practice.
 
 \begin{framed}
 \noindent
-\textbf{RQ2:} What is the relation between density, diversity, uniqueness, and DDU and diagnosability?
+\textbf{RQ2:} What is the relation between normalized density, diversity, uniqueness, and DDU and diagnosability?
 \end{framed}
-
-We would like to validate that DDU and diagnosability are positively correlated, i.e. the higher DDU, the better the diagnosability, and vice versa.
-This question is important to answer because DDU was proposed to quantify the diagnosability.
-Therefore, answering this question will function as a complementary study to Perez \etal's work \cite{DBLP:conf/icse/PerezAD17}.
+In Perez \etal's work \cite{DBLP:conf/icse/PerezAD17}, the authors show that generating tests with respect to DDU yields a 34\% diagnostic performance compared to a test suite optimized for branch coverage.
+However, this does necessarily imply that DDU is strongly correlated with diagnosability.
+Therefore, we would like to validate that DDU and diagnosability are strongly correlated, i.e. the higher DDU, the better the diagnosability, and vice versa.
+This question is important to answer because DDU was proposed as a metric to quantify the diagnosability.
 
 \begin{framed}
 \noindent
 \textbf{RQ3:} What is the relation between density, diversity, uniqueness, and DDU and test coverage?
 \end{framed}
-
 The intention of test coverage is to optimize for error detection.
-Perez \etal propose DDU as a complementary metric to test coverage \cite{DBLP:conf/icse/PerezAD17} because DDU is meant to capture the diagnosability and not error detection.
+Perez \etal \cite{DBLP:conf/icse/PerezAD17} propose DDU as a complementary metric to test coverage because DDU is meant to capture the diagnosability and not error detection.
 However, if there is a strong correlation between DDU and test coverage, then DDU could possibly replace test coverage as a test adequacy metric, which is a use case that the authors have not thought of.
-Additionally, assuming that DDU is positively correlated with diagnosability and test coverage is representative for error detection, answering this question will give us a better understanding on the relation between diagnosability and error detection.
+Furthermore, assuming that DDU is strongly correlated with diagnosability and test coverage is representative for error detection, answering this research question will give us a better understanding on the relation between diagnosability and error detection, and could give us insight in how DDU and test coverage can be used together in practice.
 
+\begin{framed}
+\noindent
+\textbf{RQ4:} How can we improve the correlation between DDU and diagnosability?
+\end{framed}
+Ultimately, we would like to decrease time spent on debugging, if not fully automate it, during the development cycle.
+We believe that writing a test suite with a high diagnosability can improve the debugging process because faults are easier to diagnose whether diagnosis is performed manually or automatically.
+Therefore, it is important to improve DDU's performance such that it strongly correlates with diagnosability.
 
 \chapter{DDU in Practice}
 \label{ch:rq1}
