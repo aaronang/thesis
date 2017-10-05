@@ -149,3 +149,70 @@
 \end{tabular}
 \end{adjustbox}
 \end{table}
+
+
+
+
+
+
+
+
+\begin{table}[]
+\centering
+\caption{Correlation between density, diversity, uniqueness, DDU, and branch coverage.}
+\label{tab:correlation_branch_coverage}
+\begin{adjustbox}{center}
+\begin{tabular}{llllll}
+\toprule
+ &  & \multicolumn{4}{c}{Pearson correlation / Correlation p-value} \\
+\multirow{-2}{*}{Subject} & \multirow{-2}{*}{Size} & Density & Diversity & Uniqueness & DDU \\
+\rowcolor{Gray}
+\cellcolor{Gray} & \cellcolor{Gray} & 0.01 & 0.66 & 0.66 & 0.54 \\
+\rowcolor{Gray}
+\multirow{-2}{*}{\cellcolor{Gray}\begin{tabular}[c]{@{}l@{}}Commons\\ Codec\end{tabular}} & \multirow{-2}{*}{\cellcolor{Gray}35} & 0.909 & $\mathbf{1.27\times10^{-5}}$ & $\mathbf{0.001}$ & $\mathbf{7.095\times10^{-4}}$ \\
+ &  & 0.21 & 0.42 & 0.38 & 0.37 \\
+\multirow{-2}{*}{\begin{tabular}[c]{@{}l@{}}Commons\\ Compress\end{tabular}} & \multirow{-2}{*}{108} & $\mathbf{0.024}$ & $\mathbf{3.627\times10^{-6}}$ & $\mathbf{4.736\times10^{-5}}$ & $\mathbf{5.142\times10^{-5}}$ \\
+\rowcolor{Gray}
+\cellcolor{Gray} & \cellcolor{Gray} & -0.04 & 0.18 & 0.16 & 0.16 \\
+\rowcolor{Gray}
+\multirow{-2}{*}{\cellcolor{Gray}\begin{tabular}[c]{@{}l@{}}Commons\\ Math\end{tabular}} & \multirow{-2}{*}{\cellcolor{Gray}433} & 0.307 & $\mathbf{9.635\times10^{-5}}$ & $\mathbf{7.426\times10^{-4}}$ & $\mathbf{3.848\times10^{-4}}$ \\
+ &  & 0.04 & 0.07 & 0.34 & 0.25 \\
+\multirow{-2}{*}{Guice} & \multirow{-2}{*}{96} & 0.672 & 0.445 & $\mathbf{4.969\times10^{-4}}$ & $\mathbf{0.011}$ \\
+\rowcolor{Gray}
+\cellcolor{Gray} & \cellcolor{Gray} & 0.36 & -0.31 & 0.23 & 0.29 \\
+\rowcolor{Gray}
+\multirow{-2}{*}{\cellcolor{Gray}Jsoup} & \multirow{-2}{*}{\cellcolor{Gray}38} & $\mathbf{0.023}$ & 0.057 & 0.163 & 0.070\\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+\begin{table}[]
+\centering
+\caption{Correlation between density, diversity, uniqueness, DDU, and error detection.}
+\label{tab:correlation_error_detection}
+\begin{adjustbox}{center}
+\begin{tabular}{llllll}
+\toprule
+ &  & \multicolumn{4}{c}{Pearson correlation / Correlation p-value} \\
+\multirow{-2}{*}{Subject} & \multirow{-2}{*}{Size} & Density & Diversity & Uniqueness & DDU \\
+\rowcolor{Gray}
+\cellcolor{Gray} & \cellcolor{Gray} & 0.64 & 0.15 & -0.17 & 0.24 \\
+\rowcolor{Gray}
+\multirow{-2}{*}{\cellcolor{Gray}\begin{tabular}[c]{@{}l@{}}Commons\\ Codec\end{tabular}} & \multirow{-2}{*}{\cellcolor{Gray}35} & $\mathbf{2.973\times10^{-5}}$ & 0.366 & 0.313 & 0.163 \\
+ &  & 0.25 & 0.18 & 0.15 & 0.27 \\
+\multirow{-2}{*}{\begin{tabular}[c]{@{}l@{}}Commons\\ Compress\end{tabular}} & \multirow{-2}{*}{108} & $\mathbf{0.008}$ & 0.052 & 0.109 & $\mathbf{0.004}$ \\
+\rowcolor{Gray}
+\cellcolor{Gray} & \cellcolor{Gray} & 0.17 & -0.18 & -0.145 & 0.06 \\
+\rowcolor{Gray}
+\multirow{-2}{*}{\cellcolor{Gray}\begin{tabular}[c]{@{}l@{}}Commons\\ Math\end{tabular}} & \multirow{-2}{*}{\cellcolor{Gray}433} & $\mathbf{1.835\times10^{-4}}$ & $\mathbf{1.281\times10^{-4}}$ & $\mathbf{0.002}$ & 0.146 \\
+ &  & 0.28 & 0.020 & 0.12 & 0.27 \\
+\multirow{-2}{*}{Guice} & \multirow{-2}{*}{96} & $\mathbf{0.004}$ & 0.842 & 0.207 & $\mathbf{0.006}$ \\
+\rowcolor{Gray}
+\cellcolor{Gray} & \cellcolor{Gray} & 0.59 & -0.26 & -0.09 & 0.40 \\
+\rowcolor{Gray}
+\multirow{-2}{*}{\cellcolor{Gray}Jsoup} & \multirow{-2}{*}{\cellcolor{Gray}38} & $\mathbf{8.175\times10^{-5}}$ & 0.104 & 0.560 & $\mathbf{0.010}$\\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}

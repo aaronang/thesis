@@ -323,15 +323,14 @@ Therefore, it is important to improve DDU's performance such that it strongly co
 
 \chapter{DDU in Practice}
 \label{ch:rq1}
-In this chapter, the goal is to obtain a better intuition on what common values are for density, diversity, uniquness, and DDU by analyzing open source projects, hosted on GitHub.
-First, we take a look at the distributions of density, diversity, uniqueness, and DDU.
-Second, we give examples of components that have a low or high value for any of the diagnosability metrics and analyze why these components have either a low or high value by investigating the component's test suite.
-Finally, we conclude this chapter with a list of observations.
-
 \begin{framed}
 \noindent
 \textbf{RQ1:} What kind of values do density, diversity, uniqueness, and DDU take on?
 \end{framed}
+In this chapter, the goal is to obtain a better intuition on what common values are for density, diversity, uniquness, and DDU by analyzing open source projects, hosted on GitHub.
+First, we take a look at the distributions of density, diversity, uniqueness, and DDU.
+Second, we give examples of components that have a low or high value for any of the diagnosability metrics and analyze why these components have either a low or high value by investigating the component's test suite.
+Finally, we conclude this chapter with a list of observations.
 
 \section{Approach}
 To get a better understanding of how the values vary for normalized density, diversity, uniqueness, and DDU, we use \texttt{ddu-maven-plugin}\footnote{\url{https://github.com/aperez/ddu-maven-plugin}}, written by Perez, to instrument Java code and construct the activity matrix.
@@ -668,15 +667,12 @@ This can be explained by the fact that the DDU is the product of normalized dens
 
 \chapter{DDU vs. Diagnosability}
 \label{ch:rq2}
-In prior work Perez \etal \cite{DBLP:conf/icse/PerezAD17} show that optimizing test suite generation with respect to DDU results in better fault diagnosis.
-Therefore, in this chapter, we perform experiments to verify the correlation between DDU and diagnosability, that is, answering RQ2.
-We do this by discussing the experimental setup followed by the experimental results.
-
 \begin{framed}
 \noindent
 \textbf{RQ2:} What is the relation between density, diversity, uniqueness, and DDU and diagnosability?
 \end{framed}
-
+In prior work Perez \etal \cite{DBLP:conf/icse/PerezAD17} show that optimizing test suite generation with respect to DDU results in better fault diagnosis.
+Therefore, in this chapter, we perform experiments to verify the correlation between DDU and diagnosability, that is, answering RQ2.
 
 \section{Experimental Setup}
 \label{sec:rq2_experimental_setup}
@@ -695,13 +691,13 @@ Additionally, \emph{STACCATO} can sometimes take hours or days to generate fault
 Hence, we discard classes when generating fault candidates takes longer than 10 seconds; this resulted in 16 classes being discarded.
 
 \begin{figure}
-  \includegraphics[width=\linewidth]{figures/fault_generation}
+  \includegraphics[width=\linewidth]{figures/effort_approach}
   \caption{An activity matrix $\mathcal{A}$ is generated for a particular class. Then, 10 fault candidates of cardinality 2 are generated with a corresponding activity matrix $\mathcal{A}_k$. For each generated matrix, we perform fault diagnosis with \emph{BARINEL} resulting in diagnostic report $\mathcal{D}_k$ and compute the wasted effort. Finally, we compute the average wasted effort. This process is repeated 10 times.}
   \label{fig:fault_generation}
 \end{figure}
 
 \begin{figure}
-  \includegraphics[width=\linewidth]{figures/fault_generation_delta}
+  \includegraphics[width=\linewidth]{figures/delta_effort_approach}
   \caption{Two activity matrices $\mathcal{A}$ and $\mathcal{A}'$ are generated for a particular class based on two different test suites. We generate 10 fault candidates of cardinality 2 and accordingly generate 10 activity matrices. Then, we use \emph{BARINEL} to perform fault diagnosis and compute the wasted effort.}
   \label{fig:fault_generation_delta}
 \end{figure}
@@ -732,30 +728,30 @@ The setup of this experiment is illustrated in \Cref{fig:fault_generation_delta}
     \centering
     \begin{subfigure}[b]{0.49\linewidth}
         \centering
-        \includegraphics[width=\linewidth]{figures/ddu_effort_goodness_025}
-        \caption{DDU, $r = -0.046$, $p = 0.224$.}
-        \label{fig:ddu_effort_goodness_025}
+        \includegraphics[width=\linewidth]{figures/effort_uniqueness}
+        \caption{Uniqueness, $r = -0.120$, $p < 0.001$.}
+        \label{fig:effort_uniqueness}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.49\linewidth}
         \centering
-        \includegraphics[width=\linewidth]{figures/density_effort_goodness_025}
+        \includegraphics[width=\linewidth]{figures/effort_density}
         \caption{Density, $r = 0.183$, $p < 0.001$.}
-        \label{fig:density_effort_goodness_025}
+        \label{fig:effort_density}
     \end{subfigure}
     \vskip\baselineskip
     \begin{subfigure}[b]{0.49\linewidth}
         \centering
-        \includegraphics[width=\linewidth]{figures/diversity_effort_goodness_025}
+        \includegraphics[width=\linewidth]{figures/effort_diversity}
         \caption{Diversity, $r = -0.326$, $p < 0.001$.}
-        \label{fig:diversity_effort_goodness_025}
+        \label{fig:effort_diversity}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.49\linewidth}
         \centering
-        \includegraphics[width=\linewidth]{figures/uniqueness_effort_goodness_025}
-        \caption{Uniqueness, $r = -0.120$, $p < 0.001$.}
-        \label{fig:uniqueness_effort_goodness_025}
+        \includegraphics[width=\linewidth]{figures/effort_ddu}
+        \caption{DDU, $r = -0.046$, $p = 0.224$.}
+        \label{fig:effort_ddu}
     \end{subfigure}
     \caption{Scatterplot of density, diversity, uniqueness, and DDU against effort.}
     \label{fig:metric_vs_effort}
@@ -810,30 +806,30 @@ Therefore, there is no strong evidence that DDU is negatively correlated to effo
     \centering
     \begin{subfigure}[b]{0.49\linewidth}
         \centering
-        \includegraphics[width=\linewidth]{figures/delta_density_delta_effort}
+        \includegraphics[width=\linewidth]{figures/delta_effort_density}
         \caption{Density, $r=-0.107$, $p<0.01$.}
-        \label{fig:delta_density_delta_effort}
+        \label{fig:delta_effort_density}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.49\linewidth}
         \centering
-        \includegraphics[width=\linewidth]{figures/delta_diversity_delta_effort}
+        \includegraphics[width=\linewidth]{figures/delta_effort_diversity}
         \caption{Diversity, $r=-0.189$, $p = 4.479\times10^{-5}$.}
-        \label{fig:delta_diversity_delta_effort}
+        \label{fig:delta_effort_diversity}
     \end{subfigure}
     \vskip\baselineskip
     \begin{subfigure}[b]{0.49\linewidth}
         \centering
-        \includegraphics[width=\linewidth]{figures/delta_uniqueness_delta_effort}
+        \includegraphics[width=\linewidth]{figures/delta_effort_uniqueness}
         \caption{Uniqueness, $r=-0.079$, $p=0.137$.}
-        \label{fig:delta_uniqueness_delta_effort}
+        \label{fig:delta_effort_uniqueness}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.49\linewidth}
         \centering
-        \includegraphics[width=\linewidth]{figures/delta_ddu_delta_effort}
+        \includegraphics[width=\linewidth]{figures/delta_effort_ddu}
         \caption{DDU, $r=-0.223$, $p=9.044\times10^{-7}$.}
-        \label{fig:delta_ddu_delta_effort}
+        \label{fig:delta_effort_ddu}
     \end{subfigure}
     \caption{Scatterplot of delta density, delta diversity, delta uniqueness, and delta DDU against delta effort.}
     \label{fig:delta_metric_vs_delta_effort}
@@ -899,93 +895,227 @@ There is also no strong evidence that density, diversity, and uniqueness are cor
 
 \chapter{DDU vs. Test Coverage}
 \label{ch:rq3}
+
+\begin{framed}
+\noindent
+\textbf{RQ3:} What is the relation between density, diversity, uniqueness, and DDU and test coverage?
+\end{framed}
+
 In this chapter, we investigate the relation between DDU and test coverage.
-The reason for researching the relation between DDU and test coverage is to investigate whether DDU should be used as a complementary metric to test coverage as the Perez \etal proposed.
-If there is a strong correlation between DDU and test coverage, then it means that DDU actually functions as an error detection metric.
+The reason for researching the relation between DDU and test coverage is to investigate whether DDU should be used as a complementary metric to test coverage as Perez \etal proposed.
+If there is a strong correlation between DDU and test coverage, then it means that DDU might function as an error detection metric too.
+Furthermore, investigating the relation between DDU and test coverage might give us insight in how DDU and test coverage could work together in practice.
 
-\todo{Why is it interesting to investigate the relation between DDU and test coverage?}
+To answer the research question we will perform several experiments.
+First, we would like to confirm that test coverage is strongly correlated with error detection since test coverage presumably optimizes the test suite for error detection.
+Second, we would like to investigate the relation between DDU and test coverage.
+Third, we would like to examine the relation between DDU and error detection.
 
-\todo{Describe structure of this chapter.}
 
 \section{Experimental Setup}
-\todo{Project selection same as before.}
+We have to measure the test coverage and error detection to analyze the relation between test coverage and error detection.
+Test coverage can be determined by dividing the number of components hit in the activity matrix by the total number of components in the activity matrix.
+Given the acitity matrix in \Cref{tab:test_coverage}, we observe that 3 out of the 4 components are hit and therefore the test coverage is $\frac{3}{4} = 0.75$.
+\begin{table}[]
+\centering
+\caption{Example of activity matrix with a test coverage of 75\%. Bolded components are hit by one of the tests.}
+\label{tab:test_coverage}
+\begin{tabular}{l|llll}
+transactions & $\mathbf{c_1}$ & $\mathbf{c_2}$ & $c_3$ & $\mathbf{c_4}$ \\ \hline
+$t_1$ & 0 & 0 & 0 & 1 \\
+$t_2$ & 1 & 0 & 0 & 1 \\
+$t_3$ & 1 & 1 & 0 & 0
+\end{tabular}
+\end{table}
+The error detection is computed by generating 10 artificial faults --- in the experiments we generate multiple components faults with a cardinality 2.
+For each fault, we compute the error vector using an \emph{oracle probability} of 0.75, similar to Perez \etal's study, and check whether the vector contains an error, i.e. $1 \in e_i$.
+Finally, the error detection is computed by dividing the sum of faults that were detected by 10, the number of generated faults.
+To account for randomness of generating fault candidates, we repeat this process 10 times.
+We obtain the activity matrices by using Perez \etal's \texttt{ddu-maven-plugin}, similar to the experiments in \Cref{ch:rq2}.
+The computation of error detection is illustrated in \Cref{fig:error_detection_computation}.
+\begin{figure}[b]
+  \includegraphics[width=\linewidth]{figures/error_detection}
+  \caption{We compute the activity matrix for a given class and generate 10 artificial fault candidates ($d_1$, $d_2$, $d_{10}$) of cardinality 2. For each pair $(\mathcal{A}_i, d_i)$, the error vector $e_i$ is computed. The error detection is computed by dividing the sum of faults that were detected ($|\{e_i | 1 \in e_i \}|$) by 10, the number of generated faults.}
+  \label{fig:error_detection_computation}
+\end{figure}
 
-\todo{First experiment: test coverage vs. error detection.}
+For the second experiment, in which we investigate the relation between DDU and test coverage, we compute the normalized density, diversity, uniqueness, DDU, and test coverage for each activity matrix, and compute the correlation.
+Furthermore, we use a similar approach as the experiments in \Cref{ch:rq2}, see \Cref{fig:delta_test_coverage_approach}, where we create two test suites: (1) a test suite that consists of 50\% of the available tests and (2) a test suite that consists of 100\% of the available tests.
+This will most likely result in a system with two test suites with different DDU values, allowing us to investigate whether improving the DDU for a fixed system results in a test coverage improvement.
+\begin{figure}
+  \center
+  \includegraphics[width=0.6\linewidth]{figures/delta_test_coverage_approach}
+  \caption{For each class, two test suites are generated, resulting in two activity matrices $\mathcal{A}$ and $\mathcal{A}'$. For each activity matrix, we compute test coverage $TC$, DDU, normalized density, diversity, uniqueness.}
+  \label{fig:delta_test_coverage_approach}
+\end{figure}
 
-\todo{Second experiment: plot DDU vs. test coverage.}
+For the third experiment, we generate two test suites with different DDU values and investigate whether the error detection improves when DDU improves, see \Cref{fig:delta_error_detection_approach}.
+Similar to the first experiment, we generate 10 fault candidates of cardinality 2 and compute the error vector with an \emph{oracle probability} of 0.75 to determine the error detection.
+To account for randomness of generating fault candidates, we repeat this process 10 times.
+\begin{figure}
+  \includegraphics[width=\linewidth]{figures/delta_error_detection_approach}
+  \caption{For each class, we generate two different test suites, resulting in a two activity matrices. For each matrix, we generate 10 fault candidates of cardinality 2 and compute the error vector. Finally, we compute the error detection and repeat this process 10 times.}
+  \label{fig:delta_error_detection_approach}
+\end{figure}
 
-\todo{Forth experiment: plot delta DDU vs. delta error detection.}
+Note that for the experiments we use the same projects as previous ones, namely Commons Codec, Commons Compress, Commons Math, Guice, Jsoup.
 
 \section{Experimental Results}
+
 \todo{First experiment results}
+In the first experiment, we confirm that test coverage is representative for error detection.
+In \Cref{fig:coverage_error_detection}, we observe that there is a strong correlation between branch coverage and error detection.
+It seems that test coverage also puts an upper bound on error detection.
+
+
+
+\begin{figure}
+  \includegraphics[width=\linewidth]{figures/coverage_error_detection}
+  \caption{Scatterplot of coverage and error detection, $r = 0.628$, $p < 0.01$.}
+  \label{fig:coverage_error_detection}
+\end{figure}
 
 \todo{Second experiment results}
 
+\begin{figure*}
+    \centering
+    \begin{subfigure}[b]{0.49\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/coverage_density}
+        \caption{Density, $r=0.029$, $p = 0.44$.}
+        \label{fig:coverage_density}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.49\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/coverage_diversity}
+        \caption{Diversity, $r=0.173$, $p < 0.01$.}
+        \label{fig:coverage_diversity}
+    \end{subfigure}
+    \vskip\baselineskip
+    \begin{subfigure}[b]{0.49\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/coverage_uniqueness}
+        \caption{Uniqueness, $r=0.237$, $p<0.01$.}
+        \label{fig:coverage_uniqueness}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.49\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/coverage_ddu}
+        \caption{DDU, $r=0.228$, $p<0.01$.}
+        \label{fig:coverage_ddu}
+    \end{subfigure}
+    \caption{Scatterplot of normalized density, diversity, uniqueness, and DDU against branch coverage.}
+    \label{fig:coverage_metric}
+\end{figure*}
+
+\begin{figure*}
+    \centering
+    \begin{subfigure}[b]{0.49\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/delta_coverage_density}
+        \caption{Density, $r=0.143$, $p<0.01$.}
+        \label{fig:delta_coverage_density}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.49\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/delta_coverage_diversity}
+        \caption{Diversity, $r=0.230$, $p < 0.01$.}
+        \label{fig:delta_coverage_diversity}
+    \end{subfigure}
+    \vskip\baselineskip
+    \begin{subfigure}[b]{0.49\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/delta_coverage_uniqueness}
+        \caption{Uniqueness, $r=0.546$, $p<0.01$.}
+        \label{fig:delta_coverage_uniqueness}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.49\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/delta_coverage_ddu}
+        \caption{DDU, $r=0.290$, $p<0.01$.}
+        \label{fig:delta_coverage_ddu}
+    \end{subfigure}
+    \caption{Scatterplot of delta normalized density, delta diversity, delta uniqueness, and delta DDU against delta branch coverage.}
+    \label{fig:delta_coverage_metric}
+\end{figure*}
+
 \todo{Third experiment results}
+
+\begin{figure*}
+    \centering
+    \begin{subfigure}[b]{0.49\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/error_detection_density}
+        \caption{Density, $r=0.256$, $p<0.01$.}
+        \label{fig:error_detection_density}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.49\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/error_detection_diversity}
+        \caption{Diversity, $r=-0.132$, $p < 0.01$.}
+        \label{fig:error_detection_diversity}
+    \end{subfigure}
+    \vskip\baselineskip
+    \begin{subfigure}[b]{0.49\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/error_detection_uniqueness}
+        \caption{Uniqueness, $r=-0.080$, $p<0.05$.}
+        \label{fig:error_detection_uniqueness}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.49\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/error_detection_ddu}
+        \caption{DDU, $r=0.142$, $p<0.01$.}
+        \label{fig:error_detection_ddu}
+    \end{subfigure}
+    \caption{Scatterplot of normalized density, diversity, uniqueness, and DDU against error detection.}
+    \label{fig:error_detection_metric}
+\end{figure*}
+
+\begin{figure*}
+    \centering
+    \begin{subfigure}[b]{0.49\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/delta_error_detection_density}
+        \caption{Density, $r=0.165$, $p<0.01$.}
+        \label{fig:delta_error_detection_density}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.49\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/delta_error_detection_diversity}
+        \caption{Diversity, $r=0.275$, $p < 0.01$.}
+        \label{fig:delta_error_detection_diversity}
+    \end{subfigure}
+    \vskip\baselineskip
+    \begin{subfigure}[b]{0.49\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/delta_error_detection_uniqueness}
+        \caption{Uniqueness, $r=0.323$, $p<0.01$.}
+        \label{fig:delta_error_detection_uniqueness}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.49\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/delta_error_detection_ddu}
+        \caption{DDU, $r=0.324$, $p<0.01$.}
+        \label{fig:delta_error_detection_ddu}
+    \end{subfigure}
+    \caption{Scatterplot of delta normalized density, delta diversity, delta uniqueness, and delta DDU against delta error detection.}
+    \label{fig:delta_error_detection_metric}
+\end{figure*}
 
 \todo{Answer RQ}
 
-\begin{table}[]
-\centering
-\caption{Correlation between density, diversity, uniqueness, DDU, and branch coverage.}
-\label{tab:correlation_branch_coverage}
-\begin{adjustbox}{center}
-\begin{tabular}{llllll}
-\toprule
- &  & \multicolumn{4}{c}{Pearson correlation / Correlation p-value} \\
-\multirow{-2}{*}{Subject} & \multirow{-2}{*}{Size} & Density & Diversity & Uniqueness & DDU \\
-\rowcolor{Gray}
-\cellcolor{Gray} & \cellcolor{Gray} & 0.01 & 0.66 & 0.66 & 0.54 \\
-\rowcolor{Gray}
-\multirow{-2}{*}{\cellcolor{Gray}\begin{tabular}[c]{@{}l@{}}Commons\\ Codec\end{tabular}} & \multirow{-2}{*}{\cellcolor{Gray}35} & 0.909 & $\mathbf{1.27\times10^{-5}}$ & $\mathbf{0.001}$ & $\mathbf{7.095\times10^{-4}}$ \\
- &  & 0.21 & 0.42 & 0.38 & 0.37 \\
-\multirow{-2}{*}{\begin{tabular}[c]{@{}l@{}}Commons\\ Compress\end{tabular}} & \multirow{-2}{*}{108} & $\mathbf{0.024}$ & $\mathbf{3.627\times10^{-6}}$ & $\mathbf{4.736\times10^{-5}}$ & $\mathbf{5.142\times10^{-5}}$ \\
-\rowcolor{Gray}
-\cellcolor{Gray} & \cellcolor{Gray} & -0.04 & 0.18 & 0.16 & 0.16 \\
-\rowcolor{Gray}
-\multirow{-2}{*}{\cellcolor{Gray}\begin{tabular}[c]{@{}l@{}}Commons\\ Math\end{tabular}} & \multirow{-2}{*}{\cellcolor{Gray}433} & 0.307 & $\mathbf{9.635\times10^{-5}}$ & $\mathbf{7.426\times10^{-4}}$ & $\mathbf{3.848\times10^{-4}}$ \\
- &  & 0.04 & 0.07 & 0.34 & 0.25 \\
-\multirow{-2}{*}{Guice} & \multirow{-2}{*}{96} & 0.672 & 0.445 & $\mathbf{4.969\times10^{-4}}$ & $\mathbf{0.011}$ \\
-\rowcolor{Gray}
-\cellcolor{Gray} & \cellcolor{Gray} & 0.36 & -0.31 & 0.23 & 0.29 \\
-\rowcolor{Gray}
-\multirow{-2}{*}{\cellcolor{Gray}Jsoup} & \multirow{-2}{*}{\cellcolor{Gray}38} & $\mathbf{0.023}$ & 0.057 & 0.163 & 0.070\\
-\bottomrule
-\end{tabular}
-\end{adjustbox}
-\end{table}
 
-\begin{table}[]
-\centering
-\caption{Correlation between density, diversity, uniqueness, DDU, and error detection.}
-\label{tab:correlation_error_detection}
-\begin{adjustbox}{center}
-\begin{tabular}{llllll}
-\toprule
- &  & \multicolumn{4}{c}{Pearson correlation / Correlation p-value} \\
-\multirow{-2}{*}{Subject} & \multirow{-2}{*}{Size} & Density & Diversity & Uniqueness & DDU \\
-\rowcolor{Gray}
-\cellcolor{Gray} & \cellcolor{Gray} & 0.64 & 0.15 & -0.17 & 0.24 \\
-\rowcolor{Gray}
-\multirow{-2}{*}{\cellcolor{Gray}\begin{tabular}[c]{@{}l@{}}Commons\\ Codec\end{tabular}} & \multirow{-2}{*}{\cellcolor{Gray}35} & $\mathbf{2.973\times10^{-5}}$ & 0.366 & 0.313 & 0.163 \\
- &  & 0.25 & 0.18 & 0.15 & 0.27 \\
-\multirow{-2}{*}{\begin{tabular}[c]{@{}l@{}}Commons\\ Compress\end{tabular}} & \multirow{-2}{*}{108} & $\mathbf{0.008}$ & 0.052 & 0.109 & $\mathbf{0.004}$ \\
-\rowcolor{Gray}
-\cellcolor{Gray} & \cellcolor{Gray} & 0.17 & -0.18 & -0.145 & 0.06 \\
-\rowcolor{Gray}
-\multirow{-2}{*}{\cellcolor{Gray}\begin{tabular}[c]{@{}l@{}}Commons\\ Math\end{tabular}} & \multirow{-2}{*}{\cellcolor{Gray}433} & $\mathbf{1.835\times10^{-4}}$ & $\mathbf{1.281\times10^{-4}}$ & $\mathbf{0.002}$ & 0.146 \\
- &  & 0.28 & 0.020 & 0.12 & 0.27 \\
-\multirow{-2}{*}{Guice} & \multirow{-2}{*}{96} & $\mathbf{0.004}$ & 0.842 & 0.207 & $\mathbf{0.006}$ \\
-\rowcolor{Gray}
-\cellcolor{Gray} & \cellcolor{Gray} & 0.59 & -0.26 & -0.09 & 0.40 \\
-\rowcolor{Gray}
-\multirow{-2}{*}{\cellcolor{Gray}Jsoup} & \multirow{-2}{*}{\cellcolor{Gray}38} & $\mathbf{8.175\times10^{-5}}$ & 0.104 & 0.560 & $\mathbf{0.010}$\\
-\bottomrule
-\end{tabular}
-\end{adjustbox}
-\end{table}
 
-\chapter{Analysis Framework}
+% \chapter{Analysis Framework}
 
 \chapter{Improving DDU}
 
