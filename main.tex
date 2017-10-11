@@ -333,9 +333,9 @@ Second, we give examples of components that have a low or high value for any of 
 Finally, we conclude this chapter with a list of observations.
 
 \section{Approach}
-To get a better understanding of how the values vary for normalized density, diversity, uniqueness, and DDU, we use \texttt{ddu-maven-plugin}\footnote{\url{https://github.com/aperez/ddu-maven-plugin}}, written by Perez, to instrument Java code and construct the activity matrix.
+To get a better understanding of how the values vary for normalized density, diversity, uniqueness, and DDU, we use \texttt{ddu-maven-plugin}\footnote{\url{https://github.com/aperez/ddu-maven-plugin}}, developed by Perez, to instrument Java code and construct the activity matrix.
 Once we obtain the activity matrices, we analyze the data using multiple Python scripts\footnote{\url{https://github.com/aaronang/ddu}}.
-With these two tools we collect data such as number of tests, number of components, density, normalized density, diversity, uniqueness, DDU, and the activity matrix.
+With these two tools we collect data such as density, normalized density, diversity, uniqueness, DDU, and the activity matrix.
 
 Then, we analyze the collected data and show examples to illustrate how DDU and its individual terms vary as a consequence to particular kinds of tests or testing strategies.
 We are interested in what kinds of testing approaches result in a high or low DDU value.
@@ -375,8 +375,8 @@ Note that some of the projects are also used in Perez \etal's study \cite{DBLP:c
 In \autoref{fig:hist_normalized_density}, we show the distribution of normalized densities for all classes of the five open source projects mentioned before.
 The average equals to 0.5145.
 The peak for the interval [0, 0.1] is primarily caused by classes that are exercised by test cases that involve all components.
-43 classes in the interval [0, 0.1] consist of only one branch.
-A class with one method will always have a density of 1.0 and therefore a normalized density of 0.
+In the interval [0, 0.1], 43 classes consist of only one branch.
+A class with one branch will always have a density of 1.0 and therefore a normalized density of 0.
 
 \begin{figure}
     \centering
@@ -385,7 +385,7 @@ A class with one method will always have a density of 1.0 and therefore a normal
     \label{fig:hist_normalized_density}
 \end{figure}
 
-The normalized density value is low when a class is tested by many tests that only cover a couple of methods, or covered by tests that involve all components.
+The normalized density value is low when a class is tested by many tests that only cover a couple of branches, or covered by tests that involve all components.
 For example, \texttt{com.google.inject.internal.ProvidesMethodScanner} has 35 branches, i.e. blocks, and its partial spectra is shown in \Cref{tab:providesmethodscanner}.
 All the transactions that cover \texttt{Provides\-Method\-Scanner} are sparse, i.e. a row consisting of many zeroes.
 
@@ -961,21 +961,25 @@ To account for randomness of generating fault candidates, we repeat this process
 Note that for the experiments we use the same projects as previous ones, namely Commons Codec, Commons Compress, Commons Math, Guice, Jsoup.
 
 \section{Experimental Results}
-
-\todo{First experiment results}
-In the first experiment, we confirm that test coverage is representative for error detection.
+In the first experiment, we confirm whether test coverage is representative for error detection.
 In \Cref{fig:coverage_error_detection}, we observe that there is a strong correlation between branch coverage and error detection.
-It seems that test coverage also puts an upper bound on error detection.
-
-
-
+Furthermore, we observe that branch coverage puts an upper bound on error detection.
+The upper bound can be explained with the following example.
+Assuming that 60\% of the components are tested, faults that involve untested components (in the remaining 40\%) can never be detected.
+Therefore, the error detection can only be 100\% if and only if the test coverage is 100\%.
 \begin{figure}
   \includegraphics[width=\linewidth]{figures/coverage_error_detection}
   \caption{Scatterplot of coverage and error detection, $r = 0.628$, $p < 0.01$.}
   \label{fig:coverage_error_detection}
 \end{figure}
 
-\todo{Second experiment results}
+In the second experiment, we examine the correlation between normalized density, diversity, uniqueness, and DDU and branch coverage.
+The results are shown in \Cref{fig:coverage_metric} and \Cref{fig:delta_coverage_metric}.
+We observe in \Cref{fig:coverage_density} and \Cref{fig:coverage_diversity} that normalized density is uncorrelated to branch coverage, and that diversity is weakly correlated to branch coverage.
+In \Cref{fig:coverage_uniqueness} and \Cref{fig:coverage_ddu}, we observe that uniqueness and DDU are weakly correlated to branch coverage.
+Nevertheless, we observe that uniqueness and DDU put a lower bound on branch coverage.
+Uniqueness lower bounds branch coverage because
+
 
 \begin{figure*}
     \centering
