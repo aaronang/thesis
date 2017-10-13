@@ -325,11 +325,11 @@ Therefore, it is important to improve DDU's performance such that it strongly co
 \label{ch:rq1}
 \begin{framed}
 \noindent
-\textbf{RQ1:} What kind of values do density, diversity, uniqueness, and DDU take on?
+\textbf{RQ1:} How do normalized density, diversity, uniqueness, and DDU vary in practice?
 \end{framed}
-In this chapter, the goal is to obtain a better intuition on what common values are for density, diversity, uniquness, and DDU by analyzing open source projects, hosted on GitHub.
-First, we take a look at the distributions of density, diversity, uniqueness, and DDU.
-Second, we give examples of components that have a low or high value for any of the diagnosability metrics and analyze why these components have either a low or high value by investigating the component's test suite.
+In this chapter, the goal is to obtain a better intuition on what common values are for density, diversity, uniquness, and DDU by analyzing open source projects hosted on GitHub.
+First, we take a look at the distributions of normalized density, diversity, uniqueness, and DDU.
+Second, we give examples of classes that have a low or high value for any of the diagnosability metrics and analyze why these components have either a low or high value by investigating the class' test suite.
 Finally, we conclude this chapter with a list of observations.
 
 \section{Approach}
@@ -338,7 +338,7 @@ Once we obtain the activity matrices, we analyze the data using multiple Python 
 With these two tools we collect data such as density, normalized density, diversity, uniqueness, DDU, and the activity matrix.
 
 Then, we analyze the collected data and show examples to illustrate how DDU and its individual terms vary as a consequence to particular kinds of tests or testing strategies.
-We are interested in what kinds of testing approaches result in a high or low DDU value.
+We are interested in what kinds of testing approaches result in a high or low value.
 
 Note that \texttt{ddu-maven-plugin} is able to instrument the code for three different granularity levels, namely statements, branches, and methods.
 By default \texttt{ddu-maven\-plugin} uses the method level granularity.
@@ -348,7 +348,7 @@ In this study, we make use of the same granularity used in the study performed b
 The selection of open source projects is done according to the following criteria.
 \begin{itemize}
   \item \emph{The project must have an executable test suite.}
-  To compute the DDU for a software project, we must construct an activity matrix, also known as program spectra.
+  To compute the DDU for a software project, we must construct an activity matrix.
   The program spectra is constructed by running the test suite and instrumenting the code such that we can keep track of what components are executed during a program execution.
 
   \item \emph{The project must use Apache Maven, a software project management and comprehension tool.}
@@ -374,7 +374,7 @@ Note that some of the projects are also used in Perez \etal's study \cite{DBLP:c
 
 In \autoref{fig:hist_normalized_density}, we show the distribution of normalized densities for all classes of the five open source projects mentioned before.
 The average equals to 0.5145.
-The peak for the interval [0, 0.1] is primarily caused by classes that are exercised by test cases that involve all components.
+The peak for the interval [0, 0.1] is primarily caused by classes that are exercised by tests that involve all components.
 In the interval [0, 0.1], 43 classes consist of only one branch.
 A class with one branch will always have a density of 1.0 and therefore a normalized density of 0.
 
@@ -386,7 +386,7 @@ A class with one branch will always have a density of 1.0 and therefore a normal
 \end{figure}
 
 The normalized density value is low when a class is tested by many tests that only cover a couple of branches, or covered by tests that involve all components.
-For example, \texttt{com.google.inject.internal.ProvidesMethodScanner} has 35 branches, i.e. blocks, and its partial spectra is shown in \Cref{tab:providesmethodscanner}.
+For example, \texttt{com.google.inject.internal.ProvidesMethodScanner} has 35 branches and its partial activity matrix is shown in \Cref{tab:providesmethodscanner}.
 All the transactions that cover \texttt{Provides\-Method\-Scanner} are sparse, i.e. a row consisting of many zeroes.
 
 \begin{table}[]
@@ -408,7 +408,7 @@ transaction & $c_1$ & \dots & $c_{22}$ & $c_{23}$ & $c_{24}$ & \dots & $c_{35}$ 
 \begin{table}[]
 \scriptsize
 \centering
-\caption{Activity matrix of the \texttt{org.apache.commons.math4.fitting.least\-squares.Circle\-Problem} class. Every transaction hits every component.}
+\caption{Activity matrix of the \texttt{org.apache.commons.math4.fitting.leastsquares.CircleProblem} class. Every transaction hits every component.}
 \label{tab:circleproblem}
 \begin{tabular}{l|cccc}
 transaction & $c_1$ & $c_2$ & \dots & $c_{26}$ \\ \hline
@@ -417,18 +417,18 @@ transaction & $c_1$ & $c_2$ & \dots & $c_{26}$ \\ \hline
 \end{tabular}
 \end{table}
 
-In the partial spectra of \texttt{Provides\-Method\-Scanner}, see \Cref{tab:providesmethodscanner}, the columns represent branches of \texttt{Provides\-Method\-Scanner}.
+In the partial activity matrix of \texttt{Provides\-Method\-Scanner}, see \Cref{tab:providesmethodscanner}, the columns represent branches of \texttt{Provides\-Method\-Scanner}.
 For example, in the first row, we observe that the transaction \texttt{test\-Untargetted\-Binding} only hits one branch $c_{23}$, indicated by a 1.
 Since every transaction is only hitting a few components, the normalized density is low.
-In fact, \texttt{Provides\-Method\-Scanner} has 35 components and if a transaction only hits a few components, it results in the activity matrix to be sparse.
+In fact, \texttt{Provides\-Method\-Scanner} has 35 components and if a transaction only hits a few components, it results in the activity matrix to become sparse.
 
-In the spectra of \texttt{org.apache.commons.math4.fitting.least\-squares.Circle\-Problem}, shown in \Cref{tab:circleproblem}, we observe a high density; all branches of \texttt{Circle\-Problem} are hit in every single test.
-Since the density is high: 1.0, the normalized density is low: 0.0.
+In the activity matrix of \texttt{Circle\-Problem}, shown in \Cref{tab:circleproblem}, we observe a high density; all branches of \texttt{Circle\-Problem} are hit in every single test.
+The normalized density is low: 0.0, because the density is high: 1.0.
 
 Thus, ideally, to obtain a high value for the normalized density, we need a good balance between tests that cover many components and tests that cover a few.
-In Commons Math, the \texttt{org.apache.commons.math4.genetics.Elitistic\-List\-Population} class has a normalized density of 0.979.
-In its spectra, see \Cref{tab:elitistic}, we observe that there is a good balance between tests that cover a few components and tests that cover most components.
-This results in a density close to 0.5 and a normalized density close 1.0.
+In Commons Math, the \texttt{Elitistic\-List\-Population} class has a normalized density of 0.979.
+In its activity matrix, see \Cref{tab:elitistic}, we observe that there is a good balance between tests that cover a few components and tests that cover many components.
+This results in a density close to 0.5 and a nearly optimal normalized density of 1.0.
 
 \begin{table}[]
 \scriptsize
@@ -461,8 +461,8 @@ In \Cref{fig:histogram_diversity}, the distribution of diversity of classes is s
 The average is 0.588.
 The peak for the interval [0, 0.1] occurs for various reasons.
 The first reason is that there are classes with only one method and therefore every row is identical, resulting in a diversity of 0.
-The second reason is that for some classes there exist only one test case, and in the current Python script the diversity defaults to 0 when there is only one test case.
-The third reason is that there are class test suites where all the test cases have identical activity patterns.
+The second reason is that for some classes there exist only one test, and in the current Python script the diversity defaults to 0 when there is only one test.
+The third reason is that there are test suites where all the test cases have identical activity patterns.
 
 \begin{figure}
     \centering
@@ -471,7 +471,7 @@ The third reason is that there are class test suites where all the test cases ha
     \label{fig:histogram_diversity}
 \end{figure}
 
-Intuitively, the diversity has a low value when the number of identical transactions, i.e. identical rows in the activity matrix, is high.
+Intuitively, the diversity has a low value when the number of identical transactions is high, i.e. identical rows in the activity matrix.
 Conversely, the diversity is high when the number of identical transactions is low.
 
 \begin{table}[]
@@ -493,9 +493,9 @@ transaction & $c_1$ & $c_2$ & $c_3$ \\ \hline
 \end{tabular}
 \end{table}
 
-In the partial spectra of \texttt{Power}, shown in \Cref{tab:power}, we observe that almost every transaction has an identical activity and therefore the diversity is low: 0.077.
-Another reason for the low diversity of \texttt{Power} is that it is covered by 102 test cases, while there are only $2^2 - 1 = 3$ possible different tests for two components.
-After 3 unique test cases every additional test will have a negative effect on the diversity because it will share an identical activity with an existing test.
+In the partial activity matrix of \texttt{Power}, shown in \Cref{tab:power}, we observe that almost every transaction has an identical activity and therefore the diversity is low: 0.077.
+Another reason for the low diversity of \texttt{Power} is that it is covered by 102 test cases, while there are only $2^3 - 1 = 7$ possible different tests for two components.
+After 7 unique tests every additional test will have a negative effect on the diversity because it will share an identical activity with an existing test.
 
 \begin{table}[]
 \scriptsize
@@ -515,18 +515,18 @@ After 3 unique test cases every additional test will have a negative effect on t
 \end{adjustbox}
 \end{table}
 
-In the activity matrix of \texttt{org.\-apache.\-commons.\-math4.\-ode.\-Abstract\-Parameterizable}, shown in \Cref{tab:abstractparameter}, we observe that almost every transaction has a unique activity and therefore its diversity is high: 0.933.
+In the activity matrix of \texttt{Abstract\-Parameterizable}, shown in \Cref{tab:abstractparameter}, we observe that almost every transaction has a unique activity and therefore its diversity is high: 0.933.
 Note that the diversity suffers when there are too many test cases, but does not suffer from a low number of test cases.
 
 An interesting case for diversity is parameterized testing.
-Although parameterized is a common practice to test different inputs for a unit, it has a negative effect on the diversity due to identical activity patterns.
+Although parameterized testing is a common practice to test different inputs for a unit, it has a negative effect on the diversity due to identical activity patterns.
 
 \section{Uniqueness}
 
 The distribution of uniqueness of classes is shown in \Cref{fig:uniqueness}.
 The average is 0.477.
 The peak for the interval [0.9, 1.0] is partially caused by classes that only have one component; activity matrices that consist of one component always have a uniqueness of 1.0.
-There are 130 classes that have a uniqueness of 1.0 and 43 out of the 130 classes only have one component.
+There are 130 classes that have a uniqueness of 1.0 and 43 out of the 130 classes only have one branch.
 
 \begin{figure}
     \centering
@@ -582,14 +582,14 @@ The \texttt{Crypt} class has a uniqueness of 0.916 because it only has one ambig
 \end{tabular}
 \end{table}
 
-In the spectra of \texttt{Unit\-Sphere\-Random\-Vector\-Generator}, see \Cref{tab:unitsphere}, we observe that all components have identical activity patterns and, therefore, the uniqueness is low: 0.142.
+In the activity matrix of \texttt{Unit\-Sphere\-Random\-Vector\-Generator}, see \Cref{tab:unitsphere}, we observe that all components have identical activity patterns and, therefore, the uniqueness is low: 0.142.
 Note that the uniqueness does not equal zero although there is no component with a unique activity.
 
 \section{DDU}
 
 The distribution of DDU of classes is shown in \Cref{fig:ddu}.
 The average is 0.157.
-We observe that 176 classes have a DDU of zero due to normalized density, diversity, or uniqueness being equal to zero.
+We observe that 176 classes have a DDU of zero due to either normalized density, diversity, or uniqueness being equal to zero.
 
 \begin{figure}
     \centering
@@ -641,28 +641,42 @@ Eventhough the normalized density and uniqueness are above average, the DDU is l
 \section{Observations}
 In this section, we summarize our findings with regards to normalized density, diversity, uniqueness, and DDU.
 
-The optimal normalized density is 1.0 and the optimal density is 0.5.
-The density can be used to guide the developer in writing tests.
+The optimal normalized density is 1.0 and the optimal density is 0.5 for a test suite.
+It is difficult to utilize normalized density to recommend the developer what kind of test to write --- a test that covers a few components or a test that covers many components.
+For example, if $\rho' = 0.6$, then the density can either be $\rho = 0.3$ or $\rho = 0.7$.
+Therefore, the density can be used to guide the developer in writing tests.
 For example, when the test suite's density is less than 0.5, it is recommended to write tests that cover many components.
 Conversely, when the test suite's density is greater than 0.5, it is recommended to write tests that cover a few components.
 
-In \Cref{tab:providesmethodscanner}, we observed that the more components a class has, the greater the impact of a test, that covers a relative small number of components, has on the sparseness of the activity matrix.
+% In \Cref{tab:providesmethodscanner}, we observed that the more components a class has, the greater the impact of a test, that covers a relative small number of components, has on the sparseness of the activity matrix.
+% Therefore, we pose the question whether density should be this punishing
 
 In practice, we write tests to account for many corner cases.
 From the diagnostic perspective, adding tests, that do not improve the information gain, is useless.
-For example, the diversity can be negatively impacted when we write parameterized tests.
+For example, the diversity can be negatively impacted when we write parameterized tests due to inputs causing the same activation patterns.
+Another example is property-based testing, where the outputs are checked against a so-called \emph{property} that should hold true given arbitrary inputs that meet certain criteria.
 Therefore, we pose the question whether we need a metric that penalizes tests that have identical component coverage.
 
-For DDU the density is normalized such that its operating domain is [0, 1].
-However, due to the definition of uniqueness, see \Cref{eq:uniqueness}, its domain is actually (0, 1] instead of [0, 1].
+% For DDU the density is normalized such that its operating domain is [0, 1].
+% However, due to the definition of uniqueness, see \Cref{eq:uniqueness}, its domain is actually (0, 1] instead of [0, 1].
 
 We observe in \Cref{fig:ddu}, that the DDU distribution is right-tailed.
 This can be explained by the fact that the DDU is the product of normalized density, diversity, and uniqueness, which all operate in the domain [0, 1].
+Even when a test suite has a high normalized density and diversity but a low uniqueness, then the value for DDU can only be as high as the uniqueness.
+In other words, the DDU can only be as high as the component with the lowest value.
 
 % Multiplying the individual terms might not be the right approach.
 %
 % Based on the uniqueness observations, it seems that uniqueness at least requires the developer to write tests that cover a few components.
 
+Revisiting the first research question:
+\begin{framed}
+\noindent
+\textbf{RQ1:} How do normalized density, diversity, uniqueness, and DDU vary in practice?
+\end{framed}
+\textbf{A:} We observed that the average for normalized density, diversity, and uniqueness are 0.5145, 0.588, 0.477, respectively.
+However, the values for DDU have an average of 0.157.
+In addition, the distribution of DDU is right-tailed which could be explained by the fact that DDU can only be as high as the lowest component --- normalized density, diversity, or uniqueness.
 
 
 \chapter{DDU vs. Diagnosability}
@@ -728,23 +742,23 @@ The setup of this experiment is illustrated in \Cref{fig:fault_generation_delta}
     \centering
     \begin{subfigure}[b]{0.49\linewidth}
         \centering
-        \includegraphics[width=\linewidth]{figures/effort_uniqueness}
-        \caption{Uniqueness, $r = -0.120$, $p < 0.001$.}
-        \label{fig:effort_uniqueness}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.49\linewidth}
-        \centering
         \includegraphics[width=\linewidth]{figures/effort_density}
-        \caption{Density, $r = 0.183$, $p < 0.001$.}
+        \caption{Normalized density, $r = 0.183$, $p < 0.001$.}
         \label{fig:effort_density}
     \end{subfigure}
-    \vskip\baselineskip
+    \hfill
     \begin{subfigure}[b]{0.49\linewidth}
         \centering
         \includegraphics[width=\linewidth]{figures/effort_diversity}
         \caption{Diversity, $r = -0.326$, $p < 0.001$.}
         \label{fig:effort_diversity}
+    \end{subfigure}
+    \vskip\baselineskip
+    \begin{subfigure}[b]{0.49\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/effort_uniqueness}
+        \caption{Uniqueness, $r = -0.120$, $p < 0.001$.}
+        \label{fig:effort_uniqueness}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.49\linewidth}
