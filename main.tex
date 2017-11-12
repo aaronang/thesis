@@ -686,15 +686,12 @@ In addition, the distribution of DDU is right-tailed which could be explained by
 \textbf{RQ2:} What is the relation between density, diversity, uniqueness, and DDU and diagnosability?
 \end{framed}
 In prior work Perez \etal \cite{DBLP:conf/icse/PerezAD17} show that optimizing test suite generation with respect to DDU results in better fault diagnosis.
-Therefore, in this chapter, we perform experiments to verify the correlation between DDU and diagnosability, that is, answering RQ2.
+Optimizing test suite generation with respect to DDU yields a 34\% diagnostic performance compared to a test suite optimized for branch coverage.
+Therefore, in this chapter, we perform experiments to verify the correlation between DDU and diagnosability.
 
 \section{Experimental Setup}
 \label{sec:rq2_experimental_setup}
-First, we have to define the subjects of interest that will be used during the experiments.
-For the experiments, we use the open source projects Commons Codec, Commons Compress, and Commons Math, which were also used in prior work by Alex \etal \cite{DBLP:conf/icse/PerezAD17}.
-In addition, we include the open source projects Guice and Jsoup due to their popularity on GitHub; both roughly have 5000 stars.
-
-To test the correlation between DDU and diagnosability, we generate 10 artificial multiple components faults of cardinality 2 for each class that has at least 8 components, i.e. method branches.
+To verify the correlation between DDU and diagnosability, we generate 10 artificial multiple components faults of cardinality 2 for each class that has at least 8 components, i.e. method branches.
 For each generated fault set, we construct an activity matrix.
 We determine for each test that exercises the faulty components whether it is failing according to an \emph{oracle quality probability} of 0.75, which was also used in prior work \cite{DBLP:conf/icse/PerezAD17}.
 Then, for each generated activity matrix, we use \emph{STACCATO} to generate fault candidates and \emph{BARINEL} to generate a diagnosis report.
@@ -972,7 +969,7 @@ To account for randomness of generating fault candidates, we repeat this process
   \label{fig:delta_error_detection_approach}
 \end{figure}
 
-Note that for the experiments we use the same projects as previous ones, namely Commons Codec, Commons Compress, Commons Math, Guice, Jsoup.
+Note that for the experiments we use the same projects used in previous experiments, namely Commons Codec, Commons Compress, Commons Math, Guice, Jsoup.
 
 \section{Experimental Results}
 In the first experiment, we confirm whether test coverage is representative for error detection.
@@ -980,7 +977,7 @@ In \Cref{fig:coverage_error_detection}, we observe that there is a strong correl
 Furthermore, we observe that branch coverage puts an upper bound on error detection.
 The upper bound can be explained with the following example.
 Assuming that 60\% of the components are tested, faults that involve untested components (in the remaining 40\%) can never be detected.
-Therefore, the error detection can only be 100\% if and only if the test coverage is 100\%.
+Therefore, the error detection can only be 100\% if the test coverage is 100\%.
 \begin{figure}
   \includegraphics[width=\linewidth]{figures/coverage_error_detection}
   \caption{Scatterplot of coverage and error detection, $r = 0.628$, $p < 0.01$.}
@@ -991,9 +988,70 @@ In the second experiment, we examine the correlation between normalized density,
 The results are shown in \Cref{fig:coverage_metric} and \Cref{fig:delta_coverage_metric}.
 We observe in \Cref{fig:coverage_density} and \Cref{fig:coverage_diversity} that normalized density is uncorrelated to branch coverage, and that diversity is weakly correlated to branch coverage.
 In \Cref{fig:coverage_uniqueness} and \Cref{fig:coverage_ddu}, we observe that uniqueness and DDU are weakly correlated to branch coverage.
-Nevertheless, we observe that uniqueness and DDU put a lower bound on branch coverage.
-Uniqueness lower bounds branch coverage because
 
+Nevertheless, we observe that uniqueness and DDU put a lower bound on branch coverage.
+The branch coverage is lower bounded by uniqueness since uniqueness enforces the number of unique columns in the activity matrix.
+This means that if the uniqueness is low, then the number of unique columns is low and therefore the branch coverage is potentially low.
+In \Cref{subfig:low_uniqueness} and \Cref{subfig:low_uniqueness_high_coverage}, we observe that branch coverage can be high or low given an activity matrix with a low uniqueness.
+If the uniqueness is high, then the number of unique columns is high and therefore the branch coverage has to be high too.
+In \Cref{subfig:optimal_uniqueness_coverage} and \Cref{subfig:optimal_uniqueness}, we observe two activity matrices with optimal uniqueness, resulting in a relative high or optimal coverage.
+The DDU lower bounds coverage since uniqueness is a component of DDU.
+
+\begin{figure*}
+    \centering
+    \begin{subfigure}[b]{0.48\linewidth}
+        \centering
+        \begin{tabular}{c|cccc}
+          & $c_1$ & $c_2$ & \dots & $c_{10}$     \\ \hline
+          $t_1$ & 1 & 0 & \dots & 0 \\
+          $t_2$ & 1 & 0 & \dots & 0 \\
+          $t_3$ & 1 & 0 & \dots & 0 \\
+          $t_4$ & 1 & 0 & \dots & 0 \\
+        \end{tabular}
+        \caption{Low uniqueness, $\mathcal{U}=0.2$, $coverage = 0.1$.}
+        \label{subfig:low_uniqueness}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.49\linewidth}
+        \centering
+        \begin{tabular}{c|cccc}
+          & $c_1$ & $c_2$ & \dots & $c_{10}$     \\ \hline
+          $t_1$ & 1 & 1 & \dots & 1 \\
+          $t_2$ & 1 & 1 & \dots & 1 \\
+          $t_3$ & 1 & 1 & \dots & 1 \\
+          $t_4$ & 1 & 1 & \dots & 1 \\
+        \end{tabular}
+        \caption{Low uniqueness, $\mathcal{U}=0.1$, $coverage = 1.0$.}
+        \label{subfig:low_uniqueness_high_coverage}
+    \end{subfigure}
+    \vskip\baselineskip    
+    \begin{subfigure}[b]{0.49\linewidth}
+        \centering
+        \begin{tabular}{c|cccc}
+          & $c_1$ & $c_2$ & $c_3$ & $c_4$     \\ \hline
+          $t_1$ & 1 & 0 & 0 & 0 \\
+          $t_2$ & 0 & 1 & 0 & 0 \\
+          $t_3$ & 0 & 0 & 1 & 0 \\
+          $t_4$ & 0 & 0 & 0 & 1 \\
+        \end{tabular}
+        \caption{Optimal uniqueness, $\mathcal{U}=1.0$, $coverage = 1.0$.}
+        \label{subfig:optimal_uniqueness_coverage}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.49\linewidth}
+        \centering
+        \begin{tabular}{c|cccc}
+          & $c_1$ & $c_2$ & $c_3$ & $c_4$     \\ \hline
+          $t_1$ & 1 & 0 & 0 & 0 \\
+          $t_2$ & 0 & 1 & 0 & 0 \\
+          $t_3$ & 0 & 0 & 1 & 0 \\
+          $t_4$ & 0 & 0 & 0 & 0 \\
+        \end{tabular}
+        \caption{Optimal uniqueness, $\mathcal{U}=1.0$, $coverage = 0.75$.}
+        \label{subfig:optimal_uniqueness}
+    \end{subfigure}
+    \caption{Examples of activity matrices with a low or high uniqueness.}
+\end{figure*}
 
 \begin{figure*}
     \centering
@@ -1062,6 +1120,7 @@ Uniqueness lower bounds branch coverage because
 \end{figure*}
 
 \todo{Third experiment results}
+In the third experiment, we analyze the relation between DDU and 
 
 \begin{figure*}
     \centering
