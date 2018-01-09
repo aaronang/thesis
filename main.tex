@@ -691,7 +691,7 @@ Therefore, in this chapter, we perform experiments to verify the correlation bet
 
 \section{Experimental Setup}
 \label{sec:rq2_experimental_setup}
-To verify the correlation between DDU and diagnosability, we generate 10 artificial multiple components faults of cardinality 2 for each class that has at least 8 components, i.e. method branches.
+To verify the correlation between DDU and diagnosability, we generate 10 artificial multiple components faults of cardinality 2 for each class that has at least 8 components, i.e. branches.
 For each generated fault set, we construct an activity matrix.
 We determine for each test that exercises the faulty components whether it is failing according to an \emph{oracle quality probability} of 0.75, which was also used in prior work \cite{DBLP:conf/icse/PerezAD17}.
 Then, for each generated activity matrix, we use \emph{STACCATO} to generate fault candidates and \emph{BARINEL} to generate a diagnosis report.
@@ -1119,8 +1119,11 @@ The DDU lower bounds coverage since uniqueness is a component of DDU.
     \label{fig:delta_coverage_metric}
 \end{figure*}
 
-\todo{Third experiment results}
-In the third experiment, we analyze the relation between DDU and 
+In the third experiment, we analyze the relation between DDU and error detection.
+In \Cref{fig:error_detection_metric}, we observe that there is no strong correlation between normalized density, diversity, uniqueness, DDU, and error detection.
+In \Cref{fig:delta_error_detection_metric}, we observe similar results; no strong correlation between delta normalized density, delta diversity, delta uniqueness, delta DDU, and delta error detection, i.e. improving the components of DDU does not result in an improvement in the error detection.
+The results in \Cref{fig:error_detection_uniqueness} and \Cref{fig:delta_error_detection_uniqueness} are unexpected because we have seen in previous experiments that branch coverage is strongly correlated to error detection, see \Cref{fig:coverage_error_detection}, and that an improvement in uniqueness is strongly correlated to an improvement in branch coverage, see \Cref{fig:delta_coverage_uniqueness}.
+However, we do not observe any correlation between uniqueness and error detection.
 
 \begin{figure*}
     \centering
@@ -1188,8 +1191,16 @@ In the third experiment, we analyze the relation between DDU and
     \label{fig:delta_error_detection_metric}
 \end{figure*}
 
-\todo{Answer RQ}
-
+Revisiting the third research question:
+\begin{framed}
+\noindent
+\textbf{RQ3:} What is the relation between density, diversity, uniqueness, and DDU and test coverage?
+\end{framed}
+\textbf{A:} In the first experiment, we confirmed that branch coverage is strongly correlated to error detection.
+In the second experiment, in which we analyze the relation between the diagnosability metrics and branch coverage, we observed that only an improvement in uniqueness is strongly correlated to an improvement in branch coverage.
+The other metrics did not show any significant correlation.
+Further, we observed that uniqueness and DDU put a lower bound on branch coverage.
+In final experiment, we found no evidence that uniqueness and the other diagnosability metrics are correlated to error detection.
 
 
 % \chapter{Analysis Framework}
