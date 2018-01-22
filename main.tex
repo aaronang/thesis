@@ -1,5 +1,7 @@
 \documentclass[twoside,a4paper,11pt]{memoir}
 \input{preamble}
+% chktex-file 44
+% chktex-file 41
 
 \title{DDU}
 \subtitle{Master's Thesis}
@@ -75,36 +77,34 @@ Intuitively, if a statement is executed primarily during failed executions, then
 Similarly, if a statement is executed primarily during successful executions, then this statement might be assigned a lower suspiciousness score.
 
 While SBFL techniques show promising results for debugging purposes, there are still aspects that prevent SBFL techniques from being used in practice.
-First, the diagnostic performance of SBFL techniques relies on the quality of the test suite.
-SBFL techniques cannot accurately pinpoint a fault with a single failing test that covers multiple components, e.g.\ methods.
-However, if the test suite consists of many tests with different coverage patterns, then SBFL might be able to pinpoint the fault more accurately because it can indict or exonerate components more precisely with more evidence, i.e.\ more execution traces.
-Second, in one of the pioneering user studies performed by Parnin and Orso~\cite{Parnin:2011:ADT:2001420.2001445}, the authors show that several assumptions made by SBFL techniques do not hold in practice.
+First, in one of the pioneering user studies performed by Parnin and Orso~\cite{Parnin:2011:ADT:2001420.2001445}, the authors show that several assumptions made by SBFL techniques do not hold in practice.
 For example, the authors find no evidence that the effectiveness of SBFL techniques is affected by the rank of the faulty statement.
+Second, the diagnostic performance of SBFL techniques relies on the quality of the test suite.
+SBFL techniques cannot accurately pinpoint a fault with a single failing test that covers multiple components, e.g.\ statements, branches, methods.
+However, if the test suite consists of many tests with different coverage patterns, then SBFL might be able to pinpoint the fault more accurately because it can indict or exonerate components more precisely with more evidence, i.e.\ more execution traces.
 
 The quality of test suites is commonly measured using an adequacy metric that focuses on error detection like statement coverage, branch coverage, method coverage.
-However, these metrics do not enforce a good test suite.
-For example, one could easily obtain a 100\% test coverage with a set of tests that each covers a big part of the codebase.
-In this case, when a test fails due to a bug, it might be difficult for the developer to pinpoint the root cause.
+However, these metrics do not necessarily enforce the quality of a test suite with respect to diagnosability --- the property of faults to be easily and precisely located~\cite{730889}.
+For example, one could obtain a 100\% test coverage with a relative small number of tests that each covers a big part of the codebase.
+In this case, when a test fails due to a fault, it might be difficult for SBFL techniques to pinpoint the root cause accurately since the failing test covers a large portion of the codebase, lowering the possibility for SBFL techniques to accurately indict or exonerate components from being faulty.
 
-To address the first problem --- SBFL techniques rely on the quality of the test suite --- Perez \etal~\cite{DBLP:conf/icse/PerezAD17} propose a new metric, called DDU, to quantify the diagnosability of a test suite.
-As opposed to optimizing a test suite with respect to adequacy measurements that focus on error detection, e.g.\ branch coverage, line coverage.
-However, Perez \etal~\cite{DBLP:conf/icse/PerezAD17} show evidence that optimizing a test suite with respect to DDU --- a metric to quantify the test suite's diagnosability --- improves the diagnostic performance of SBFL by 34\% compared to a test suite optimized with respect to branch coverage.
-The goal of DDU is to capture diagnosability and to serve as a complementary metric to code coverage for developers to use to improve the test suite's diagnosability.
+For this reason, Perez \etal~\cite{DBLP:conf/icse/PerezAD17} propose a new metric, called DDU, to quantify the diagnosability of test suites as opposed to adequacy metrics that focus on error detection.
+The objective of optimizing test suites with respect to DDU is to improve the diagnosability of test suites and consequently improve the diagnostic performance of SBFL techniques.
+The authors have shown empirical evidence that optimizing a test suite with respect to DDU improves the diagnostic performance of SBFL by 34\% compared to a test suite optimized with respect to branch coverage.
 
 \section{Problem Definition}%
 \label{sec:problem_definition}
-Currently, when the DDU is computed for a given test suite, its value is in the domain \([ 0, 1 ]\), where \(0\) suggests that the test suite's diagnosability is low, and \(1\) suggests that the test suite's diagnosability is high.
+However, DDU is not yet usable in practice.
+Currently, when the DDU is computed for a given test suite, its value lies in the domain \([ 0, 1 ]\), where \(0\) suggests that the test suite's diagnosability is low, and \(1\) suggests that the test suite's diagnosability is high.
 The problem with this value is that the developer does not know how to extend or update the test suite given a DDU value.
 For example, when the test suite's DDU is equal to \(0.1\), the developer does not know how to write tests that improve the DDU\@.
-In other words, time spent on software debugging cannot be reduced using DDU because its practical implications are unclear to the developer.
+In other words, time spent on software debugging (using SBFL techniques) cannot be reduced using DDU because its practical implications are unclear to the developer.
 
 \section{Goal}
-Although DDU is currently not usable in practice, Perez \etal~\cite{DBLP:conf/icse/PerezAD17} have shown that optimizing a test suite with respect to DDU can yield a 34\% gain in diagnostic performance using SBFL\@.
-In addition, having a test suite with a high diagnosability could possibly reduce the time spent debugging because the fault is easier to find manually.
+Although DDU is currently not usable in practice, Perez \etal~\cite{DBLP:conf/icse/PerezAD17} have shown that optimizing a test suite with respect to DDU can yield a 34\% gain in diagnostic performance using SBFL under constraint conditions\@.
+In addition, having a test suite with a high diagnosability could possibly reduce the time spent debugging because the fault is easier to pinpoint using SBFL techniques.
 Therefore, the goal of this thesis is to find ways to make DDU usable in practice.
 In other words, we explore possibilities to convey DDU to the developer such that the developer knows what kind of tests to write to improve the system's diagnosability.
-To be able to
-
 
 \section{Structure of Report}
 The structure of this report is as follows.
@@ -161,7 +161,7 @@ Both evaluation metrics assume \emph{perfect bug understanding}, which has been 
 However, cost of diagnosis and effort serve as an objective evaluation metric that can be used for comparison and therefore will also be used in this study.
 
 \section{Diagnosability}
-Diagnosability is the property of faults to be easily and precisely locate~\cite{730889}.
+Diagnosability is the property of faults to be easily and precisely located~\cite{730889}.
 In other words, given that a fault exists in a software system, if the test suite's diagnosability is high and we would perform SFL using an automated debugging technique, then the faulty component would be ranked high in the diagnostic report, resulting in a low wasted effort.
 On the contrary, if the test suite's diagnosability is low and we would perform SFL using an automated debugging technique, then the faulty component would be ranked low in the diagnostic report, resulting in a high wasted effort.
 
