@@ -102,13 +102,16 @@ In other words, time spent on software debugging (using SBFL techniques) cannot 
 
 \section{Goal}
 Although DDU is currently not usable in practice, Perez \etal~\cite{DBLP:conf/icse/PerezAD17} have shown that optimizing a test suite with respect to DDU can yield a 34\% gain in diagnostic performance using SBFL under constraint conditions\@.
-In addition, having a test suite with a high diagnosability could possibly reduce the time spent debugging because the fault is easier to pinpoint using SBFL techniques.
-Therefore, the goal of this thesis is to find ways to make DDU usable in practice.
+Having a test suite with a high diagnosability could possibly reduce the time spent debugging because the fault is easier to pinpoint using SBFL techniques.
+Therefore, the goal of this thesis is to explore how DDU behaves in practice and to find ways to make DDU usable in practice.
 In other words, we explore possibilities to convey DDU to the developer such that the developer knows what kind of tests to write to improve the system's diagnosability.
 
 \section{Structure of Report}
 The structure of this report is as follows.
-\todo{Update once all chapters are done.}
+In \Cref{ch:background}, we explain the relevant topics to understanding this study, like spectrum-based fault localization, wasted effort, and DDU\@.
+In \Cref{ch:research_questions}, we formalize the research questions and explain the motivation behind them.
+Then, in \Cref{ch:rq1,ch:rq2,ch:rq3}, we discuss the experimental design and results to answer the research questions.
+Finally, in \Cref{ch:conclusion}, we conclude this study with a summary and recommendations for future work.
 
 \chapter{Background}%
 \label{ch:background}
@@ -117,6 +120,7 @@ In this chapter, we discuss topics that are relevant to understanding this study
 First, we discuss spectrum-based fault localization and spectrum-based reasoning, which are used in the experiments to perform fault diagnosis.
 Second, we discuss the metric used to evaluate the diagnostic performance of spectrum-based fault localization techniques.
 Then, we explain the definition of diagnosability and diagnosability assessment metrics.
+Finally, we discuss how DDU was evaluated in the study that proposed DDU\@.
 
 \section{Spectrum-Based Fault Localization (SBFL)}
 In spectrum-based fault localization, we define a finite set \(\mathcal{C} = \langle c_1, c_2, \ldots, c_M \rangle \) of \(M\) system components, and a finite set \(\mathcal{T} = \langle t_1, t_2, \ldots, t_N \rangle \) of \(N\) system transactions, i.e.\ test executions.
@@ -177,8 +181,28 @@ The optimal entropy for a system with \(M \) components is \(M \) shannons, and 
 SBFL techniques are able to diagnose faults with 100\% accuracy when \(\frac{H(T)}{M} = 1.0 \).
 
 However, an optimal normalized entropy would require \(2^M -1 \) tests, which is difficult to achieve in practice.
-First, not all activity patterns can be generated from tests due to software topology, e.g.\ a basic block consisting of several statements --- these statements will always be executed together, and therefore on a statement granularity it is not possible to achieve optimal entropy.
-Second, systems of today can consist of millions of lines of code and would therefore require a non-realistic amount of effort to write the tests.
+First, not all activity patterns can be generated from tests due to software topology, e.g.\ a basic block consisting of several statements --- these statements will always be executed together, and therefore on a statement granularity it is not possible to achieve optimal entropy, see \Cref{lst:topology}.
+Second, systems of today can consist of millions of lines of code and would therefore require a non-realistic amount of effort to write the tests.\\
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[caption={Lines 4 - 9 will always be executed together and therefore no optimal entropy can be achieved on a statement granularity. Same holds for lines 11 - 14.},label={lst:topology}]
+public FieldRotation(final T q0, final T q1, final T q2, final T q3, final boolean needsNormalization) {
+    if (needsNormalization) {
+        // normalization preprocessing
+        final T inv =
+                q0.multiply(q0).add(q1.multiply(q1)).add(q2.multiply(q2)).add(q3.multiply(q3)).sqrt().reciprocal();
+        this.q0 = inv.multiply(q0);
+        this.q1 = inv.multiply(q1);
+        this.q2 = inv.multiply(q2);
+        this.q3 = inv.multiply(q3);
+    } else {
+        this.q0 = q0;
+        this.q1 = q1;
+        this.q2 = q2;
+        this.q3 = q3;
+    }
+}
+\end{lstlisting}
+\end{minipage}
 
 \section{Diagnosability Metric: DDU}
 To elevate the problem with entropy, Perez \etal~\cite{DBLP:conf/icse/PerezAD17} propose a new diagnosability metric: DDU\@.
@@ -244,9 +268,8 @@ For this reason, Perez \etal~\cite{DBLP:conf/icse/PerezAD17} propose two enhance
     \label{fig:diversity_ambiguity}
 \end{figure*}
 
-The first enhancement to normalized density is diversity, which ensures test diversity.
-Test diversity captures the diversity among test activity patterns, i.e.\ the diversity among the activity matrix's rows.
-The test diversity is low when the test suite consists of many tests that have identical activity patterns.
+The first enhancement to normalized density is diversity, which ensures test diversity among the activity matrix's rows.
+The test diversity is low when the test suite consists of many tests that have identical activity patterns, i.e.\ rows.
 Conversely, the test diversity is high when the test suite consists of many tests that have distinct activity patterns.
 
 Perez \etal~\cite{DBLP:conf/icse/PerezAD17} use the Gini-Simpson index \(\mathcal{G} \)~\cite{OIK:OIK14714} to capture test diversity:
@@ -288,12 +311,35 @@ If \(DDU = 1 \), then the test suite's diagnosability is high.
 Vice versa, if \(DDU = 0 \), then the test suite's diagnosability is low.
 Perez \etal~\cite{DBLP:conf/icse/PerezAD17} have shown in an experiment that optimizing a test suite with respect to DDU yields a 34\% diagnostic performance compared to a test suite optimized for branch coverage.
 
+\section{Evaluation of DDU}
+In the study that proposed DDU, Perez \etal~\cite{DBLP:conf/icse/PerezAD17} performed two experiments to answer three research questions:
+\begin{enumerate}[noitemsep]
+    \item [\textbf{RQ1}] Is the DDU metric more accurate than the state-of-the-art in diagnosability assessment?
+    \item [\textbf{RQ2}] How close does the DDU metric come to the (ideal yet intractable) full entropy?
+    \item [\textbf{RQ3}] Does optimizing a test-suite with regard to DDU result in better diagnosability than optimizing adequacy metrics such as branch-coverage in traditional scenarios?
+\end{enumerate}
+The goal of their study was to evaluate how DDU compares with the existing metrics: entropy, density, uniqueness, and branch coverage.
 
+The empirical evaluation leveraged a test-generation approach using \textsc{EvoSuite}\footnote{\url{http://www.evosuite.org/}}, which employs search-based software testing approaches.
+\textsc{EvoSuite} generates tests to minimize a fitness function using genetic algorithms.
+In essence, the fitness function is a measure that indicates the distance between a given solution and the optimal solution.
+For example, in the case of DDU, the optimal solution is \(\emph{DDU} = 1\) and, therefore, \textsc{EvoSuite} generates tests to minimize the differene between the current test suite's DDU value and the optimal DDU value.
+
+To answer \textbf{RQ1} and \textbf{RQ2}, the authors generated test suites for each class in the open source projects Commons Codec, Commons Compress, Commons Math and JodaTime that are optimized with respect to DDU, branch coverage, entropy, density and uniqueness.
+For each test suite, the activity matrix is constructed and, subsequently, the error vector is generated by artificially injecting faults --- single-component and two-component faults.
+Then, given these program spectra, on each program spectrum SBR is performend to generate a diagnostic report.
+Finally, the wasted effort is computed for each diagnostic report, which enables the authors to compare the diagnostic performance of DDU against the diagnostic performance of branch coverage, entropy, density, uniqueness.
+
+To answer \textbf{RQ3}, the authors make use of the \textsc{Defects4J} database, which contains 357 real software bugs from 5 open source projects.
+The database contains a faulty and fixed software version for each bug.
+For each bug, the authors generate two test suites for the fixed software version --- one test suite that optimizes DDU and one that optimizes branch coverage.
+Then, instead of artificially injecting faults, the authors run the generated test suite against the faulty software version and collect the program spectrum.
+Subsequently, SBR is performed on the collected program spectra, enabling the comparison between DDU and branch coverage.
 
 \chapter{Research Questions}%
 \label{ch:research_questions}
 Ideally, we would like to propose an intuitive approach that allows developers to use DDU in their software development cycle.
-However, to the best of our knowledge, there has been no study yet on DDU that investigates how it actually behaves in practice.
+However, there has been no study yet on DDU that investigates how it actually behaves in practice.
 For this reason, the goal of this study is to explore how DDU behaves in practice and to potentially improve DDU\@.
 To achieve this goal, we define four research questions.
 
@@ -358,7 +404,9 @@ The selection of open source projects is done according to the following criteri
 \begin{itemize}
   \item \emph{The project must have an executable test suite.}
   To compute the DDU for a software project, we must construct an activity matrix.
-  The program spectra is constructed by running the test suite and instrumenting the code such that we can keep track of what components are executed during a program execution.
+  The activity matrix is constructed by running the test suite and instrumenting the code to keep track of which components are executed during a program execution.
+  Since we are interested in the activity matrix \(\mathcal{A}\), we do not care if a test suite has failing tests.
+  A project meets this criterion as long as the test suite executes and does not crash.
 
   \item \emph{The project must use Apache Maven, a software project management and comprehension tool.}
   The current tool that instruments the code to construct the activity matrix is implemented as a Maven plugin.
@@ -366,8 +414,6 @@ The selection of open source projects is done according to the following criteri
 \end{itemize}
 
 Based on these requirements, we choose the following open source projects.
-Note that some of the projects are also used in Perez \etal's study~\cite{DBLP:conf/icse/PerezAD17}.
-
 \begin{itemize}[noitemsep]
     % \item Commons CSV\footnote{\url{https://github.com/apache/commons-csv}}: a library that provides a simple interface for reading and writing CSV files of various types.
     % \item Commons Text\footnote{\url{https://github.com/apache/commons-text}}: a library focused on algorithms working on strings.
@@ -378,6 +424,38 @@ Note that some of the projects are also used in Perez \etal's study~\cite{DBLP:c
     \item Guice\footnote{\url{https://github.com/google/guice}}: a lightweight dependency injection framework for Java 6 and above.
     \item Jsoup\footnote{\url{https://github.com/jhy/jsoup}}: an API for extracting and manipulating data, using the best of DOM, CSS, and jquery-like methods.
 \end{itemize}
+Note that some of the projects are also used in Perez \etal's study~\cite{DBLP:conf/icse/PerezAD17}.
+In \Cref{tab:project_statistics}, we show some statistics for each project.
+The number of classes, methods, and lines were obtained by running the complete test suites in IntelliJ and collecting the coverage report.
+The number of branches was obtained by running the complete test suite while the \textsc{ddu-maven-plugin} instruments the code using the branch granularity and consequently counting the number of components in the program spectrum.
+% project_name,number_of_classes,number_of_methods,number_of_branches,number_of_lines
+% Commons Codec,87,743,2901,3827
+% Commons Compress,261,2143,8650,12182
+% Commons Math,977,7406,33614,45004
+% Guice,332,2039,9134,7102
+% Jsoup,232,1343,5088,6875
+
+% Please add the following required packages to your document preamble:
+% \usepackage[table,xcdraw]{xcolor}
+% If you use beamer only pass "xcolor=table" option, i.e. \documentclass[xcolor=table]{beamer}
+\begin{table}[]
+\centering
+\caption{Statistics of open source projects.}%
+\label{tab:project_statistics}
+\begin{tabular}{lllll}
+    \toprule
+    Subject          & Classes & Methods & Branches & Lines \\
+    \rowcolor{Gray} 
+    Commons Codec    & 87      & 743     & 2901     & 3827  \\
+    Commons Compress & 261     & 2143    & 8650     & 12182 \\
+    \rowcolor{Gray} 
+    Commons Math     & 977     & 7406    & 33614    & 45004 \\
+    Guice            & 332     & 2039    & 9134     & 7102  \\
+    \rowcolor{Gray} 
+    Jsoup            & 232     & 1343    & 5088     & 6875 \\
+    \bottomrule
+\end{tabular}
+\end{table}
 
 \section{Normalized Density}
 

@@ -9,6 +9,7 @@
 \usepackage{adjustbox}
 \usepackage{xspace}
 \usepackage{enumitem}
+\usepackage{listings}
 \usepackage{multirow}
 \usepackage{subcaption}
 \usepackage[hidelinks]{hyperref}
@@ -30,3 +31,19 @@
 \def\chapterautorefname{Chapter}
 \def\sectionautorefname{Section}
 \def\subsectionautorefname{Section}
+
+\lstset{
+  language=Java,
+  backgroundcolor=\color{Gray},
+  basicstyle=\ttfamily\scriptsize,
+  numbers=left,
+  numberstyle=\ttfamily\tiny,
+  frame=none,
+  captionpos=b,
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  breaklines=true,
+  breakatwhitespace=false,
+  escapeinside={\%*}{*\)}
+}
