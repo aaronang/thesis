@@ -340,8 +340,8 @@ Subsequently, SBR is performed on the collected program spectra, enabling the co
 \label{ch:research_questions}
 Ideally, we would like to propose an intuitive approach that allows developers to use DDU in their software development cycle.
 However, there has been no study yet on DDU that investigates how it actually behaves in practice.
-For this reason, the goal of this study is to explore how DDU behaves in practice and to potentially improve DDU\@.
-To achieve this goal, we define four research questions.
+For this reason, the goal of this study is to explore how DDU behaves in practice and to find ways to make DDU usable in practice.
+To achieve this goal, we define three research questions.
 
 \begin{framed}
 \noindent
@@ -367,14 +367,6 @@ The intention of test coverage is to optimize for error detection.
 Perez \etal~\cite{DBLP:conf/icse/PerezAD17} propose DDU as a complementary metric to test coverage because DDU is meant to capture the diagnosability and not error detection.
 However, if there is a strong correlation between DDU and test coverage, then DDU could possibly replace test coverage as a test adequacy metric, which is a use case that the authors have not thought of.
 Furthermore, assuming that DDU is strongly correlated with diagnosability and test coverage is representative for error detection, answering this research question will give us a better understanding on the relation between diagnosability and error detection, and could give us insight in how DDU and test coverage can be used together in practice.
-
-\begin{framed}
-\noindent
-\textbf{RQ4:} How can we improve the correlation between DDU and diagnosability?
-\end{framed}
-Ultimately, we would like to decrease time spent on debugging, if not fully automate it, during the development cycle.
-We believe that writing a test suite with a high diagnosability can improve the debugging process because faults are easier to diagnose whether diagnosis is performed manually or automatically.
-Therefore, it is important to improve DDU's performance such that it strongly correlates with diagnosability.
 
 \chapter{DDU in Practice}%
 \label{ch:rq1}
