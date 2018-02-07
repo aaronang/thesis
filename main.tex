@@ -393,7 +393,7 @@ In this study, we make use of the same granularity used in the study performed b
 
 \section{Selection}
 The selection of open source projects is done according to the following criteria.
-\begin{itemize}
+\begin{itemize}[noitemsep]
   \item \emph{The project must have an executable test suite.}
   To compute the DDU for a software project, we must construct an activity matrix.
   The activity matrix is constructed by running the test suite and instrumenting the code to keep track of which components are executed during a program execution.
@@ -402,7 +402,7 @@ The selection of open source projects is done according to the following criteri
 
   \item \emph{The project must use Apache Maven, a software project management and comprehension tool.}
   The current tool that instruments the code to construct the activity matrix is implemented as a Maven plugin.
-  Note that the current Maven plugin does not work for all Maven projects, and therefore only projects, that can be analyzed with this plugin, are used.
+  Note that the current Maven plugin does not work for all Maven projects and, therefore, only projects that can be analyzed with this plugin are used.
 \end{itemize}
 
 Based on these requirements, we choose the following open source projects.
@@ -453,25 +453,28 @@ The number of branches was obtained by running the complete test suite while the
 
 In \autoref{fig:hist_normalized_density}, we show the distribution of normalized densities for all classes of the five open source projects mentioned before.
 The average equals to 0.5145.
-The peak for the interval [0, 0.1] is primarily caused by classes that are exercised by tests that involve all components.
-In the interval [0, 0.1], 43 classes consist of only one branch.
+The peak for the interval [0, 0.1) is primarily caused by classes that are exercised by tests that involve all components.
+In the interval [0, 0.1), 43 classes consist of only one branch.
 A class with one branch will always have a density of 1.0 and therefore a normalized density of 0.
 
 \begin{figure}
     \centering
-    \includegraphics[width=\linewidth]{figures/histogram_normalized_density}
+    \includegraphics[width=\linewidth]{figures/grouped_barchart_density}
     \caption{Normalized density distribution.}%
     \label{fig:hist_normalized_density}
 \end{figure}
 
 The normalized density value is low when a class is tested by many tests that only cover a couple of branches, or covered by tests that involve all components.
-For example, \texttt{com.google.inject.internal.ProvidesMethodScanner} has 35 branches and its partial activity matrix is shown in \Cref{tab:providesmethodscanner}.
-All the transactions that cover \texttt{Provides\-Method\-Scanner} are sparse, i.e.\ a row consisting of many zeroes.
+For example, the class \texttt{ProvidesMethodScanner} has 35 branches and its partial activity matrix is shown in \Cref{tab:providesmethodscanner}, where the columns represent branches of \texttt{Provides\-Method\-Scanner}.
+In the first row, we observe that the transaction \texttt{test\-Untargetted\-Binding} only hits one branch \(c_{23} \), indicated by a 1.
+We observe that all transactions in the activity matrix have a similar coverage.
+Since every transaction is only hitting a few components, the normalized density is low.
+Moreover, \texttt{Provides\-Method\-Scanner} has 35 components and if a transaction only hits a few components, it results in the activity matrix to become sparse.
 
 \begin{table}[]
 \scriptsize
 \centering
-\caption{Partial activity matrix of the \texttt{com.google.\-inject.\-internal.\-Provides\-Method\-Scanner} class.}%
+\caption{Partial activity matrix of the \texttt{com.google.\-inject.\-internal.\-Provides\-Method\-Scanner} class where \(\rho' = 0.111\).}%
 \label{tab:providesmethodscanner}
 \begin{tabular}{l|ccccccc}
 transaction & \(c_1 \) & \dots & \(c_{22} \) & \(c_{23} \) & \(c_{24} \) & \dots & \(c_{35} \) \\ \hline
@@ -487,7 +490,7 @@ transaction & \(c_1 \) & \dots & \(c_{22} \) & \(c_{23} \) & \(c_{24} \) & \dots
 \begin{table}[]
 \scriptsize
 \centering
-\caption{Activity matrix of the \texttt{org.apache.commons.math4.fitting.leastsquares.CircleProblem} class. Every transaction hits every component.}%
+\caption{Activity matrix of the \texttt{org.apache.commons.math4.fitting.leastsquares.CircleProblem} class where \(\rho' = 0\) because every transaction covers every component.}%
 \label{tab:circleproblem}
 \begin{tabular}{l|cccc}
 transaction & \(c_1 \) & \(c_2 \) & \dots & \(c_{26} \) \\ \hline
@@ -496,23 +499,17 @@ transaction & \(c_1 \) & \(c_2 \) & \dots & \(c_{26} \) \\ \hline
 \end{tabular}
 \end{table}
 
-In the partial activity matrix of \texttt{Provides\-Method\-Scanner}, see \Cref{tab:providesmethodscanner}, the columns represent branches of \texttt{Provides\-Method\-Scanner}.
-For example, in the first row, we observe that the transaction \texttt{test\-Untargetted\-Binding} only hits one branch \(c_{23} \), indicated by a 1.
-Since every transaction is only hitting a few components, the normalized density is low.
-In fact, \texttt{Provides\-Method\-Scanner} has 35 components and if a transaction only hits a few components, it results in the activity matrix to become sparse.
-
 In the activity matrix of \texttt{Circle\-Problem}, shown in \Cref{tab:circleproblem}, we observe a high density; all branches of \texttt{Circle\-Problem} are hit in every single test.
-The normalized density is low: 0.0, because the density is high: 1.0.
+This results in a low normalized density: 0.0, because the density is high: 1.0.
 
 Thus, ideally, to obtain a high value for the normalized density, we need a good balance between tests that cover many components and tests that cover a few.
-In Commons Math, the \texttt{Elitistic\-List\-Population} class has a normalized density of 0.979.
-In its activity matrix, see \Cref{tab:elitistic}, we observe that there is a good balance between tests that cover a few components and tests that cover many components.
-This results in a density close to 0.5 and a nearly optimal normalized density of 1.0.
+In Commons Math, the \texttt{Elitistic\-List\-Population} class has a nearly optimal normalized density.
+In its activity matrix, see \Cref{tab:elitistic}, we observe that there is a good balance between tests that cover a few components and tests that cover many components, resulting in a normalized density of 0.979.
 
 \begin{table}[]
 \scriptsize
 \centering
-\caption{Activity matrix of \texttt{org.apache.commons.math4.genetics.Elitistic\-List\-Population}.}%
+\caption{Activity matrix of \texttt{org.apache.commons.math4.genetics.Elitistic\-List\-Population} where \(\rho' = 0.979\).}%
 \label{tab:elitistic}
 \begin{adjustbox}{center}
 \begin{tabular}{l|llllllll}
@@ -538,14 +535,15 @@ transaction                                                       & \(c_1 \) & \
 \section{Diversity}
 In \Cref{fig:histogram_diversity}, the distribution of diversity of classes is shown.
 The average is 0.588.
-The peak for the interval [0, 0.1] occurs for various reasons.
-The first reason is that there are classes with only one method and therefore every row is identical, resulting in a diversity of 0.
-The second reason is that for some classes there exist only one test, and in the current Python script the diversity defaults to 0 when there is only one test.
+The peak for the interval [0, 0.1) occurs for various reasons.
+The first reason is that there are 43 classes with only one method and therefore every row is identical, resulting in a diversity of 0.
+The second reason is that for 52 classes there exists only one test, and in the current Python script the diversity defaults to 0 when there is only one test.
 The third reason is that there are test suites where all the test cases have identical activity patterns.
+In total there are 176 classes with a diversity of 0, where 36 classes only have one method, 45 classes only have one test, and 7 classes only have one method and one test.
 
 \begin{figure}
     \centering
-    \includegraphics[width=\linewidth]{figures/histogram_diversity}
+    \includegraphics[width=\linewidth]{figures/grouped_barchart_diversity}
     \caption{Diversity distribution.}%
     \label{fig:histogram_diversity}
 \end{figure}
@@ -556,7 +554,7 @@ Conversely, the diversity is high when the number of identical transactions is l
 \begin{table}[]
 \scriptsize
 \centering
-\caption{Partial activity matrix of \texttt{org.apache.commons.math4.analysis.function.Power}.}%
+\caption{Partial activity matrix of \texttt{org.apache.commons.math4.analysis.function.Power} where \(\mathcal{G} = 0.077\).}%
 \label{tab:power}
 \begin{tabular}{l|ccc}
 transaction & \(c_1 \) & \(c_2 \) & \(c_3 \) \\ \hline
@@ -579,7 +577,7 @@ After 7 unique tests every additional test will have a negative effect on the di
 \begin{table}[]
 \scriptsize
 \centering
-\caption{Activity matrix of \texttt{org.apache.commons.math4.ode.AbstractParameterizable}.}%
+\caption{Activity matrix of \texttt{org.\-apache.\-commons.\-math4.\-ode.\-AbstractParameterizable} where \(\mathcal{G} = 0.933\).}%
 \label{tab:abstractparameter}
 \begin{adjustbox}{center}
 \begin{tabular}{l|cccccccc}
@@ -598,7 +596,33 @@ In the activity matrix of \texttt{Abstract\-Parameterizable}, shown in \Cref{tab
 Note that the diversity suffers when there are too many test cases, but does not suffer from a low number of test cases.
 
 An interesting case for diversity is parameterized testing.
-Although parameterized testing is a common practice to test different inputs for a unit, it has a negative effect on the diversity due to identical activity patterns.
+Although parameterized testing is a common practice to test different inputs for a unit, it can have a negative effect on the diversity if the various parameters chosen exhibit identical activity patterns.
+An example is the class \texttt{Symmetric\-Gauss\-Integrator} with a diversity of 0.571, shown in \Cref{tab:hermite}.
+
+
+\begin{table}[]
+    \scriptsize
+    \centering
+    \caption{Partial activity matrix of \texttt{org.\-apache.\-commons.\-math4.\-analysis.\-integration.\-gauss.\-SymmetricGaussIntegrator}, where parameterized testing exhibits identical activity patterns.}%
+    \label{tab:hermite}
+    \begin{adjustbox}{center}
+    \begin{tabular}{l|cccccccc}
+     & \(c_1 \) & \(c_2 \) & \(c_3 \) & \(c_4 \) & \(c_5 \) & \(c_6 \) & \(c_7 \) & \(c_8 \) \\ \hline
+    \texttt{HermiteParametricTest\#testAllMonomials[0]} & 0 & 1 & 1 & 0 & 0 & 0 & 0 & 0 \\
+    \texttt{HermiteParametricTest\#testAllMonomials[1]} & 1 & 0 & 1 & 1 & 1 & 1 & 1 & 0 \\
+    \texttt{HermiteParametricTest\#testAllMonomials[2]} & 1 & 0 & 1 & 1 & 1 & 1 & 1 & 1 \\
+    \texttt{HermiteParametricTest\#testAllMonomials[3]} & 1 & 0 & 1 & 1 & 1 & 1 & 1 & 0 \\
+    \texttt{HermiteParametricTest\#testAllMonomials[4]} & 1 & 0 & 1 & 1 & 1 & 1 & 1 & 1 \\
+    \texttt{HermiteParametricTest\#testAllMonomials[5]} & 1 & 0 & 1 & 1 & 1 & 1 & 1 & 0 \\
+    \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots \\
+    \texttt{HermiteParametricTest\#testAllMonomials[26]} & 1 & 0 & 1 & 1 & 1 & 1 & 1 & 1 \\
+    \texttt{HermiteParametricTest\#testAllMonomials[27]} & 1 & 0 & 1 & 1 & 1 & 1 & 1 & 0 \\
+    \texttt{HermiteParametricTest\#testAllMonomials[28]} & 1 & 0 & 1 & 1 & 1 & 1 & 1 & 1 \\
+    \texttt{HermiteParametricTest\#testAllMonomials[29]} & 1 & 0 & 1 & 1 & 1 & 1 & 1 & 0
+    \end{tabular}
+    \end{adjustbox}
+\end{table}
+
 
 \section{Uniqueness}
 
@@ -609,7 +633,7 @@ There are 130 classes that have a uniqueness of 1.0 and 43 out of the 130 classe
 
 \begin{figure}
     \centering
-    \includegraphics[width=\linewidth]{figures/histogram_uniqueness}
+    \includegraphics[width=\linewidth]{figures/grouped_barchart_uniqueness}
     \caption{Distribution of uniqueness.}%
     \label{fig:uniqueness}
 \end{figure}
@@ -620,7 +644,7 @@ Conversely, the uniqueness is low when there is a low number of unique columns i
 \begin{table}[]
 \scriptsize
 \centering
-\caption{Activity matrix of \texttt{org.apache.commons.codec.digest.Crypt}.}%
+\caption{Activity matrix of \texttt{org.apache.commons.codec.digest.Crypt} where \(\mathcal{U} = 0.916\).}%
 \label{tab:crypt}
 \begin{adjustbox}{center}
 \begin{tabular}{l|cccccccccccc}
@@ -647,7 +671,7 @@ The \texttt{Crypt} class has a uniqueness of 0.916 because it only has one ambig
 \begin{table}[]
 \scriptsize
 \centering
-\caption{Partial activity matrix of \texttt{org.\-apache.\-commons.\-math4.\-random.\-Unit\-Sphere\-Random\-Vector\-Generator}.}%
+\caption{Partial activity matrix of \texttt{org.\-apache.\-commons.\-math4.\-random.\-Unit\-Sphere\-Random\-Vector\-Generator} where \(\mathcal{U} = 0.142\).}%
 \label{tab:unitsphere}
 \begin{tabular}{l|ccccccc}
  & \(c_1 \) & \(c_2 \) & \(c_3 \) & \(c_4 \) & \(c_5 \) & \(c_6 \) & \(c_7 \) \\ \hline
@@ -668,20 +692,20 @@ Note that the uniqueness does not equal zero although there is no component with
 
 The distribution of DDU of classes is shown in \Cref{fig:ddu}.
 The average is 0.157.
-We observe that 176 classes have a DDU of zero due to either normalized density, diversity, or uniqueness being equal to zero.
+We observe that 176 out of 987 classes have a DDU of zero due to either normalized density, diversity, or uniqueness being equal to zero.
+Additionally, we observe a right-tailed distribution due to the nature of how DDU is computed, a product of three metrics within the domain [0, 1].
 
 \begin{figure}
     \centering
-    \includegraphics[width=\linewidth]{figures/histogram_ddu}
+    \includegraphics[width=\linewidth]{figures/grouped_barchart_ddu}
     \caption{DDU distribution.}%
     \label{fig:ddu}
 \end{figure}
 
-
 \begin{table}[]
 \scriptsize
 \centering
-\caption{Activity matrix of \texttt{org.apache.commons.math4.analysis.function.Min}, \(\rho' = 1.0 \), \(\mathcal{G} = 0.809 \), and \(\mathcal{U} = 1.0 \).}%
+\caption{Activity matrix of \texttt{org.apache.commons.math4.analysis.function.Min}, \(\rho' = 1.0 \), \(\mathcal{G} = 0.809 \), \(\mathcal{U} = 1.0 \), and \(DDU = 0.809\).}%
 \label{tab:min}
 \begin{tabular}{l|cccc}
 transaction & \(c_1 \) & \(c_2 \) & \(c_3 \) & \(c_4 \) \\ \hline
@@ -701,7 +725,7 @@ Its DDU is high because it has an optimal normalized density, uniqueness, and an
 \begin{table}[]
 \scriptsize
 \centering
-\caption{Partial activity matrix of \texttt{org.jsoup.parser.ParseSettings}, \(\rho' = 0.727 \), \(\mathcal{G} = 0.204 \), and \(\mathcal{U} = 0.555 \).}%
+\caption{Partial activity matrix of \texttt{org.jsoup.parser.ParseSettings}, \(\rho' = 0.727 \), \(\mathcal{G} = 0.204 \), \(\mathcal{U} = 0.555 \), and \(DDU = 0.082\).}%
 \label{tab:parsesettings}
 \begin{tabular}{l|ccccccccc}
 transaction & \(c_1 \) & \(c_2 \) & \(c_3 \) & \(c_4 \) & \(c_5 \) & \(c_6 \) & \(c_7 \) & \(c_8 \) & \(c_9 \) \\ \hline
@@ -732,7 +756,7 @@ Conversely, when the test suite's density is greater than 0.5, it is recommended
 
 In practice, we write tests to account for many corner cases.
 From the diagnostic perspective, adding tests, that do not improve the information gain, is useless.
-For example, the diversity can be negatively impacted when we write parameterized tests due to inputs causing the same activation patterns.
+For example, the diversity can be negatively impacted when we write parameterized tests with certain inputs that cause identical activation patterns.
 Another example is property-based testing, where the outputs are checked against a so-called \emph{property} that should hold true given arbitrary inputs that meet certain criteria.
 Therefore, we pose the question whether we need a metric that penalizes tests that have identical component coverage.
 
@@ -742,7 +766,8 @@ Therefore, we pose the question whether we need a metric that penalizes tests th
 We observe in \Cref{fig:ddu}, that the DDU distribution is right-tailed.
 This can be explained by the fact that the DDU is the product of normalized density, diversity, and uniqueness, which all operate in the domain [0, 1].
 Even when a test suite has a high normalized density and diversity but a low uniqueness, then the value for DDU can only be as high as the uniqueness.
-In other words, the DDU can only be as high as the component with the lowest value.
+In other words, the DDU can only be as high as the term with the lowest value.
+A possible solution to the right-tailed distribution is to use geometric mean.
 
 % Multiplying the individual terms might not be the right approach.
 %
@@ -771,13 +796,13 @@ Therefore, in this chapter, we perform experiments to verify the correlation bet
 \section{Experimental Setup}%
 \label{sec:rq2_experimental_setup}
 To verify the correlation between DDU and diagnosability, we generate 10 artificial multiple components faults of cardinality 2 for each class that has at least 8 components, i.e.\ branches.
-For each generated fault set, we construct an activity matrix.
+For each injected fault, we generate an error vector corresponding to the activity matrix and the fault.
 We determine for each test that exercises the faulty components whether it is failing according to an \emph{oracle quality probability} of 0.75, which was also used in prior work~\cite{DBLP:conf/icse/PerezAD17}.
-Then, for each generated activity matrix, we use \emph{STACCATO} to generate fault candidates and \textsc{Barinel} to generate a diagnosis report.
+Then, for each generated activity matrix, we use \textsc{Staccato} to generate fault candidates and \textsc{Barinel} to generate a diagnosis report.
 Based on the diagnosis report we compute the wasted effort which is a measurement for diagnosability.
 To account for randomness of generating fault sets, we repeat this process 10 times.
 Note that we do not generate single component faults because in this case the optimal matrix for diagnosability is a diagonal activity matrix, i.e.\ each component each tested individually by a unit test.
-Additionally, \emph{STACCATO} can sometimes take hours or days to generate fault candidates.
+Additionally, \textsc{Staccato} can sometimes take hours or days to generate fault candidates.
 Hence, we discard classes when generating fault candidates takes longer than 10 seconds; this resulted in 16 classes being discarded.
 
 \begin{figure}
@@ -1284,7 +1309,7 @@ In final experiment, we found no evidence that uniqueness and the other diagnosa
 
 % \chapter{Analysis Framework}
 
-\chapter{Improving DDU}
+% \chapter{Improving DDU}
 
 \chapter{Conclusion}%
 \label{ch:conclusion}
