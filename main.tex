@@ -2,6 +2,7 @@
 \input{preamble}
 % chktex-file 44
 % chktex-file 41
+% chktex-file 17
 
 \title{DDU}
 \subtitle{Master's Thesis}
@@ -70,34 +71,35 @@ Profiling is used to perform runtime analysis and collect metrics on, for exampl
 These techniques provide an intuitive approach to localize the root cause of a failure, but, as one might expect, are less effective in the massive size and scale of software systems today.
 
 Therefore, in the last decades a lot of research has been performed on improving and developing \emph{advanced} fault localization techniques~\cite{wong2016survey} such that they are applicable to the software systems of today.
-Specifically, a prominent fault localization technique is spectrum-based fault localization (SBFL).
+A prominent fault localization technique is spectrum-based fault localization (SBFL).
 SBFL techniques pinpoint faults in code based on execution information of a program, also known as a program spectrum~\cite{reps1997use}.
-The output of SBFL techniques is a list of components ranked by their fault probability, e.g.\ statements or methods.
+The output of SBFL techniques is a list of components, e.g.\ statements, branches or methods, ranked by their fault probability, allowing the developer to investigate the suspicious components consecutively.
 Intuitively, if a statement is executed primarily during failed executions, then this statement might be assigned a higher suspiciousness score.
 Similarly, if a statement is executed primarily during successful executions, then this statement might be assigned a lower suspiciousness score.
+Ultimately, if the diagnostic performance of an SBFL technique is high, it means that the faulty component is ranked high in the diagnostic report, allowing the developer to spend less time on locating the root cause.
 
 While SBFL techniques show promising results for debugging purposes, there are still aspects that prevent SBFL techniques from being used in practice.
 First, in one of the pioneering user studies performed by Parnin and Orso~\cite{Parnin:2011:ADT:2001420.2001445}, the authors show that several assumptions made by SBFL techniques do not hold in practice.
 For example, the authors find no evidence that the effectiveness of SBFL techniques is affected by the rank of the faulty statement.
 Second, the diagnostic performance of SBFL techniques relies on the quality of the test suite.
-SBFL techniques cannot accurately pinpoint a fault with a single failing test that covers multiple components, e.g.\ statements, branches, methods.
-However, if the test suite consists of many tests with different coverage patterns, then SBFL might be able to pinpoint the fault more accurately because it can indict or exonerate components more precisely with more evidence, i.e.\ more execution traces.
+SBFL techniques cannot accurately pinpoint a fault with a single failing test that covers multiple components.
+However, if the test suite consists of many tests with different coverage patterns, then SBFL is able to pinpoint the fault more accurately because it can indict or exonerate components more precisely with more evidence, i.e.\ more execution traces.
 
 The quality of test suites is commonly measured using an adequacy metric that focuses on error detection like statement coverage, branch coverage, method coverage.
 However, these metrics do not necessarily enforce the quality of a test suite with respect to diagnosability --- the property of faults to be easily and precisely located~\cite{730889}.
-For example, one could obtain a 100\% test coverage with a relative small number of tests that each covers a big part of the codebase.
-In this case, when a test fails due to a fault, it might be difficult for SBFL techniques to pinpoint the root cause accurately since the failing test covers a large portion of the codebase, lowering the possibility for SBFL techniques to accurately indict or exonerate components from being faulty.
+For example, one could obtain a high test coverage (90\%) with a relative small number of tests that each covers a big part of the codebase.
+In this case, when a test fails due to a fault, it is potentially difficult for SBFL techniques to pinpoint the root cause accurately due to a failing test that covers a large portion of the codebase and a small number of tests, lowering the possibility for SBFL techniques to accurately indict or exonerate components from being faulty.
 
 For this reason, Perez \etal~\cite{DBLP:conf/icse/PerezAD17} propose a new metric, called DDU, to quantify the diagnosability of test suites as opposed to adequacy metrics that focus on error detection.
 The objective of optimizing test suites with respect to DDU is to improve the diagnosability of test suites and consequently improve the diagnostic performance of SBFL techniques.
-The authors have shown empirical evidence that optimizing a test suite with respect to DDU improves the diagnostic performance of SBFL by 34\% compared to a test suite optimized with respect to branch coverage.
+The authors have shown empirical evidence that optimizing a test suite with respect to DDU improves the diagnostic performance of SBFL by 34\% compared to a test suite that is optimized with respect to branch coverage.
 
 \section{Problem Definition}%
 \label{sec:problem_definition}
 However, DDU is not yet usable in practice.
 Currently, when the DDU is computed for a given test suite, its value lies in the domain \([ 0, 1 ]\), where \(0\) suggests that the test suite's diagnosability is low, and \(1\) suggests that the test suite's diagnosability is high.
 The problem with this value is that the developer does not know how to extend or update the test suite given a DDU value.
-For example, when the test suite's DDU is equal to \(0.1\), the developer does not know how to write tests that improve the DDU\@.
+For example, when the test suite's DDU is equal to \(0.1\), it is impossible for the developer to know what tests to write to improve the DDU\@.
 In other words, time spent on software debugging (using SBFL techniques) cannot be reduced using DDU because its practical implications are unclear to the developer.
 
 \section{Goal}
@@ -108,7 +110,7 @@ In other words, we explore possibilities to convey DDU to the developer such tha
 
 \section{Structure of Report}
 The structure of this report is as follows.
-In \Cref{ch:background}, we explain the relevant topics to understanding this study, like spectrum-based fault localization, wasted effort, and DDU\@.
+In \Cref{ch:background}, we explain the relevant topics to understand this study, like spectrum-based fault localization, spectrum-based reasoning, wasted effort, diagnosability assessment metrics and DDU\@.
 In \Cref{ch:research_questions}, we formalize the research questions and explain the motivation behind them.
 Then, in \Cref{ch:rq1,ch:rq2,ch:rq3}, we discuss the experimental design and results to answer the research questions.
 Finally, in \Cref{ch:conclusion}, we conclude this study with a summary and recommendations for future work.
@@ -1459,11 +1461,6 @@ In the second experiment, in which we analyze the relation between the diagnosab
 The other metrics did not show any significant correlation.
 Further, we observed that uniqueness and DDU put a lower bound on branch coverage.
 In final experiment, we found no evidence that uniqueness and the other diagnosability metrics are correlated to error detection.
-
-
-% \chapter{Analysis Framework}
-
-% \chapter{Improving DDU}
 
 \chapter{Conclusion}%
 \label{ch:conclusion}
