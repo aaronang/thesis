@@ -869,6 +869,7 @@ We generate two test suites by enabling the first 50\% of the tests and 100\% of
 For both test suites we compute the DDU and randomly generate 10 multiple components faults of cardinality 2 to compute the wasted effort.
 Similar to previous experiment we perform this process 10 times to account for randomness of generating fault sets.
 The intuition behind this experiment is when we improve the DDU of a fixed system, its diagnosability should improve too.
+If the two created test suites of a class do result in a difference in DDU, then the class is discarded.
 The setup of this experiment is illustrated in \Cref{fig:fault_generation_delta}.
 
 In the experiments, we compute the wasted effort using the following approach.
@@ -1184,7 +1185,9 @@ Third, we would like to examine the relation between DDU and error detection.
 
 
 \section{Experimental Setup}
-We have to measure the test coverage and error detection to analyze the relation between test coverage and error detection.
+Similar to previous experiment, we use the projects: Commons Codec, Commons Compress, Commons Math, Guice, Jsoup.
+
+To analyze the relation between test coverage and error detection, we have to measure the test coverage and error detection.
 Test coverage can be determined by dividing the number of components hit in the activity matrix by the total number of components in the activity matrix.
 Given the acitity matrix in \Cref{tab:test_coverage}, we observe that 3 out of the 4 components are hit and therefore the test coverage is \(\frac{3}{4} = 0.75 \).
 \begin{table}[]
@@ -1198,12 +1201,15 @@ transactions & \(\mathbf{c_1} \) & \(\mathbf{c_2} \) & \(c_3 \) & \(\mathbf{c_4}
 \(t_3 \) & 1 & 1 & 0 & 0
 \end{tabular}
 \end{table}
+
 The error detection is computed by generating 10 artificial faults --- in the experiments we generate multiple components faults with a cardinality 2.
-For each fault, we compute the error vector using an \emph{oracle probability} of 0.75, similar to Perez \etal's study, and check whether the vector contains an error, i.e. \(1 \in e_i \).
-Finally, the error detection is computed by dividing the sum of faults that were detected by 10, the number of generated faults.
+As opposed to the experimental setup described in \Cref{sec:rq2_experimental_setup} where we only generate faults that cause a failure, in this experiment, we also include artificial faults that that do not cause a failure because we are interested in error detection.
+For each fault, we compute the error vector using an \emph{oracle probability} of 0.75, similar to Perez \etal's study, and check whether the vector (\(e_i\)) contains an error, i.e. \( 1 \in e_i \).
+Finally, the error detection is computed by dividing the sum of detected faults by 10, the number of generated faults.
+
 To account for randomness of generating fault candidates, we repeat this process 10 times.
 We obtain the activity matrices by using Perez \etal's \texttt{ddu-maven-plugin}, similar to the experiments in \Cref{ch:rq2}.
-The computation of error detection is illustrated in \Cref{fig:error_detection_computation}.
+An overview of this experiment is illustrated in \Cref{fig:error_detection_computation}.
 \begin{figure}[b]
   \includegraphics[width=\linewidth]{figures/error_detection}
   \caption{We compute the activity matrix for a given class and generate 10 artificial fault candidates \(d_1 \), \(d_2 \), \(d_{10}\) of cardinality 2. For each pair \((\mathcal{A}_i, d_i) \), the error vector \(e_i \) is computed. The error detection is computed by dividing the sum of faults that were detected \(|\{e_i | 1 \in e_i \}|\) by 10, the number of generated faults.}%
@@ -1211,8 +1217,13 @@ The computation of error detection is illustrated in \Cref{fig:error_detection_c
 \end{figure}
 
 For the second experiment, in which we investigate the relation between DDU and test coverage, we compute the normalized density, diversity, uniqueness, DDU, and test coverage for each activity matrix, and compute the correlation.
-Furthermore, we use a similar approach as the experiments in \Cref{ch:rq2}, see \Cref{fig:delta_test_coverage_approach}, where we create two test suites: (1) a test suite that consists of 50\% of the available tests and (2) a test suite that consists of 100\% of the available tests.
+Furthermore, we use a similar approach as the experiments in \Cref{ch:rq2}; we create two test suites: (1) a test suite that consists of the first 50\% of the available tests and (2) a test suite that consists of 100\% of the available tests.
 This will most likely result in a system with two test suites with different DDU values, allowing us to investigate whether improving the DDU for a fixed system results in a test coverage improvement.
+If the two created tests suites of class do not result in test coverage difference, then the class is discarded.
+
+Since we are comparing test coverage with DDU, normalized density, diversity and uniqueness, there is no need for injecting artificial faults.
+Test coverage and the diagnosability assessment metrics can be computed solely from the activity matrix.
+The overview of the second experiment is shown in \Cref{fig:delta_test_coverage_approach},
 \begin{figure}
   \center%
   \includegraphics[width=0.6\linewidth]{figures/delta_test_coverage_approach}
@@ -1228,8 +1239,6 @@ To account for randomness of generating fault candidates, we repeat this process
   \caption{For each class, we generate two different test suites, resulting in a two activity matrices. For each matrix, we generate 10 fault candidates of cardinality 2 and compute the error vector. Finally, we compute the error detection and repeat this process 10 times.}%
   \label{fig:delta_error_detection_approach}
 \end{figure}
-
-Note that for the experiments we use the same projects used in previous experiments, namely Commons Codec, Commons Compress, Commons Math, Guice, Jsoup.
 
 \section{Experimental Results}
 In the first experiment, we confirm whether test coverage is representative for error detection.
@@ -1249,7 +1258,7 @@ The results are shown in \Cref{fig:coverage_metric} and \Cref{fig:delta_coverage
 We observe in \Cref{fig:coverage_density} and \Cref{fig:coverage_diversity} that normalized density is uncorrelated to branch coverage, and that diversity is weakly correlated to branch coverage.
 In \Cref{fig:coverage_uniqueness} and \Cref{fig:coverage_ddu}, we observe that uniqueness and DDU are weakly correlated to branch coverage.
 
-Nevertheless, we observe that uniqueness and DDU put a lower bound on branch coverage.
+We observe that uniqueness and DDU put a lower bound on branch coverage.
 The branch coverage is lower bounded by uniqueness since uniqueness enforces the number of unique columns in the activity matrix.
 This means that if the uniqueness is low, then the number of unique columns is low and therefore the branch coverage is potentially low.
 In \Cref{subfig:low_uniqueness} and \Cref{subfig:low_uniqueness_high_coverage}, we observe that branch coverage can be high or low given an activity matrix with a low uniqueness.
@@ -1318,7 +1327,7 @@ The DDU lower bounds coverage since uniqueness is a component of DDU\@.
     \begin{subfigure}[b]{0.49\linewidth}
         \centering
         \includegraphics[width=\linewidth]{figures/coverage_density}
-        \caption{Density, \(r=0.029 \), \(p = 0.44 \).}%
+        \caption{Normalized density, \(r=0.029 \), \(p = 0.44 \).}%
         \label{fig:coverage_density}
     \end{subfigure}
     \hfill
@@ -1351,7 +1360,7 @@ The DDU lower bounds coverage since uniqueness is a component of DDU\@.
     \begin{subfigure}[b]{0.49\linewidth}
         \centering
         \includegraphics[width=\linewidth]{figures/delta_coverage_density}
-        \caption{Density, \(r=0.143 \), \(p<0.01 \).}%
+        \caption{Normalized density, \(r=0.143 \), \(p<0.01 \).}%
         \label{fig:delta_coverage_density}
     \end{subfigure}
     \hfill
@@ -1390,7 +1399,7 @@ However, we do not observe any correlation between uniqueness and error detectio
     \begin{subfigure}[b]{0.49\linewidth}
         \centering
         \includegraphics[width=\linewidth]{figures/error_detection_density}
-        \caption{Density, \(r=0.256 \), \(p<0.01 \).}%
+        \caption{Normalized density, \(r=0.256 \), \(p<0.01 \).}%
         \label{fig:error_detection_density}
     \end{subfigure}
     \hfill
@@ -1423,7 +1432,7 @@ However, we do not observe any correlation between uniqueness and error detectio
     \begin{subfigure}[b]{0.49\linewidth}
         \centering
         \includegraphics[width=\linewidth]{figures/delta_error_detection_density}
-        \caption{Density, \(r=0.165 \), \(p<0.01 \).}%
+        \caption{Normalized density, \(r=0.165 \), \(p<0.01 \).}%
         \label{fig:delta_error_detection_density}
     \end{subfigure}
     \hfill
