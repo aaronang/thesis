@@ -36,12 +36,12 @@ Palo Alto, CA 94304\\
 \frontmatter
 \thispagestyle{empty}
 \maketitle
-\makeformaltitlepages{ABSTRACT}
+\makeformaltitlepages{TODO}
 
 \chapter{Preface}%
 \label{ch:preface}
 
-This is where you thank people for helping you etc.
+TODO
 
 \vspace{1cm}
 \begin{flushright}
@@ -1531,8 +1531,8 @@ We found that DDU is right-tailed, that is, it is difficult to write tests to ob
 \end{framed}
 
 In \Cref{ch:rq2}, we performed experiments to investigate the relation between the diagnosability assessment metrics and diagnosability.
-We found no strong evidence that DDU is correlated to diagnosability, measured in effort.
-This means that current tests written in open source projects, according to DDU, are not written with the intent to optimize diagnosability.
+We found no strong evidence that DDU is correlated to diagnosability, measured in effort, although prior study~\cite{DBLP:conf/icse/PerezAD17} showed evidence that DDU improves the diagnosability when generating tests that are optimized with respect to DDU\@.
+Therefore, this means that current tests written in open source projects, according to DDU, are not written with the intent to optimize diagnosability.
 
 \begin{framed}
 \noindent
@@ -1545,6 +1545,24 @@ However, uniqueness does not have a strong correlation with error detection, whi
 
 \section{Future Work}
 % The projects are well-tested, why do they not have a high diagnosability? How important is diagnosability in practice?
+The experimental results have shown that DDU and its components do not have a strong correlation with diagnosability in practice.
+Therefore, it is worth researching if manually writing tests to optimize diagnosability is useful in practice at all.
+Also, we pose the question if diagnosability is only useful for automated debugging techniques because prior work~\cite{DBLP:conf/icse/PerezAD17} has shown that optimizing tests with respect to DDU when generating tests results in an increase in diagnosability.
+To answer these questions, we propose a case study or user study in which a deeper understanding should be obtained on why developers write tests and to investigate whether developers desire tests that improve the diagnosability.
+% Theoretically, writing tests that optimize diagnosability would be beneficial to automated debugging techniques, like spectrum-based reasoning, but we have seen in practice that barely any class has a high 
+
+Furthermore, DDU is supposedly a metric that quantifies diagnosability, the property of faults to be easily and precisely located~\cite{730889}.
+Currenlty, DDU is only useful when generating tests to increase the diagnostic performance of SBFL techniques.
+However, Parnin and Orso~\cite{Parnin:2011:ADT:2001420.2001445} found evidence in a prelimenary user study that a high diagnostic performance does not result in a shorter debugging time due to the lack of context provided by SBFL techniques to understand the root cause.
+Therefore, we pose the question: how important is diagnosability in practice?
+
+We analyzed DDU due to its possibility to improve the diagnostic performance of automated debugging techniques.
+However, there has been no study that investigates the impact of diagnosability on the debugging activity when performed by the developer without automated debugging techniques.
+Future work could perform a user study with two developer groups, where one group tries to locate the fault with tests that are optimized for test coverage and the other group tries to locate the fault with tests that are optimized for diagnosability.
+
+In this study, most experiments are performed by injecting faults of cardinality 2, which is similar to the cardinality used by prior work~\cite{DBLP:conf/icse/PerezAD17}.
+However, Perez \etal~\cite{7927959} showed evidence with an empirical study that single-component faults are prevalent --- over 82\% of the bugs found in 279 open source projects involved a single-component fault.
+This means that DDU can be modified to account for these findings, for example, by biasing DDU towards single-component faults.
 
 % Is diagnosability only important for test generation?
 
@@ -1553,8 +1571,6 @@ However, uniqueness does not have a strong correlation with error detection, whi
 % 80% coverage then DDU
 
 % future experiments
-
-% wat zijn de argumenten
 
 \bibliographystyle{plain}
 \bibliography{bibliography}
