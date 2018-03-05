@@ -4,7 +4,10 @@
 % chktex-file 41
 % chktex-file 17
 
-\title{DDU}
+% \title{An in-depth case study on DDU}
+% \title{DDU in Practice}
+% \title{An exploration of DDU in practice}
+\title{Exploring DDU in Practice}
 \subtitle{Master's Thesis}
 
 \author{Aaron Ang}
@@ -22,7 +25,7 @@ Palo Alto, CA 94304\\
 
 \chair{Prof.\ Dr.\ A. van Deursen, Faculty EEMCS, TU Delft}
 \supervisor{Prof.\ Dr.\ A. van Deursen, Faculty EEMCS, TU Delft}
-\externalsupervisor{Prof.\ Dr.\ R. Maranhao, University of Lisbon}
+\externalsupervisor{Dr.\ R. Maranhao, University of Lisbon}
 
 \setcounter{tocdepth}{1}
 \setsecnumdepth{subsection}
@@ -793,20 +796,20 @@ In addition, the distribution of DDU is right-tailed which could be explained by
 \textbf{RQ2:} What is the relation between density, diversity, uniqueness, and DDU and diagnosability?
 \end{framed}
 In prior work, Perez \etal~\cite{DBLP:conf/icse/PerezAD17} show that optimizing test suite generation with respect to DDU results in better fault diagnosis.
-Optimizing test suite generation with respect to DDU yields a 34\% diagnostic performance compared to a test suite optimized for branch coverage.
+Optimizing test suite generation with respect to DDU yields a 34\% increase in diagnostic performance compared to a test suite optimized for branch coverage.
 Therefore, in this chapter, we perform experiments to verify the correlation between DDU and diagnosability.
 
 \section{Experimental Setup}%
 \label{sec:rq2_experimental_setup}
-To verify the correlation between DDU and diagnosability, we generate 10 artificial multiple components faults of cardinality 2 --- that is, faults that are caused by two components --- for each class that has at least 8 components, i.e.\ branches.
-We do not generate single component faults because in this case the optimal activity matrix for diagnosability is an identity matrix, i.e.\ each component is tested individually by a test.
+To verify the correlation between DDU and diagnosability, we seed 10 artificial multiple components faults of cardinality 2 --- that is, faults that are caused by two components --- for each class that has at least 8 components, i.e.\ branches.
+We do not seed single component faults because in this case the optimal activity matrix for diagnosability is an identity matrix, i.e.\ each component is tested individually by a (very focused unit) test.
 
-For each injected fault, we generate an error vector corresponding to the activity matrix and the fault.
+For each injected fault, we produce an error vector corresponding to the activity matrix and the fault.
 We determine for each test that exercises the faulty components whether it is failing according to an \emph{oracle quality probability} of 0.75, which was also used in prior work~\cite{DBLP:conf/icse/PerezAD17}.
-Note that we only generate faults that result in at least one failing test in the error vector because in this experiment we are interested in diagnosability and not error detection.
-For some classes, it is not possible to generate 10 faults that result in a failing test in the error vector and, therefore, we do not include these classes in the experiment.
+Note that we only seed faults that result in at least one failing test in the error vector because in this experiment we are interested in diagnosability and not error detection.
+For some classes, it is not possible to seed 10 faults that result in a failing test in the error vector and, therefore, we do not include these classes in the experiment.
 
-Then, for each generated program spectrum, we use \textsc{Staccato} to generate fault candidates and \textsc{Barinel} to rank these candidates into a diagnostic report, see \Cref{sec:sbr} for a more detailed explanation.
+Then, for each seeded program spectrum, we use \textsc{Staccato} to generate fault candidates and \textsc{Barinel} to rank these candidates into a diagnostic report, see \Cref{sec:sbr} for a more detailed explanation.
 Based on the diagnostic report we compute the wasted effort which is a measurement for diagnosability.
 This whole process of constructing an activity matrix, injecting artificial faults, performing SFL, and diagnosis evaluation is shown in \Cref{fig:fault_generation}.
 
@@ -845,13 +848,13 @@ In \Cref{tab:too_big}, we observe that the discarded classes are covered by a re
 
 \begin{figure}
   \includegraphics[width=\linewidth]{figures/effort_approach}
-  \caption{An activity matrix \(\mathcal{A} \) is constructed from a particular class. Then, 10 fault candidates of cardinality 2 are generated with a corresponding activity matrix \(\mathcal{A}_k \). For each generated matrix, we perform fault diagnosis with \textsc{Barinel} resulting in diagnostic report \(\mathcal{D}_k \) and compute the wasted effort. Finally, we compute the average wasted effort. This process is repeated 10 times.}%
+  \caption{An activity matrix \(\mathcal{A} \) is constructed from a particular class. Then, 10 fault candidates of cardinality 2 are seeded with a corresponding activity matrix \(\mathcal{A}_k \). For each seeded matrix, we perform fault diagnosis with \textsc{Barinel} resulting in diagnostic report \(\mathcal{D}_k \) and compute the wasted effort. Finally, we compute the average wasted effort. This process is repeated 10 times.}%
   \label{fig:fault_generation}
 \end{figure}
 
 \begin{figure}
   \includegraphics[width=\linewidth]{figures/delta_effort_approach}
-  \caption{Two activity matrices \(\mathcal{A} \) and \(\mathcal{A}' \) are generated for a particular class based on two different test suites. We generate 10 fault candidates of cardinality 2 and accordingly generate 10 activity matrices. Then, we use \textsc{Barinel} to perform fault diagnosis and compute the wasted effort.}%
+  \caption{Two activity matrices \(\mathcal{A} \) and \(\mathcal{A}' \) are produced for a particular class based on two different test suites. We seed 10 fault candidates of cardinality 2 and accordingly produce 10 activity matrices. Then, we use \textsc{Barinel} to perform fault diagnosis and compute the wasted effort.}%
   \label{fig:fault_generation_delta}
 \end{figure}
 
@@ -866,7 +869,7 @@ However, in this experiment, we compute the DDU for each class and measure for e
 
 For this reason, we perform another experiment where we generate two test suites for each class with at least 8 components and at least 10 tests.
 We generate two test suites by enabling the first 50\% of the tests and 100\% of the tests.
-For both test suites we compute the DDU and randomly generate 10 multiple components faults of cardinality 2 to compute the wasted effort.
+For both test suites we compute the DDU and randomly seed 10 multiple components faults of cardinality 2 to compute the wasted effort.
 Similar to previous experiment we perform this process 10 times to account for randomness of generating fault sets.
 The intuition behind this experiment is when we improve the DDU of a fixed system, its diagnosability should improve too.
 If the two created test suites of a class do result in a difference in DDU, then the class is discarded.
@@ -875,7 +878,7 @@ The setup of this experiment is illustrated in \Cref{fig:fault_generation_delta}
 In the experiments, we compute the wasted effort using the following approach.
 Given a diagnostic report where the candidates are ranked by their fault probabilities in descending order, shown in \Cref{tab:diagnostic_report}, and the injected fault set: \(\langle c_0, c_1 \rangle \), the wasted effort is computed by, first, flattening the ranked list to single components and recomputing the probabilities for each component using addition, e.g.\ fault probability of \(\langle c_0 \rangle = 0.5 + 0.05 = 0.55\).
 Then, the wasted effort is computed for each component in the generated fault set: \(\emph{effort}_{c_0} = \frac{0}{4} = 0\), \(\emph{effort}_{c_1} = \frac{1}{4} = 0.25\).
-Finally, the wasted effort of the generated multi-component fault is computed by averaging the computed wasted efforts: \(\frac{0 + 0.25}{2} = 0.125\).
+Finally, the wasted effort of the seeded multi-component fault is computed by averaging the computed wasted efforts: \(\frac{0 + 0.25}{2} = 0.125\).
 This approach is used because of its simplicity.
 It's not always guaranteed that the multi-component fault is found as a candidate in the diagnostic report.
 For example, there are cases that \textsc{Staccato} does not generate \(c_0\) and \(c_1\) as one candidate set but as separate candidates.
@@ -1179,15 +1182,15 @@ If there is a strong correlation between DDU and test coverage, then it means th
 Furthermore, investigating the relation between DDU and test coverage might give us insight in how DDU and test coverage could work together in practice.
 
 To answer the research question we will perform several experiments.
-First, we would like to confirm that test coverage is strongly correlated with error detection since test coverage presumably optimizes the test suite for error detection.
-Second, we would like to investigate the relation between DDU and test coverage.
-Third, we would like to examine the relation between DDU and error detection.
+First, we confirm that test coverage is strongly correlated with error detection since test coverage presumably optimizes the test suite for error detection.
+Second, we investigate the relation between DDU and test coverage.
+Third, we examine the relation between DDU and error detection.
 
 
 \section{Experimental Setup}
-Similar to previous experiment, we use the projects: Commons Codec, Commons Compress, Commons Math, Guice, Jsoup.
+Similar to the previous experiment, we use the projects Commons Codec, Commons Compress, Commons Math, Guice, and Jsoup.
 
-To analyze the relation between test coverage and error detection, we have to measure the test coverage and error detection.
+To analyze the relation between test coverage and error detection, we measure the test coverage and error detection.
 Test coverage can be determined by dividing the number of components hit in the activity matrix by the total number of components in the activity matrix.
 Given the acitity matrix in \Cref{tab:test_coverage}, we observe that 3 out of the 4 components are hit and therefore the test coverage is \(\frac{3}{4} = 0.75 \).
 \begin{table}[]
@@ -1205,14 +1208,14 @@ transactions & \(\mathbf{c_1} \) & \(\mathbf{c_2} \) & \(c_3 \) & \(\mathbf{c_4}
 The error detection is computed by generating 10 artificial faults --- in the experiments we generate multiple components faults with a cardinality 2.
 As opposed to the experimental setup described in \Cref{sec:rq2_experimental_setup} where we only generate faults that cause a failure, in this experiment, we also include artificial faults that that do not cause a failure because we are interested in error detection.
 For each fault, we compute the error vector using an \emph{oracle probability} of 0.75, similar to Perez \etal's study, and check whether the vector (\(e_i\)) contains an error, i.e. \( 1 \in e_i \).
-Finally, the error detection is computed by dividing the sum of detected faults by 10, the number of generated faults.
+Finally, the error detection \(\emph{ED}\) is computed by dividing the number of detected faults by 10, the number of generated faults.
 
 To account for randomness of generating fault candidates, we repeat this process 10 times.
 We obtain the activity matrices by using Perez \etal's \texttt{ddu-maven-plugin}, similar to the experiments in \Cref{ch:rq2}.
 An overview of this experiment is illustrated in \Cref{fig:error_detection_computation}.
 \begin{figure}[b]
   \includegraphics[width=\linewidth]{figures/error_detection}
-  \caption{We compute the activity matrix for a given class and generate 10 artificial fault candidates \(d_1 \), \(d_2 \), \(d_{10}\) of cardinality 2. For each pair \((\mathcal{A}_i, d_i) \), the error vector \(e_i \) is computed. The error detection is computed by dividing the sum of faults that were detected \(|\{e_i | 1 \in e_i \}|\) by 10, the number of generated faults.}%
+  \caption{We compute the activity matrix for a given class and generate 10 artificial fault candidates \(d_1 \), \(d_2 \), \(d_{10}\) of cardinality 2. For each pair \((\mathcal{A}_i, d_i) \), the error vector \(e_i \) is computed. The error detection \(\emph{ED}\) is computed by dividing the number of detected faults by the number of generated faults.}%
   \label{fig:error_detection_computation}
 \end{figure}
 
@@ -1231,96 +1234,62 @@ The overview of the second experiment is shown in \Cref{fig:delta_test_coverage_
   \label{fig:delta_test_coverage_approach}
 \end{figure}
 
-For the third experiment, we generate two test suites with different DDU values and investigate whether the error detection improves when DDU improves, see \Cref{fig:delta_error_detection_approach}.
+For the third experiment, we generate two test suites with different DDU values and investigate whether the error detection improves when DDU improves, as illustrated in \Cref{fig:delta_error_detection_approach}.
 Similar to the first experiment, we generate 10 fault candidates of cardinality 2 and compute the error vector with an \emph{oracle probability} of 0.75 to determine the error detection.
 To account for randomness of generating fault candidates, we repeat this process 10 times.
 \begin{figure}
   \includegraphics[width=\linewidth]{figures/delta_error_detection_approach}
-  \caption{For each class, we generate two different test suites, resulting in a two activity matrices. For each matrix, we generate 10 fault candidates of cardinality 2 and compute the error vector. Finally, we compute the error detection and repeat this process 10 times.}%
+  \caption{For each class, we generate two different test suites, resulting in two activity matrices. For each matrix, we generate 10 fault candidates of cardinality 2 and compute the error vector. Finally, we compute the error detection and repeat this process 10 times.}%
   \label{fig:delta_error_detection_approach}
 \end{figure}
 
 \section{Experimental Results}
 In the first experiment, we confirm whether test coverage is representative for error detection.
 In \Cref{fig:coverage_error_detection}, we observe that there is a strong correlation between branch coverage and error detection.
-Furthermore, we observe that branch coverage puts an upper bound on error detection.
+We can say with 95\% confidence that branch coverage is positively correlated with error detection.
+Furthermore, we observe in \Cref{fig:coverage_error_detection} that all data points are in the lower right corner, meaning that branch coverage puts an upper bound on error detection.
 The upper bound can be explained with the following example.
-Assuming that 60\% of the components are tested, faults that involve untested components (in the remaining 40\%) can never be detected.
-Therefore, the error detection can only be 100\% if the test coverage is 100\%.
+Assuming that 60\% of the components are tested, faults that involve untested components (in the remaining 40\%) can never be detected and, therefore, the error detection can at most be 60\%.
+Likewise, the error detection can at most be 100\% if the test coverage is 100\%.
+In \Cref{tab:hightclowed}, an example is given of a class with 100\% test coverage but 0\% error detection for faults of cardinality 2.
+To summarize, the error detection for a class can at most be equal to the test coverage.
 \begin{figure}
   \includegraphics[width=\linewidth]{figures/coverage_error_detection}
   \caption{Scatterplot of coverage and error detection, \(r = 0.628 \), \(p < 0.01 \).}%
   \label{fig:coverage_error_detection}
 \end{figure}
 
-In the second experiment, we examine the correlation between normalized density, diversity, uniqueness, and DDU and branch coverage.
+\begin{table}[]
+    \centering
+    \caption{Example of activity matrix with a high test coverage of 100\% but a low error detection for faults with a cardinality of two.}%
+    \label{tab:hightclowed}
+    \begin{tabular}{l|llll}
+    transactions & \(c_1 \) & \(c_2 \) & \(c_3 \) & \(c_4 \) \\ \hline
+    \(t_1 \) & 1 & 0 & 0 & 0 \\
+    \(t_2 \) & 0 & 1 & 0 & 0 \\
+    \(t_3 \) & 0 & 0 & 1 & 0 \\
+    \(t_4 \) & 0 & 0 & 0 & 1
+    \end{tabular}
+\end{table}
+
+In the second experiment, we examine the correlation between normalized density, diversity, uniqueness, and DDU on the one hand, and branch coverage on the other.
 The results are shown in \Cref{fig:coverage_metric} and \Cref{fig:delta_coverage_metric}.
 We observe in \Cref{fig:coverage_density} and \Cref{fig:coverage_diversity} that normalized density is uncorrelated to branch coverage, and that diversity is weakly correlated to branch coverage.
 In \Cref{fig:coverage_uniqueness} and \Cref{fig:coverage_ddu}, we observe that uniqueness and DDU are weakly correlated to branch coverage.
 
-We observe that uniqueness and DDU put a lower bound on branch coverage.
-The branch coverage is lower bounded by uniqueness since uniqueness enforces the number of unique columns in the activity matrix.
+Although uniqueness and DDU have a weak correlation with branch coverage, in \Cref{fig:coverage_uniqueness} and \Cref{fig:coverage_ddu}, we observe that uniqueness and DDU put a lower bound on branch coverage --- all data points are located in the upper left corner of the plot.
+The branch coverage is lower bounded by uniqueness since uniqueness corresponds to the number of unique columns in the activity matrix.
 This means that if the uniqueness is low, then the number of unique columns is low and therefore the branch coverage is potentially low.
-In \Cref{subfig:low_uniqueness} and \Cref{subfig:low_uniqueness_high_coverage}, we observe that branch coverage can be high or low given an activity matrix with a low uniqueness.
+In \Cref{subfig:low_uniqueness} and \Cref{subfig:low_uniqueness_high_coverage}, we provide examples illustrating how branch coverage can be high or low given an activity matrix with a low uniqueness.
 If the uniqueness is high, then the number of unique columns is high and therefore the branch coverage has to be high too.
-In \Cref{subfig:optimal_uniqueness_coverage} and \Cref{subfig:optimal_uniqueness}, we observe two activity matrices with optimal uniqueness, resulting in a relative high or optimal coverage.
-The DDU lower bounds coverage since uniqueness is a component of DDU\@.
+In \Cref{subfig:optimal_uniqueness_coverage} and \Cref{subfig:optimal_uniqueness}, we provide two activity matrices with optimal uniqueness, resulting in a relative high or optimal coverage.
+Consequently, the DDU lower bounds branch coverage because uniqueness is a component of DDU\@.
 
-\begin{figure*}
-    \centering
-    \begin{subfigure}[b]{0.48\linewidth}
-        \centering
-        \begin{tabular}{c|cccc}
-          & \(c_1 \) & \(c_2 \) & \dots & \(c_{10} \)     \\ \hline
-          \(t_1 \) & 1 & 0 & \dots & 0 \\
-          \(t_2 \) & 1 & 0 & \dots & 0 \\
-          \(t_3 \) & 1 & 0 & \dots & 0 \\
-          \(t_4 \) & 1 & 0 & \dots & 0 \\
-        \end{tabular}
-        \caption{Low uniqueness, \(\mathcal{U}=0.2 \), \(coverage = 0.1 \).}%
-        \label{subfig:low_uniqueness}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.49\linewidth}
-        \centering
-        \begin{tabular}{c|cccc}
-          & \(c_1 \) & \(c_2 \) & \dots & \(c_{10} \)     \\ \hline
-          \(t_1 \) & 1 & 1 & \dots & 1 \\
-          \(t_2 \) & 1 & 1 & \dots & 1 \\
-          \(t_3 \) & 1 & 1 & \dots & 1 \\
-          \(t_4 \) & 1 & 1 & \dots & 1 \\
-        \end{tabular}
-        \caption{Low uniqueness, \(\mathcal{U}=0.1 \), \(coverage = 1.0 \).}%
-        \label{subfig:low_uniqueness_high_coverage}
-    \end{subfigure}
-    \vskip\baselineskip%
-    \begin{subfigure}[b]{0.49\linewidth}
-        \centering
-        \begin{tabular}{c|cccc}
-          & \(c_1 \) & \(c_2 \) & \(c_3 \) & \(c_4 \)     \\ \hline
-          \(t_1 \) & 1 & 0 & 0 & 0 \\
-          \(t_2 \) & 0 & 1 & 0 & 0 \\
-          \(t_3 \) & 0 & 0 & 1 & 0 \\
-          \(t_4 \) & 0 & 0 & 0 & 1 \\
-        \end{tabular}
-        \caption{Optimal uniqueness, \(\mathcal{U}=1.0 \), \(coverage = 1.0 \).}%
-        \label{subfig:optimal_uniqueness_coverage}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.49\linewidth}
-        \centering
-        \begin{tabular}{c|cccc}
-          & \(c_1 \) & \(c_2 \) & \(c_3 \) & \(c_4 \)     \\ \hline
-          \(t_1 \) & 1 & 0 & 0 & 0 \\
-          \(t_2 \) & 0 & 1 & 0 & 0 \\
-          \(t_3 \) & 0 & 0 & 1 & 0 \\
-          \(t_4 \) & 0 & 0 & 0 & 0 \\
-        \end{tabular}
-        \caption{Optimal uniqueness, \(\mathcal{U}=1.0 \), \(coverage = 0.75 \).}%
-        \label{subfig:optimal_uniqueness}
-    \end{subfigure}
-    \caption{Examples of activity matrices with a low or high uniqueness.}
-\end{figure*}
+Similar results are found in the experiment where an improvement in a diagnosability assessment metric is compared with a difference in test coverage, see \Cref{fig:delta_coverage_metric}.
+In \Cref{fig:delta_coverage_density}, \Cref{fig:delta_coverage_diversity}, and \Cref{fig:delta_coverage_ddu}, we observe that an improvement in normalized density, diversity, and DDU is weakly correlated with an increase in branch coverage.
+Also, an improvement in uniqueness is strongly correlated with an improvement in branch coverage, as illustrated in \Cref{fig:delta_coverage_uniqueness}, which could be related to our previous observation where uniqueness puts a lower bound on branch coverage.
+However, DDU does not show similar results --- a strong correlation with an improvement in branch coverage, which could be caused by the fact that normalized density and diversity reduce the effect of uniqueness.
+
 
 \begin{figure*}
     \centering
@@ -1388,9 +1357,65 @@ The DDU lower bounds coverage since uniqueness is a component of DDU\@.
     \label{fig:delta_coverage_metric}
 \end{figure*}
 
+\begin{figure*}
+    \centering
+    \begin{subfigure}[b]{0.48\linewidth}
+        \centering
+        \begin{tabular}{c|cccc}
+          & \(c_1 \) & \(c_2 \) & \dots & \(c_{10} \)     \\ \hline
+          \(t_1 \) & 1 & 0 & \dots & 0 \\
+          \(t_2 \) & 1 & 0 & \dots & 0 \\
+          \(t_3 \) & 1 & 0 & \dots & 0 \\
+          \(t_4 \) & 1 & 0 & \dots & 0 \\
+        \end{tabular}
+        \caption{Low uniqueness, \(\mathcal{U}=0.2 \), \(coverage = 0.1 \).}%
+        \label{subfig:low_uniqueness}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.49\linewidth}
+        \centering
+        \begin{tabular}{c|cccc}
+          & \(c_1 \) & \(c_2 \) & \dots & \(c_{10} \)     \\ \hline
+          \(t_1 \) & 1 & 1 & \dots & 1 \\
+          \(t_2 \) & 1 & 1 & \dots & 1 \\
+          \(t_3 \) & 1 & 1 & \dots & 1 \\
+          \(t_4 \) & 1 & 1 & \dots & 1 \\
+        \end{tabular}
+        \caption{Low uniqueness, \(\mathcal{U}=0.1 \), \(coverage = 1.0 \).}%
+        \label{subfig:low_uniqueness_high_coverage}
+    \end{subfigure}
+    \vskip\baselineskip%
+    \begin{subfigure}[b]{0.49\linewidth}
+        \centering
+        \begin{tabular}{c|cccc}
+          & \(c_1 \) & \(c_2 \) & \(c_3 \) & \(c_4 \)     \\ \hline
+          \(t_1 \) & 1 & 0 & 0 & 0 \\
+          \(t_2 \) & 0 & 1 & 0 & 0 \\
+          \(t_3 \) & 0 & 0 & 1 & 0 \\
+          \(t_4 \) & 0 & 0 & 0 & 1 \\
+        \end{tabular}
+        \caption{Optimal uniqueness, \(\mathcal{U}=1.0 \), \(coverage = 1.0 \).}%
+        \label{subfig:optimal_uniqueness_coverage}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.49\linewidth}
+        \centering
+        \begin{tabular}{c|cccc}
+          & \(c_1 \) & \(c_2 \) & \(c_3 \) & \(c_4 \)     \\ \hline
+          \(t_1 \) & 1 & 0 & 0 & 0 \\
+          \(t_2 \) & 0 & 1 & 0 & 0 \\
+          \(t_3 \) & 0 & 0 & 1 & 0 \\
+          \(t_4 \) & 0 & 0 & 0 & 0 \\
+        \end{tabular}
+        \caption{Optimal uniqueness, \(\mathcal{U}=1.0 \), \(coverage = 0.75 \).}%
+        \label{subfig:optimal_uniqueness}
+    \end{subfigure}
+    \caption{Examples of activity matrices with a low or high uniqueness.}
+\end{figure*}
+
 In the third experiment, we analyze the relation between DDU and error detection.
-In \Cref{fig:error_detection_metric}, we observe that there is no strong correlation between normalized density, diversity, uniqueness, DDU, and error detection.
-In \Cref{fig:delta_error_detection_metric}, we observe similar results; no strong correlation between delta normalized density, delta diversity, delta uniqueness, delta DDU, and delta error detection, i.e.\ improving the components of DDU does not result in an improvement in the error detection.
+In \Cref{fig:error_detection_metric}, we observe that there is no strong correlation between normalized density, diversity, uniqueness, and DDU on the one hand, and error detection on the other.
+In \Cref{fig:delta_error_detection_metric}, we observe similar results; no strong correlation between delta normalized density, delta diversity, delta uniqueness, delta DDU, and delta error detection, i.e.\ improving a diagnosability assessment metric does not result in an improvement in error detection.
 The results in \Cref{fig:error_detection_uniqueness} and \Cref{fig:delta_error_detection_uniqueness} are unexpected because we have seen in previous experiments that branch coverage is strongly correlated to error detection, see \Cref{fig:coverage_error_detection}, and that an improvement in uniqueness is strongly correlated to an improvement in branch coverage, see \Cref{fig:delta_coverage_uniqueness}.
 However, we do not observe any correlation between uniqueness and error detection.
 
@@ -1474,6 +1499,62 @@ In final experiment, we found no evidence that uniqueness and the other diagnosa
 \chapter{Conclusion}%
 \label{ch:conclusion}
 
+% Goal of this study
+% Why is this important?
+
+In this work, we performed the first study on DDU, a metric that quantifies the diagnosability of software systems, proposed by Perez \etal~\cite{DBLP:conf/icse/PerezAD17}.
+The goal of this study was to obtain knowledge about DDU such that it can be made usable in practice as an aid to developers in writing better tests.
+\emph{Better tests}, in this study, are defined as tests that can easily and precisely locate the root cause of a failure, also known as diagnosability.
+A high diagnosability is important because it can potentially reduce the time spent on debugging, which currently accounts for 30\% to 90\% of the software development cycle.
+
+% In prior work, Perez \etal~\cite{DBLP:conf/icse/PerezAD17} proposed DDU, a complementary metric to test coverage that measures the diagnosability of software systems.
+% The authors find evidence that optimizing a test suite with respect to DDU yields a 34\% gain in diagnostic performance with spectrum-based reasoning compared to branch coverage.
+% However, the problem with DDU is that it is not usable in practice due to its output value between 0 and 1.
+
+% Therefore, we performed the first study on DDU\@.
+% In this study, we explored the behavior of DDU in practice and investigated its correlation with diagnosability and test coverage to obtain insight in how DDU can be used in practice.
+
+To better understand the capabilities of DDU, we answer the research questions defined in \Cref{ch:research_questions} by analyzing real-world code repositories, namely Commons Codec, Commons Compress, Commons Math, Guice and Jsoup.
+
+\begin{framed}
+\noindent
+\textbf{RQ1:} How do normalized density, diversity, uniqueness, and DDU vary in practice?
+\end{framed}
+
+In \Cref{ch:rq1}, we explored the behavior of the diagnosability assessment metrics by analyzing existing software systems.
+We looked at various activity matrices to see what influences the diagnosability assessment metrics to have a low or high value.
+We found that DDU is right-tailed, that is, it is difficult to write tests to obtain an optimal DDU value of 1.
+
+\begin{framed}
+\noindent
+\textbf{RQ2:} What is the relation between normalized density, diversity, uniqueness, and DDU and diagnosability?
+\end{framed}
+
+In \Cref{ch:rq2}, we performed experiments to investigate the relation between the diagnosability assessment metrics and diagnosability.
+We found no strong evidence that DDU is correlated to diagnosability, measured in effort.
+This means that current tests written in open source projects, according to DDU, are not written with the intent to optimize diagnosability.
+
+\begin{framed}
+\noindent
+\textbf{RQ3:} What is the relation between density, diversity, uniqueness, and DDU and test coverage?
+\end{framed}
+
+In \Cref{ch:rq3}, we performed experiments to investigate the relation between the diagnosability assessment metrics and test coverage to understand how DDU could potentially be used together with test coverage.
+We found that normalized density, diversity, DDU have a weak correlation with test coverage, and that uniqueness is strongly correlated to test coverage.
+However, uniqueness does not have a strong correlation with error detection, which is supposedly measured by test coverage.
+
+\section{Future Work}
+% The projects are well-tested, why do they not have a high diagnosability? How important is diagnosability in practice?
+
+% Is diagnosability only important for test generation?
+
+% DDU seems to have no correlation with diagnosability in practice. How can DDU be modified
+
+% 80% coverage then DDU
+
+% future experiments
+
+% wat zijn de argumenten
 
 \bibliographystyle{plain}
 \bibliography{bibliography}
