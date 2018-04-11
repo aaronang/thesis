@@ -39,8 +39,9 @@ Palo Alto, CA 94304\\
 \makeformaltitlepages{The quality of test suites is commonly measured using adequacy metrics that focus on error detection, like test coverage.
 However, the diagnostic performance of spectrum-based fault localization techniques, that can potentially reduce the time spent on debugging, rely on diagnosability of test suites --- the property of faults to be easily and precisely located.
 Therefore, in prior work, Perez \etal~\cite{DBLP:conf/icse/PerezAD17} proposed a new metric, called DDU, that measures the diagnosability of test suites.
-However, DDU is not yet usable in practice due to its output values.
-In this study we explore the performance of DDU in practice by analyzing open source projects.
+However, DDU is not yet usable in practice due to its output value between 0 and 1.
+A developer would not know what test to write next given a certain DDU value.
+In this study, we explore the performance of DDU in practice by analyzing open source projects.
 We find no evidence that DDU is correlated to diagnosability and, thus, DDU is currently only useful when combined with test generation techniques.}
 
 \chapter{Preface}%
@@ -75,7 +76,7 @@ This process is time-consuming and can account for 30\% to 90\% of the software 
 Traditionally, developers use four different approaches to debug a software system, namely program logging, assertions, breakpoints and profiling~\cite{wong2016survey}.
 Program logging is the act of inserting \emph{print} statements in the code to observe program state information during execution.
 Assertions are constraints that can be added to a program that have to evaluate to true during execution time.
-Breakpoints allow the developer to pause the software system during execution, and observe and modify variable values.
+Breakpoints allow the developer to pause the software system during execution and observe and modify variable values.
 Profiling is used to perform runtime analysis and collect metrics on, for example, execution speed and memory usage.
 These techniques provide an intuitive approach to localize the root cause of a failure, but, as one might expect, are less effective in the massive size and scale of software systems today.
 
@@ -112,7 +113,7 @@ For example, when the test suite's DDU is equal to \(0.1\), it is impossible for
 In other words, time spent on software debugging (using SBFL techniques) cannot be reduced using DDU because its practical implications are unclear to the developer.
 
 \section{Goal}
-Although DDU is currently not usable in practice, Perez \etal~\cite{DBLP:conf/icse/PerezAD17} have shown that optimizing a test suite with respect to DDU can yield a 34\% gain in diagnostic performance using SBFL under constraint conditions\@.
+Although DDU is currently not usable in practice, Perez \etal~\cite{DBLP:conf/icse/PerezAD17} have shown that optimizing a test suite with respect to DDU can yield a 34\% gain in diagnostic performance using SBFL under constrained conditions\@.
 Having a test suite with a high diagnosability could possibly reduce the time spent debugging because the fault is easier to pinpoint using SBFL techniques.
 Therefore, the goal of this thesis is to explore how DDU behaves in practice and to find ways to make DDU usable in practice.
 In other words, we explore possibilities to convey DDU to the developer such that the developer knows what kind of tests to write to improve the system's diagnosability.
@@ -137,11 +138,11 @@ Finally, we discuss how DDU was evaluated in the study that proposed DDU\@.
 In spectrum-based fault localization, we define a finite set \(\mathcal{C} = \langle c_1, c_2, \ldots, c_M \rangle \) of \(M\) system components, and a finite set \(\mathcal{T} = \langle t_1, t_2, \ldots, t_N \rangle \) of \(N\) system transactions, i.e.\ test executions.
 The outcomes of all system tests are defined as an error vector \(e = \langle e_1, e_2, \ldots, e_N \rangle \), where \(e_i = 1 \) indicates that test \(t_i \) has failed and \(e_i = 0 \) indicates that test \(t_i \) has passed.
 To keep track of which system components were executed during which test execution, we construct a \(N \times M \) activity matrix \(\mathcal{A} \), where \(\mathcal{A}_{ij} = 1 \) indicates that component \(c_j \) was exercised during test \(t_i \).
-The pair \((\mathcal{A}, e) \) is also known as a program spectrum, which was first coined by Reps \etal~cite{reps1997use}.
+The pair \((\mathcal{A}, e) \) is also known as a program spectrum, which was first coined by Reps \etal~\cite{reps1997use}.
 
 Given the program spectrum, SBFL techniques compute the suspiciousness scores of system components, resulting in a diagnostic report, which is a list of components ranked by their fault probability.
 The fault probabiliy is often computed using a similarity coefficient~\cite{Jones_visualizationfor, 4041886, Naish:2011:MSS:2000791.2000795, 6651713, 5772029, ERICWONG2010188, 6058639}.
-Intuitively, the similarity coefficient indicates the similarity between the component's activity and the error vector.
+Intuitively, the coefficient indicates the similarity between the component's activity and the error vector.
 When a component is more frequently exercised by test executions that fail, then the component is more likely to be faulty.
 Conversely, when a component is more frequently exercised by test executions that pass, then the component is more likely to be healthy.
 
@@ -186,17 +187,17 @@ The optimal diagnosability is achieved by having an exhaustive test suite that w
 This way, any fault, whether it involves a single component or multiple components, can be diagnosed using an automated debugging technique with 100\% accuracy.
 Perez \etal~\cite{DBLP:conf/icse/PerezAD17} find that Shannon's entropy accurately captures the test suite's exhaustiveness:
 \begin{equation}
-  H(T) = - \sum_i P(t_i) \cdot \log_2(P(t_i))
+  H(T) = - \sum_{t_i \in T} P(t_i) \cdot \log_2 P(t_i)
 \end{equation}
 where \(T \) is the set of unique test activities, and \(P(t_i) \) is the probability of test activity \(t_i \) occuring in the activity matrix.
 The optimal entropy for a system with \(M \) components is \(M \) shannons, and therefore we can compute the normalized entropy \(\frac{H(T)}{M} \).
 SBFL techniques are able to diagnose faults with 100\% accuracy when \(\frac{H(T)}{M} = 1.0 \).
 
-However, an optimal normalized entropy would require \(2^M -1 \) tests, which is difficult to achieve in practice.
+However, an optimal normalized entropy would require \(2^M -1 \) distinct tests, which is difficult to achieve in practice.
 First, not all activity patterns can be generated from tests due to software topology, e.g.\ a basic block consisting of several statements --- these statements will always be executed together, and therefore on a statement granularity it is not possible to achieve optimal entropy, see \Cref{lst:topology}.
 Second, systems of today can consist of millions of lines of code and would therefore require a non-realistic amount of effort to write the tests.\\
 \begin{minipage}{\linewidth}
-\begin{lstlisting}[caption={Lines 4 - 9 will always be executed together and therefore no optimal entropy can be achieved on a statement granularity. Same holds for lines 11 - 14.},label={lst:topology}]
+\begin{lstlisting}[caption={Lines 4 - 9 will always be executed together and therefore no optimal entropy can be achieved on a statement granularity. The same holds for lines 11 - 14.},label={lst:topology}]
 public FieldRotation(final T q0, final T q1, final T q2, final T q3, final boolean needsNormalization) {
     if (needsNormalization) {
         // normalization preprocessing
@@ -359,7 +360,7 @@ To achieve this goal, we define three research questions.
 \noindent
 \textbf{RQ1:} How do normalized density, diversity, uniqueness, and DDU vary in practice?
 \end{framed}
-To be able to propose an intuitive approach that allows developers to use DDU in practie, we first need to understand how the metrics vary in practice.
+To be able to propose an intuitive approach that allows developers to use DDU in practice, we first need to understand how the metrics vary in practice.
 By analyzing how these metrics perform in practice, we are able to propose improvements for DDU, and potentially propose an approach that enables DDU in practice.
 
 \begin{framed}
@@ -760,8 +761,8 @@ The optimal normalized density is 1.0 and the optimal density is 0.5 for a test 
 It is difficult to utilize normalized density to recommend the developer what kind of test to write --- a test that covers a few components or a test that covers many components.
 For example, if \(\rho' = 0.6 \), then the density can either be \(\rho = 0.3 \) or \(\rho = 0.7 \).
 Therefore, the density can be used to guide the developer in writing tests.
-For example, when the test suite's density is less than 0.5, it is recommended to write tests that cover many components.
-Conversely, when the test suite's density is greater than 0.5, it is recommended to write tests that cover a few components.
+For example, when the test suite's density is less than 0.5, the developer should write tests that cover many components.
+Conversely, when the test suite's density is greater than 0.5, the developer should write tests that cover a few components.
 
 % In \Cref{tab:providesmethodscanner}, we observed that the more components a class has, the greater the impact of a test, that covers a relative small number of components, has on the sparseness of the activity matrix.
 % Therefore, we pose the question whether density should be this punishing
@@ -1187,7 +1188,7 @@ The reason for researching the relation between DDU and test coverage is to inve
 If there is a strong correlation between DDU and test coverage, then it means that DDU might function as an error detection metric too.
 Furthermore, investigating the relation between DDU and test coverage might give us insight in how DDU and test coverage could work together in practice.
 
-To answer the research question we will perform several experiments.
+To answer the research question we perform several experiments.
 First, we confirm that test coverage is strongly correlated with error detection since test coverage presumably optimizes the test suite for error detection.
 Second, we investigate the relation between DDU and test coverage.
 Third, we examine the relation between DDU and error detection.
